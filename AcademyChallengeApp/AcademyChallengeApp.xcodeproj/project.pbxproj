@@ -7,23 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3206C80628DE062500397C95 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80528DE062500397C95 /* Coordinator.swift */; };
+		3206C80928DE067000397C95 /* EmojisListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80828DE067000397C95 /* EmojisListViewController.swift */; };
+		3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80A28DE08D400397C95 /* EmojisListCoordinator.swift */; };
 		324AE7DA28DB5C8700B816A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7D928DB5C8700B816A7 /* AppDelegate.swift */; };
 		324AE7DC28DB5C8700B816A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7DB28DB5C8700B816A7 /* SceneDelegate.swift */; };
-		324AE7DE28DB5C8700B816A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7DD28DB5C8700B816A7 /* ViewController.swift */; };
-		324AE7E128DB5C8700B816A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 324AE7DF28DB5C8700B816A7 /* Main.storyboard */; };
+		324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7DD28DB5C8700B816A7 /* MainViewController.swift */; };
 		324AE7E328DB5C8900B816A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 324AE7E228DB5C8900B816A7 /* Assets.xcassets */; };
 		324AE7E628DB5C8900B816A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 324AE7E428DB5C8900B816A7 /* LaunchScreen.storyboard */; };
+		3253622128E1B7EB0073C59F /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622028E1B7EB0073C59F /* ApplicationCoordinator.swift */; };
+		3253622328E1B8620073C59F /* MainViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622228E1B8620073C59F /* MainViewCoordinator.swift */; };
+		3253622528E1C7210073C59F /* AvatarListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622428E1C7210073C59F /* AvatarListCoordinator.swift */; };
+		3253622728E1C7710073C59F /* AvatarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622628E1C7710073C59F /* AvatarListViewController.swift */; };
+		3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622828E1C8320073C59F /* AppleReposViewController.swift */; };
+		3253622B28E1C8570073C59F /* AppleReposCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622A28E1C8570073C59F /* AppleReposCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3206C80528DE062500397C95 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		3206C80828DE067000397C95 /* EmojisListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisListViewController.swift; sourceTree = "<group>"; };
+		3206C80A28DE08D400397C95 /* EmojisListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisListCoordinator.swift; sourceTree = "<group>"; };
 		324AE7D628DB5C8700B816A7 /* AcademyChallengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AcademyChallengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		324AE7D928DB5C8700B816A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		324AE7DB28DB5C8700B816A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		324AE7DD28DB5C8700B816A7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		324AE7E028DB5C8700B816A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		324AE7DD28DB5C8700B816A7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		324AE7E228DB5C8900B816A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		324AE7E528DB5C8900B816A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		324AE7E728DB5C8900B816A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3253622028E1B7EB0073C59F /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
+		3253622228E1B8620073C59F /* MainViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewCoordinator.swift; sourceTree = "<group>"; };
+		3253622428E1C7210073C59F /* AvatarListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarListCoordinator.swift; sourceTree = "<group>"; };
+		3253622628E1C7710073C59F /* AvatarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarListViewController.swift; sourceTree = "<group>"; };
+		3253622828E1C8320073C59F /* AppleReposViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposViewController.swift; sourceTree = "<group>"; };
+		3253622A28E1C8570073C59F /* AppleReposCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +53,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3206C80428DE061100397C95 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				3206C80528DE062500397C95 /* Coordinator.swift */,
+				3206C80A28DE08D400397C95 /* EmojisListCoordinator.swift */,
+				3253622028E1B7EB0073C59F /* ApplicationCoordinator.swift */,
+				3253622228E1B8620073C59F /* MainViewCoordinator.swift */,
+				3253622428E1C7210073C59F /* AvatarListCoordinator.swift */,
+				3253622A28E1C8570073C59F /* AppleReposCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		3206C80728DE065600397C95 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				324AE7DD28DB5C8700B816A7 /* MainViewController.swift */,
+				3206C80828DE067000397C95 /* EmojisListViewController.swift */,
+				3253622628E1C7710073C59F /* AvatarListViewController.swift */,
+				3253622828E1C8320073C59F /* AppleReposViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		324AE7CD28DB5C8700B816A7 = {
 			isa = PBXGroup;
 			children = (
@@ -56,15 +96,23 @@
 		324AE7D828DB5C8700B816A7 /* AcademyChallengeApp */ = {
 			isa = PBXGroup;
 			children = (
+				3253622C28E219150073C59F /* Model */,
+				3206C80728DE065600397C95 /* Controllers */,
+				3206C80428DE061100397C95 /* Coordinators */,
 				324AE7D928DB5C8700B816A7 /* AppDelegate.swift */,
 				324AE7DB28DB5C8700B816A7 /* SceneDelegate.swift */,
-				324AE7DD28DB5C8700B816A7 /* ViewController.swift */,
-				324AE7DF28DB5C8700B816A7 /* Main.storyboard */,
 				324AE7E228DB5C8900B816A7 /* Assets.xcassets */,
 				324AE7E428DB5C8900B816A7 /* LaunchScreen.storyboard */,
 				324AE7E728DB5C8900B816A7 /* Info.plist */,
 			);
 			path = AcademyChallengeApp;
+			sourceTree = "<group>";
+		};
+		3253622C28E219150073C59F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +175,6 @@
 			files = (
 				324AE7E628DB5C8900B816A7 /* LaunchScreen.storyboard in Resources */,
 				324AE7E328DB5C8900B816A7 /* Assets.xcassets in Resources */,
-				324AE7E128DB5C8700B816A7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +185,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				324AE7DE28DB5C8700B816A7 /* ViewController.swift in Sources */,
+				3253622328E1B8620073C59F /* MainViewCoordinator.swift in Sources */,
+				3253622728E1C7710073C59F /* AvatarListViewController.swift in Sources */,
+				3206C80628DE062500397C95 /* Coordinator.swift in Sources */,
+				3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */,
+				3206C80928DE067000397C95 /* EmojisListViewController.swift in Sources */,
+				324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */,
+				3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */,
 				324AE7DA28DB5C8700B816A7 /* AppDelegate.swift in Sources */,
 				324AE7DC28DB5C8700B816A7 /* SceneDelegate.swift in Sources */,
+				3253622B28E1C8570073C59F /* AppleReposCoordinator.swift in Sources */,
+				3253622128E1B7EB0073C59F /* ApplicationCoordinator.swift in Sources */,
+				3253622528E1C7210073C59F /* AvatarListCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		324AE7DF28DB5C8700B816A7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				324AE7E028DB5C8700B816A7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		324AE7E428DB5C8900B816A7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -291,7 +339,6 @@
 				INFOPLIST_FILE = AcademyChallengeApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -318,7 +365,6 @@
 				INFOPLIST_FILE = AcademyChallengeApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

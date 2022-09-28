@@ -6,24 +6,20 @@
 //
 
 import Foundation
+import UIKit
 
-struct Emoji {
+struct Emoji: CustomDebugStringConvertible {
     
     var name: String
     var urlImage: String
     
-}
-
-extension Emoji{
-    var emojiDecoder : [EmojiData]{
-        return[
-            ("name",name),
-            ("url",urlImage)
-        ]
-        
+    var debugDescription: String {
+        "\(name) \(urlImage)"
     }
 }
 
-typealias EmojiData = (name: String,url: String)
+protocol Network {
+    func downloadImage(from url: URL, emojiImageView: UIImageView)
+}
 
 

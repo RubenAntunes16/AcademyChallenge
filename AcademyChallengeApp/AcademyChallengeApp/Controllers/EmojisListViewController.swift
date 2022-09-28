@@ -8,17 +8,25 @@
 import Foundation
 import UIKit
 
+enum Constants {
+    static let cellIdentifier = "emojiCell"
+}
+
 class EmojisListViewController: UIViewController {
     
     private var collectionView: UICollectionView
-    private var emojisList: [String:String]
+    private var emojiImageView: UIImageView
+    
+    var emojisList: [Emoji]?
     
     init(){
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 8
+        layout.minimumInteritemSpacing = 4
         collectionView = .init(frame: .zero, collectionViewLayout: layout)
-        emojisList = [:]
-        
+        emojiImageView = .init(frame: .zero)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,19 +42,21 @@ class EmojisListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Emojis List"
         // Do any additional setup after loading the view.
         setupCollectionsView()
         addViewsToSuperview()
         setupConstraints()
-        view.backgroundColor = .cyan
+        view.backgroundColor = .systemBlue
     }
     
     private func setupCollectionsView(){
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.frame = view.bounds
-        collectionView.backgroundColor = .white
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        
+        collectionView.backgroundColor = .none
+        collectionView.register(EmojisListCollectionViewCell.self, forCellWithReuseIdentifier: Constants.cellIdentifier)
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -66,6 +76,21 @@ class EmojisListViewController: UIViewController {
         
     }
     
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+
+   func downloadImage(from url: URL) {
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            // always update the UI from the main thread
+            DispatchQueue.main.async() { () in
+                self.emojiImageView.image = UIImage(data: data)
+            }
+        }
+    }
+    
     
     
 }
@@ -73,17 +98,39 @@ class EmojisListViewController: UIViewController {
 extension EmojisListViewController: UICollectionViewDelegate, UICollectionViewDataSource{
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         
-        cell.contentView.backgroundColor = .purple
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
+        
+        guard let url = URL(string: (self.emojisList?[indexPath.row].urlImage)!) else { return UICollectionViewCell()}
+        
+        //emojiModel?.downloadImage(from: url!, emojiImageView: self.emojiImageView)
+        downloadImage(from: url)
+        cell.addSubview(emojiImageView)
+        //cell.setupCell(emoji: emojiImageView)
+        cell.contentView.backgroundColor = .orange
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Num cells: \(emojisList.count)")
-        return 30
+        
+        guard let numEmojis = emojisList?.count else { return 0 }
+        
+        return numEmojis
     }
     
     
+}
+
+extension EmojisListViewController: UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let cellWidth = view.frame.width / 3
+        return CGSize(width: cellWidth - 8, height: cellWidth)
+    }
 }

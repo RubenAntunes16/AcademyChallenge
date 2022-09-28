@@ -47,6 +47,7 @@ class MainViewController: UIViewController {
     
     private var emojisList: [Emoji]
     
+    
     // --------- HOW TO START ---------
     // 1 - CREATE THE VIEWS
     // 2 - ADDVIEWS TO SUPERVIEW
@@ -93,8 +94,8 @@ class MainViewController: UIViewController {
         view.tintColor = .lightGray
         getEmojisList()
         
-//        let url = URL(string: "https://github.githubassets.com/images/icons/emoji/unicode/1f947.png?v8")!
-//        downloadImage(from: url)
+        let url = URL(string: "https://github.githubassets.com/images/icons/emoji/unicode/1f947.png?v8")!
+        downloadImage(from: url)
         
         setupViews()
         addViewsToSuperview()
@@ -189,7 +190,7 @@ class MainViewController: UIViewController {
 //
 //        navigationController?.pushViewController(emojisListView, animated: true)
         
-        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!)
+        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!, emojisList: emojisList)
         
         emojiListCoordinator.start()
         
@@ -203,11 +204,11 @@ class MainViewController: UIViewController {
 //
 //        navigationController?.pushViewController(emojisListView, animated: true)
         
-        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!)
-        
-        emojiListCoordinator.start()
-        
-        self.emojisListCoordinator = emojiListCoordinator
+//        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!)
+//
+//        emojiListCoordinator.start()
+//
+//        self.emojisListCoordinator = emojiListCoordinator
         //self.present(emojisListView, animated: true)
     }
     
@@ -229,22 +230,20 @@ class MainViewController: UIViewController {
     
     // -------- SWIFT VERSION ------
     // --------- 1
-     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-     }
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
 
-     func downloadImage(from url: URL) {
-         print("Download Started")
-         getData(from: url) { data, response, error in
-             guard let data = data, error == nil else { return }
-             print(response?.suggestedFilename ?? url.lastPathComponent)
-             print("Download Finished")
-             // always update the UI from the main thread
-             DispatchQueue.main.async() { () in
-                 self.emojiImageView.image = UIImage(data: data)
-             }
-         }
-     }
+   func downloadImage(from url: URL) {
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            // always update the UI from the main thread
+            DispatchQueue.main.async() { () in
+                self.emojiImageView.image = UIImage(data: data)
+            }
+        }
+    }
     
     // --------- 2
     //ir buscar ao playground networking

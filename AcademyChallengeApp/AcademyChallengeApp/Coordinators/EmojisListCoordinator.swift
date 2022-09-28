@@ -11,13 +11,17 @@ import UIKit
 class EmojisListCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var emojisListViewController: EmojisListViewController?
+    private var emojiList: [Emoji]
     
-    init(presenter: UINavigationController){
+    init(presenter: UINavigationController, emojisList: [Emoji]){
         self.presenter = presenter
+        emojiList = emojisList
     }
     
     func start() {
         let emojisListViewController = EmojisListViewController()
+        
+        emojisListViewController.emojisList = emojiList
         
         presenter.pushViewController(emojisListViewController, animated: true)
         

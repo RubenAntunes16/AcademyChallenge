@@ -21,6 +21,9 @@
 		3253622728E1C7710073C59F /* AvatarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622628E1C7710073C59F /* AvatarListViewController.swift */; };
 		3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622828E1C8320073C59F /* AppleReposViewController.swift */; };
 		3253622B28E1C8570073C59F /* AppleReposCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622A28E1C8570073C59F /* AppleReposCoordinator.swift */; };
+		3253622E28E2EE1C0073C59F /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253622D28E2EE1C0073C59F /* Emoji.swift */; };
+		3253623128E31B530073C59F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3253623028E31B530073C59F /* Alamofire */; };
+		3253623328E347BD0073C59F /* EmojisListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3253623228E347BD0073C59F /* EmojisListCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +43,8 @@
 		3253622628E1C7710073C59F /* AvatarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarListViewController.swift; sourceTree = "<group>"; };
 		3253622828E1C8320073C59F /* AppleReposViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposViewController.swift; sourceTree = "<group>"; };
 		3253622A28E1C8570073C59F /* AppleReposCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposCoordinator.swift; sourceTree = "<group>"; };
+		3253622D28E2EE1C0073C59F /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
+		3253623228E347BD0073C59F /* EmojisListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisListCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3253623128E31B530073C59F /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +79,7 @@
 				3206C80828DE067000397C95 /* EmojisListViewController.swift */,
 				3253622628E1C7710073C59F /* AvatarListViewController.swift */,
 				3253622828E1C8320073C59F /* AppleReposViewController.swift */,
+				3253623228E347BD0073C59F /* EmojisListCollectionViewCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -111,6 +118,7 @@
 		3253622C28E219150073C59F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3253622D28E2EE1C0073C59F /* Emoji.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -131,6 +139,9 @@
 			dependencies = (
 			);
 			name = AcademyChallengeApp;
+			packageProductDependencies = (
+				3253623028E31B530073C59F /* Alamofire */,
+			);
 			productName = AcademyChallengeApp;
 			productReference = 324AE7D628DB5C8700B816A7 /* AcademyChallengeApp.app */;
 			productType = "com.apple.product-type.application";
@@ -159,6 +170,9 @@
 				Base,
 			);
 			mainGroup = 324AE7CD28DB5C8700B816A7;
+			packageReferences = (
+				3253622F28E31B530073C59F /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 324AE7D728DB5C8700B816A7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -194,8 +208,10 @@
 				3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */,
 				324AE7DA28DB5C8700B816A7 /* AppDelegate.swift in Sources */,
 				324AE7DC28DB5C8700B816A7 /* SceneDelegate.swift in Sources */,
+				3253623328E347BD0073C59F /* EmojisListCollectionViewCell.swift in Sources */,
 				3253622B28E1C8570073C59F /* AppleReposCoordinator.swift in Sources */,
 				3253622128E1B7EB0073C59F /* ApplicationCoordinator.swift in Sources */,
+				3253622E28E2EE1C0073C59F /* Emoji.swift in Sources */,
 				3253622528E1C7210073C59F /* AvatarListCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -402,6 +418,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3253622F28E31B530073C59F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3253623028E31B530073C59F /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3253622F28E31B530073C59F /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 324AE7CE28DB5C8700B816A7 /* Project object */;
 }

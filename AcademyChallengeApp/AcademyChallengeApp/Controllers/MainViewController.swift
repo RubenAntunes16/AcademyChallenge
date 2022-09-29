@@ -92,15 +92,16 @@ class MainViewController: UIViewController {
        
         view.backgroundColor = .systemBlue
         view.tintColor = .lightGray
-        getEmojisList()
-        
-        let url = URL(string: "https://github.githubassets.com/images/icons/emoji/unicode/1f947.png?v8")!
-        downloadImage(from: url)
         
         setupViews()
         addViewsToSuperview()
         setupConstraints()
         //getAllEmojis()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getEmojisList()
     }
     
     private func setupViews(){
@@ -271,10 +272,12 @@ class MainViewController: UIViewController {
                 //print(String(data: data, encoding: .utf8))
                 if let array = json {
                     print(array.count)
+                    self.emojisList = []
                     for (emojiName,emojiUrl) in array {
                         self.emojisList.append(Emoji(name: emojiName, urlImage: emojiUrl))
                         //print("Item \(emojiName) - URL: \(emojiUrl)\n")
                     }
+                    self.emojisList.sort()
                     self.getRandomEmoji()
                 }
                 

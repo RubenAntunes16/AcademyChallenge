@@ -10,25 +10,69 @@ import UIKit
 
 class EmojisListCollectionViewCell : UICollectionViewCell{
     
-    private var emojiImageView: UIImageView!
+    private var emojiImageView: UIImageView
+    var dataTask: URLSessionTask?
     
-    func setupCell(emoji: UIImageView){
-        self.emojiImageView = emoji
+    override init(frame: CGRect) {
+        emojiImageView = .init(frame: .zero)
+        emojiImageView.contentMode = .scaleAspectFit
+        emojiImageView.clipsToBounds = true
+        //self.emojiImageView = emoji
+        super.init(frame: .zero)
         self.contentView.addSubview(emojiImageView)
         setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupCell(url: URL){
+        downloadImage(from: url)
     }
     
     func setupConstraints(){
         emojiImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            emojiImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            emojiImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            emojiImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            emojiImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            emojiImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            emojiImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        dataTask?.cancel()
+        dataTask = Application.urlSession?.dataTask(with: url, completionHandler: completion)
+        dataTask?.resume()
+    }
+    
+    func downloadImage(from url: URL) {
+        getData(from: url) { [weak self] data, response, error in
+            if let error = error {
+                DispatchQueue.main.async() {
+                    self?.emojiImageView.image = nil
+                    self?.dataTask = nil
+                }
+                return
+            }
+            DispatchQueue.main.async() { () in
+                self?.emojiImageView.image = nil
+                self?.dataTask = nil
+                guard let data = data, error == nil else { return }
+                // always update the UI from the main thread
+                self?.emojiImageView.image = UIImage(data: data)
+            }
+        }
+    }
+    
     override func prepareForReuse() {
+        // vamos ter que fazer aqui o cancel do download acaso a imagem não va ser mostrada
+        
         super.prepareForReuse()
+        dataTask?.cancel()
         // NOTE: - Don't forget to clear your cell before reusing it!
-        self.emojiImageView.removeFromSuperview()
+        // Em caso de placeholders, o nil será substituido por uma imagem que será o placeholder
+        emojiImageView.image = nil
     }
 }

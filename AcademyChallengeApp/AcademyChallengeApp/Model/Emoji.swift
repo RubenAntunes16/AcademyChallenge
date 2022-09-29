@@ -18,6 +18,12 @@ struct Emoji: CustomDebugStringConvertible {
     }
 }
 
+extension Emoji: Comparable {
+    static func < (lhs: Emoji, rhs: Emoji) -> Bool {
+        lhs.name < rhs.name
+    } 
+}
+
 protocol Network {
     func downloadImage(from url: URL, emojiImageView: UIImageView)
 }

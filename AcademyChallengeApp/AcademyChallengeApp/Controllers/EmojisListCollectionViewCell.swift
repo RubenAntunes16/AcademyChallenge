@@ -14,11 +14,12 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     
     func setupCell(emoji: UIImageView){
         self.emojiImageView = emoji
-        self.addSubview(emojiImageView)
+        self.contentView.addSubview(emojiImageView)
         setupConstraints()
     }
     
     func setupConstraints(){
+        emojiImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             emojiImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             emojiImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
@@ -28,6 +29,6 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     override func prepareForReuse() {
         super.prepareForReuse()
         // NOTE: - Don't forget to clear your cell before reusing it!
-        self.backgroundColor = .clear
+        self.emojiImageView.removeFromSuperview()
     }
 }

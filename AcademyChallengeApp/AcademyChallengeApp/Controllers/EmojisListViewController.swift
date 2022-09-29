@@ -19,6 +19,8 @@ class EmojisListViewController: UIViewController {
     
     var emojisList: [Emoji]?
     
+    var mockemojiList : [String] = ["😄","😇","🤩","🥳"]
+    
     init(){
         
         let layout = UICollectionViewFlowLayout()
@@ -48,6 +50,8 @@ class EmojisListViewController: UIViewController {
         addViewsToSuperview()
         setupConstraints()
         view.backgroundColor = .systemBlue
+        
+        collectionView.reloadData()
     }
     
     private func setupCollectionsView(){
@@ -78,15 +82,24 @@ class EmojisListViewController: UIViewController {
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+//        URLSession.shared.dataTask(with: url) { data, response, error in
+//            guard let data = data, error == nil else { return }
+//            print(response?.suggestedFilename ?? url.lastPathComponent)
+//            // always update the UI from the main thread
+//            DispatchQueue.main.async() { () in
+//                self.emojiImageView.image = UIImage(data: data)
+//            }
+//
+//        }.resume()
     }
 
-   func downloadImage(from url: URL) {
+    func downloadImage(from url: URL, imageView: UIImageView) {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
             print(response?.suggestedFilename ?? url.lastPathComponent)
             // always update the UI from the main thread
             DispatchQueue.main.async() { () in
-                self.emojiImageView.image = UIImage(data: data)
+                imageView.image = UIImage(data: data)
             }
         }
     }
@@ -102,12 +115,21 @@ extension EmojisListViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
         
         guard let url = URL(string: (self.emojisList?[indexPath.row].urlImage)!) else { return UICollectionViewCell()}
-        
+        print("URL - \(url)")
         //emojiModel?.downloadImage(from: url!, emojiImageView: self.emojiImageView)
-        downloadImage(from: url)
-        cell.addSubview(emojiImageView)
-        //cell.setupCell(emoji: emojiImageView)
-        cell.contentView.backgroundColor = .orange
+        
+        let imageView : UIImageView = .init(frame: .zero)
+        downloadImage(from: url, imageView: imageView)
+        //imageView.image = mockemojiList[indexPath.row].image()
+        //cell.contentView.addSubview(imageView)
+        //cell.addSubview(imageView)
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            imageView.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
+//            imageView.centerYAnchor.constraint(equalTo: cell.centerYAnchor)
+//        ])
+        cell.setupCell(emoji: imageView)
+        //cell.contentView.backgroundColor = .orange
         
         return cell
     }
@@ -132,5 +154,19 @@ extension EmojisListViewController: UICollectionViewDelegateFlowLayout{
         
         let cellWidth = view.frame.width / 3
         return CGSize(width: cellWidth - 8, height: cellWidth)
+    }
+}
+
+extension String {
+    func image() -> UIImage? {
+        let size = CGSize(width: 40, height: 40)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        UIColor.white.set()
+        let rect = CGRect(origin: .zero, size: size)
+        UIRectFill(CGRect(origin: .zero, size: size))
+        (self as AnyObject).draw(in: rect, withAttributes: [.font: UIFont.systemFont(ofSize: 40)])
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
     }
 }

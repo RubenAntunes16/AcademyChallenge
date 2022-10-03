@@ -11,6 +11,7 @@ import UIKit
 class EmojisListCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var emojisListViewController: EmojisListViewController?
+//    private var emojiList: EmojiStorage
     private var emojiList: [Emoji]
     
     init(presenter: UINavigationController, emojisList: [Emoji]){

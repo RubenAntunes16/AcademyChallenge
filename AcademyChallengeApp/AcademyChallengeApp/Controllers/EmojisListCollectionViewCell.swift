@@ -28,7 +28,15 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     }
     
     func setupCell(url: URL){
-        downloadImage(from: url)
+        //downloadImage(from: url)
+        downloadImageFromURL(from: url) { (result: Result<UIImage, Error>) in
+            switch result {
+            case .success(let success):
+                self.emojiImageView.image = success
+            case .failure(let failure):
+                print("Cannot get image from url: \(failure)")
+            }
+        }
     }
     
     func setupConstraints(){
@@ -48,6 +56,7 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     }
     
     func downloadImage(from url: URL) {
+        // CALL DOWNLOAD IMAGE FUNCTION (CLASS EMOJI API)
         getData(from: url) { [weak self] data, response, error in
             if let error = error {
                 DispatchQueue.main.async() {

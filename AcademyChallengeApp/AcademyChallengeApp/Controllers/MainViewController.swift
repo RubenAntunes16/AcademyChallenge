@@ -24,7 +24,12 @@ extension CGFloat {
 }
 
 class MainViewController: UIViewController {
-
+    
+    var emojisList: [Emoji] = [] {
+        didSet{
+            getRandomEmoji()
+        }
+    }
     
     private var emojisListCoordinator: EmojisListCoordinator?
     private var avatarListCoordinator: AvatarListCoordinator?
@@ -36,16 +41,12 @@ class MainViewController: UIViewController {
     private var mainStackView: UIStackView
     private var searchStackView: UIStackView
     
-    //private
-    
     private var buttonEmojisList: UIButton
     private var buttonRandomEmojis: UIButton
     private var buttonSearch: UIButton
     private var searchBar: UISearchBar
     private var buttonAvatarList: UIButton
     private var buttonAppleRepos: UIButton
-    
-    private var emojisList: [Emoji]
     
     
     // --------- HOW TO START ---------
@@ -76,8 +77,6 @@ class MainViewController: UIViewController {
             buttonAppleRepos
         ])
         
-        emojisList = []
-        
         // ESTE INIT É NECESSÁRIO
         super.init(nibName: nil, bundle: nil)
     }
@@ -96,17 +95,18 @@ class MainViewController: UIViewController {
         setupViews()
         addViewsToSuperview()
         setupConstraints()
-        //getAllEmojis()
+        //getEmojisList()
+//        getEmojisList()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getEmojisList()
+        //getRandomEmoji()
+        //getEmojisList()
     }
     
     private func setupViews(){
         // FAZER O SETUP DAS STACKVIEWS
-        title = "Main Screen"
         
         //emojiImageView.backgroundColor = .orange
         //emojiImageView.image = UIImage(named: "emoji_Test")
@@ -174,12 +174,30 @@ class MainViewController: UIViewController {
             viewEmojiRandom.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: World.K.appMarginTop),
             viewEmojiRandom.bottomAnchor.constraint(equalTo: mainStackView.topAnchor,constant: World.K.interItemSpacing.symmetric),
             
-            emojiImageView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
-            emojiImageView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
+            emojiImageView.leadingAnchor.constraint(equalTo: viewEmojiRandom.leadingAnchor, constant: World.K.appMarginTop),
+            emojiImageView.trailingAnchor.constraint(equalTo: viewEmojiRandom.trailingAnchor, constant: World.K.appMarginTop.symmetric),
+            emojiImageView.topAnchor.constraint(equalTo: viewEmojiRandom.topAnchor, constant: World.K.appMarginTop),
+            emojiImageView.bottomAnchor.constraint(equalTo: viewEmojiRandom.bottomAnchor, constant: World.K.appMarginTop.symmetric)
             
         ])
         
+        emojiImageView.contentMode = .scaleAspectFit
     }
+    
+//    func getEmojisList(){
+//        // METHOD IN EMOJI API
+//        networkCallExecution(EmojiAPI.getEmojis) { (result: Result<EmojiAPICallResult, Error>) in
+//            switch result{
+//            case .success(let success):
+//                print("Success: \(success)")
+//                self.emojisList = success.emojis
+//                self.emojisList.sort()
+//            case .failure(let failure):
+//                print("Failure: \(failure)")
+//            }
+//        }
+//    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -222,18 +240,22 @@ class MainViewController: UIViewController {
         
         guard let emoji = emojisList.item(at: random) else { return }
         
-        let url = URL(string: emoji.urlImage)
-        downloadImage(from: url!)
+        //downloadImage(from: emoji.urlImage)
+        downloadImageFromURL(from: emoji.urlImage) { (result: Result<UIImage, Error>) in
+            switch result {
+            case .success(let success):
+                self.emojiImageView.image = success
+            case .failure(let failure):
+                print("Cannot get image from url: \(failure)")
+            }
+        }
     }
     
-    // -------------- NETWORKING ---------------
-    
-    
-    // -------- SWIFT VERSION ------
-    // --------- 1
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
+            
+            URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+           
+        }
 
    func downloadImage(from url: URL) {
         getData(from: url) { data, response, error in
@@ -246,49 +268,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // --------- 2
-    //ir buscar ao playground networking
     
-    //-------- ALAMOFIRE VERSION -------
-//    func getAllEmojis(){
-//        let response = AF.request("https://api.github.com/emojis")
-//
-//        response.responseJSON { (data) in print(data)}
-//    }
-    
-    private func getEmojisList(){
-        let url = URL(string: "https://api.github.com/emojis")!
-
-        var request = URLRequest(url: url)
-
-        print(request)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data {
-                let json = try? JSONSerialization.jsonObject(with: data) as? Dictionary<String,String>
-        //        print(json!)
-        //        print(data)
-                //print(String(data: data, encoding: .utf8))
-                if let array = json {
-                    print(array.count)
-                    self.emojisList = []
-                    for (emojiName,emojiUrl) in array {
-                        self.emojisList.append(Emoji(name: emojiName, urlImage: emojiUrl))
-                        //print("Item \(emojiName) - URL: \(emojiUrl)\n")
-                    }
-                    self.emojisList.sort()
-                    self.getRandomEmoji()
-                }
-                
-                //print(String(data: data, encoding: .utf8))
-            } else if let error = error {
-                print("HTTP Request Failed \(error)")
-            }
-        }
-
-        task.resume()
-    }
      
 }
 

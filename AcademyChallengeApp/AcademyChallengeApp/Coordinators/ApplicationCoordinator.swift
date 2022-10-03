@@ -12,6 +12,9 @@ class ApplicationCoordinator: Coordinator {
     // SETUPS IT'S PRESENTATIONS IN THE APP'S WINDOW
     let window: UIWindow
     
+    //var emojiList: EmojiStorage
+    let emojiList: LiveEmojiStorage = LiveEmojiStorage()
+    
     // THE ROOTVIEWCONTROLLER WILL BE THE NAVIGATION CONTROLLER SO WE CAN NAVIGATE BETWEEN THE OTHERS VIEW CONTROLLER
     let rootViewController: UINavigationController
     
@@ -21,14 +24,9 @@ class ApplicationCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
-        //rootViewController.navigationBar.prefersLargeTitles = true
+        emojiList.getEmojisList()
         
-        // Just for testing purposes, when you don't have other view controller to present
-//        let emptyViewController = UIViewController()
-//        emptyViewController.view.backgroundColor = .cyan
-//        rootViewController.pushViewController(emptyViewController, animated: false)
-//
-        mainViewCoordinator = MainViewCoordinator(presenter: rootViewController)
+        mainViewCoordinator = MainViewCoordinator(presenter: rootViewController, emojiList: emojiList.emojis)
     }
     
     // THIS FUNCTION WILL PRESENT THE WINDOW WITH ITS ROOTVIEWCONTROLLER

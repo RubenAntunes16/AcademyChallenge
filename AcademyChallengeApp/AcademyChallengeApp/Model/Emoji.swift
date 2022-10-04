@@ -14,7 +14,7 @@ struct Emoji: CustomDebugStringConvertible {
     var urlImage: URL
     
     var debugDescription: String {
-        "\(name) \(urlImage)"
+        "\(name): \(urlImage)"
     }
 }
 

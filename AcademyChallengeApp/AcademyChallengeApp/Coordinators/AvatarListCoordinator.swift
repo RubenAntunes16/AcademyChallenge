@@ -17,6 +17,7 @@ class AvatarListCoordinator: Coordinator {
     
     func start() {
         let avatarListViewController = AvatarListViewController()
+        avatarListViewController.title = "Avatar List"
         
         presenter.pushViewController(avatarListViewController, animated: true)
         

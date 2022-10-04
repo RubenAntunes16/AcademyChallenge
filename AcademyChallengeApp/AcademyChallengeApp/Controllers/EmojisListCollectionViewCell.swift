@@ -32,7 +32,10 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
         downloadImageFromURL(from: url) { (result: Result<UIImage, Error>) in
             switch result {
             case .success(let success):
-                self.emojiImageView.image = success
+                DispatchQueue.main.async {
+                    self.emojiImageView.image = success
+                }
+                
             case .failure(let failure):
                 print("Cannot get image from url: \(failure)")
             }

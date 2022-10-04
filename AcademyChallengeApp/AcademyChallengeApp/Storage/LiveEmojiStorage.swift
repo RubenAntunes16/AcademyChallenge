@@ -9,6 +9,7 @@ import Foundation
 
 class LiveEmojiStorage: EmojiStorage  {
     
+    weak var delegate: EmojiStorageDelegate?
     var emojis: [Emoji] = []
     
     init(){
@@ -22,6 +23,9 @@ class LiveEmojiStorage: EmojiStorage  {
                 print("Success: \(success)")
                 self.emojis = success.emojis
                 self.emojis.sort()
+                DispatchQueue.main.async {
+                    self.delegate?.emojiListUpdated()
+                }
             case .failure(let failure):
                 print("Failure: \(failure)")
             }
@@ -31,11 +35,11 @@ class LiveEmojiStorage: EmojiStorage  {
 
 protocol EmojiStorage{
     var emojis: [Emoji] { get set }
-    //var delegate : EmojiStorageDelegate? { get set }
+    var delegate : EmojiStorageDelegate? { get set }
 }
 
 protocol EmojiStorageDelegate: AnyObject {
-    func getEmojisList()
+    func emojiListUpdated()
 }
 
 protocol EmojiPresenter: EmojiStorageDelegate {

@@ -13,7 +13,7 @@ class ApplicationCoordinator: Coordinator {
     let window: UIWindow
     
     //var emojiList: EmojiStorage
-    let emojiList: LiveEmojiStorage = LiveEmojiStorage()
+    let emojiStorage: LiveEmojiStorage = LiveEmojiStorage()
     
     // THE ROOTVIEWCONTROLLER WILL BE THE NAVIGATION CONTROLLER SO WE CAN NAVIGATE BETWEEN THE OTHERS VIEW CONTROLLER
     let rootViewController: UINavigationController
@@ -24,9 +24,9 @@ class ApplicationCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
-        emojiList.getEmojisList()
+        emojiStorage.getEmojisList()
         
-        mainViewCoordinator = MainViewCoordinator(presenter: rootViewController, emojiList: emojiList.emojis)
+        mainViewCoordinator = MainViewCoordinator(presenter: rootViewController, emojiStorage: emojiStorage)
     }
     
     // THIS FUNCTION WILL PRESENT THE WINDOW WITH ITS ROOTVIEWCONTROLLER

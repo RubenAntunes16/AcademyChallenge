@@ -25,7 +25,7 @@ extension CGFloat {
 
 class MainViewController: UIViewController {
     
-    var emojisStorage: EmojiStorage?
+//    var emojisStorage: EmojiStorage?
 //    var emojisList: [Emoji] = []
 //    var emojisList: [Emoji] = [] {
 //        didSet{
@@ -53,7 +53,9 @@ class MainViewController: UIViewController {
     private var buttonAppleRepos: UIButton
     
     //var emojiList: EmojiStorage
-    let emojiStorage: LiveEmojiStorage = LiveEmojiStorage()
+//    let emojiStorage: LiveEmojiStorage = LiveEmojiStorage()
+    
+    var emojiService: EmojiService?
     
     
     // --------- HOW TO START ---------
@@ -108,7 +110,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        emojiStorage.delegate = self
+//        emojiStorage.delegate = self
         //getRandomEmoji()
         //getEmojisList()
     }
@@ -139,7 +141,7 @@ class MainViewController: UIViewController {
         buttonAppleRepos.setTitle("APPLE REPOS", for: .normal)
         
         // --------- ADD TARGETS -----------
-        buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap(_:)), for: .touchUpInside)
+        buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap), for: .touchUpInside)
         
         // TouchUpInside - é o gesto vulgar de carregar no botão
         buttonEmojisList.addTarget(self, action: #selector(buttonEmojisListTap(_:)), for: .touchUpInside)
@@ -205,7 +207,7 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        emojiStorage.getEmojisList()
+        buttonRandomEmojisTap()
     }
     
     @objc func buttonEmojisListTap(_ sender: UIButton){
@@ -214,16 +216,17 @@ class MainViewController: UIViewController {
 //
 //        navigationController?.pushViewController(emojisListView, animated: true)
         
-        guard let emojiList = emojisStorage?.emojis else {
-            print("EmojiStorage Emojis a nil")
-            return
-            
-        }
+//        guard let emojiList = emojis?.emojis else {
+//            print("EmojiStorage Emojis a nil")
+//            return
+//
+//        }
+//
+        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!)
         
-        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!, emojisList: emojiList)
-        
+
         emojiListCoordinator.start()
-        
+
         self.emojisListCoordinator = emojiListCoordinator
         //self.present(emojisListView, animated: true)
     }
@@ -242,28 +245,30 @@ class MainViewController: UIViewController {
         //self.present(emojisListView, animated: true)
     }
     
-    @objc func buttonRandomEmojisTap(_ sender: UIButton){
-        getRandomEmoji()
+    @objc func buttonRandomEmojisTap(){
+        emojiService?.getRandomEmojiUrl({ (url: URL) in
+            self.emojiImageView.downloadImageFromURL(from: url)
+        })
     }
     
-    func getRandomEmoji(){
-        let random = Int.random(in: 0...(emojisStorage?.emojis.count ?? 0))
-        
-        guard let emoji = emojisStorage?.emojis.item(at: random) else { return }
-        
-        //downloadImage(from: emoji.urlImage)
-        downloadImageFromURL(from: emoji.urlImage) { (result: Result<UIImage, Error>) in
-            switch result {
-            case .success(let success):
-                DispatchQueue.main.async {
-                    self.emojiImageView.image = success
-                }
-                
-            case .failure(let failure):
-                print("Cannot get image from url: \(failure)")
-            }
-        }
-    }
+//    func getRandomEmoji(){
+//        let random = Int.random(in: 0...(emojisStorage?.emojis.count ?? 0))
+//        
+//        guard let emoji = emojisStorage?.emojis.item(at: random) else { return }
+//        
+//        //downloadImage(from: emoji.urlImage)
+//        downloadImageFromURL(from: emoji.urlImage) { (result: Result<UIImage, Error>) in
+//            switch result {
+//            case .success(let success):
+//                DispatchQueue.main.async {
+//                    self.emojiImageView.image = success
+//                }
+//                
+//            case .failure(let failure):
+//                print("Cannot get image from url: \(failure)")
+//            }
+//        }
+//    }
     
 //    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
 //
@@ -289,9 +294,9 @@ extension Array{
     }
 }
 
-extension MainViewController: EmojiStorageDelegate {
-    func emojiListUpdated() {
-        getRandomEmoji()
-    }
-}
+//extension MainViewController: EmojiStorageDelegate {
+//    func emojiListUpdated() {
+//        getRandomEmoji()
+//    }
+//}
 

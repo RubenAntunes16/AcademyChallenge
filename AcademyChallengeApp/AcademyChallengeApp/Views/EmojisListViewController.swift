@@ -21,6 +21,8 @@ class EmojisListViewController: UIViewController {
     var emojisList: [Emoji]?
     //var emojisList: EmojiStorage?
     
+    var emojiService: EmojiService?
+    
     var mockemojiList : [String] = ["😄","😇","🤩","🥳"]
     
     init(){
@@ -42,6 +44,14 @@ class EmojisListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        emojiService?.getEmojisList({ (result: EmojiAPICallResult) in
+            self.emojisList = result.emojis
+            self.emojisList?.sort()
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+            
+        })
     }
     
     override func viewDidLoad() {
@@ -53,7 +63,6 @@ class EmojisListViewController: UIViewController {
         setupConstraints()
         view.backgroundColor = .systemBlue
         
-        collectionView.reloadData()
     }
     
     private func setupCollectionsView(){

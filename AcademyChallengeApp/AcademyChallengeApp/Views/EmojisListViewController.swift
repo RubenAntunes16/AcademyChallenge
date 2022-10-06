@@ -19,11 +19,8 @@ class EmojisListViewController: UIViewController {
     private var emojiImageView: UIImageView
     
     var emojisList: [Emoji]?
-    //var emojisList: EmojiStorage?
     
     var emojiService: EmojiService?
-    
-    var mockemojiList : [String] = ["😄","😇","🤩","🥳"]
     
     init(){
         

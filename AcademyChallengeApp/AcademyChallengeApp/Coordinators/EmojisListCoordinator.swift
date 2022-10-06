@@ -23,7 +23,7 @@ class EmojisListCoordinator: Coordinator {
     func start() {
         let emojisListViewController = EmojisListViewController()
         
-        emojisListViewController.emojiService = MockedEmojiService()
+        emojisListViewController.emojiService = emojiSource
         
         presenter.pushViewController(emojisListViewController, animated: true)
         

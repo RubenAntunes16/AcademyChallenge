@@ -28,7 +28,7 @@ class MainViewCoordinator: Coordinator {
         // CREATE THE VIEW CONTROLLER TO PRESENT
         let mainViewController = MainViewController()
         mainViewController.title = "Main Page"
-        mainViewController.emojiService = MockedEmojiService()
+        mainViewController.emojiService = emojiSource
 //        mainViewController.emojisStorage = emojisStorage
         // PUSH THE NEW VIEW CONTROLLER SO IT CAN BE PRESENT
         presenter.pushViewController(mainViewController, animated: true)

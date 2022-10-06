@@ -8,5 +8,6 @@
 import Foundation
 
 protocol Coordinator {
+//    var emojiSource: EmojiService { get }
     func start()
 }

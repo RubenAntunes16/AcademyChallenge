@@ -13,9 +13,11 @@ class MainViewCoordinator: Coordinator {
     
     private let presenter: UINavigationController
     private var mainViewController: MainViewController?
+    private var emojis: [Emoji]?
     
     init(presenter: UINavigationController){
         self.presenter = presenter
+//        self.emojis = emojis
 //        self.emojisStorage = emojiStorage
 //        self.emojisStorage?.delegate = self
     }
@@ -26,7 +28,7 @@ class MainViewCoordinator: Coordinator {
         // CREATE THE VIEW CONTROLLER TO PRESENT
         let mainViewController = MainViewController()
         mainViewController.title = "Main Page"
-        mainViewController.emojiService = .init()
+        mainViewController.emojiService = MockedEmojiService()
 //        mainViewController.emojisStorage = emojisStorage
         // PUSH THE NEW VIEW CONTROLLER SO IT CAN BE PRESENT
         presenter.pushViewController(mainViewController, animated: true)

@@ -246,8 +246,18 @@ class MainViewController: UIViewController {
     }
     
     @objc func buttonRandomEmojisTap(){
-        emojiService?.getRandomEmojiUrl({ (url: URL) in
-            self.emojiImageView.downloadImageFromURL(from: url)
+        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji],Error>) in
+            switch result{
+            case .success(let success):
+                
+               guard let randomUrl = success.randomElement()?.urlImage else { return }
+                
+                self?.emojiImageView.downloadImageFromURL(from: randomUrl)
+                
+            case .failure(let failure):
+                print("Failure: \(failure)")
+            }
+            
         })
     }
     

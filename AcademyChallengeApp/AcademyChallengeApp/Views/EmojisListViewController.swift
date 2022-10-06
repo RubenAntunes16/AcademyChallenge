@@ -44,13 +44,20 @@ class EmojisListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        emojiService?.getEmojisList({ (result: EmojiAPICallResult) in
-            self.emojisList = result.emojis
-            self.emojisList?.sort()
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji],Error>) in
+            switch result{
+            case .success(let success):
+                self?.emojisList = success
+                self?.emojisList?.sort()
+                DispatchQueue.main.async { [weak self] in
+                    self?.collectionView.reloadData()
+                }
+                
+            case .failure(let failure):
+                print("Failure: \(failure)")
             }
             
+
         })
     }
     

@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class EmojisListCoordinator: Coordinator {
+    
     private let presenter: UINavigationController
     private var emojisListViewController: EmojisListViewController?
 //    private var emojiList: EmojiStorage
@@ -22,7 +23,7 @@ class EmojisListCoordinator: Coordinator {
     func start() {
         let emojisListViewController = EmojisListViewController()
         
-        emojisListViewController.emojiService = .init()
+        emojisListViewController.emojiService = MockedEmojiService()
         
         presenter.pushViewController(emojisListViewController, animated: true)
         

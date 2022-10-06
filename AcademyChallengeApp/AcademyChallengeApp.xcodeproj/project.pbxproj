@@ -27,7 +27,9 @@
 		32823CA028E5DB7300596B98 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32823C9F28E5DB7300596B98 /* Application.swift */; };
 		32823CA328E6E04100596B98 /* EmojiAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32823CA228E6E04000596B98 /* EmojiAPI.swift */; };
 		32823CA628E6F42B00596B98 /* EmojiMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32823CA528E6F42B00596B98 /* EmojiMock.swift */; };
-		32C5E73428EC787200C5FD93 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5E73328EC787200C5FD93 /* EmojiService.swift */; };
+		32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */; };
+		32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285328EED8FC00EDFFF1 /* EmojiService.swift */; };
+		32C5E73428EC787200C5FD93 /* LiveEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5E73328EC787200C5FD93 /* LiveEmojiService.swift */; };
 		32C5E73728EC78B900C5FD93 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5E73628EC78B900C5FD93 /* NetworkManager.swift */; };
 		32C5E73A28EC7AB100C5FD93 /* UIImageView+download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5E73928EC7AB100C5FD93 /* UIImageView+download.swift */; };
 /* End PBXBuildFile section */
@@ -54,7 +56,9 @@
 		32823C9F28E5DB7300596B98 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		32823CA228E6E04000596B98 /* EmojiAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAPI.swift; sourceTree = "<group>"; };
 		32823CA528E6F42B00596B98 /* EmojiMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMock.swift; sourceTree = "<group>"; };
-		32C5E73328EC787200C5FD93 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
+		32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedEmojiService.swift; sourceTree = "<group>"; };
+		32B8285328EED8FC00EDFFF1 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
+		32C5E73328EC787200C5FD93 /* LiveEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEmojiService.swift; sourceTree = "<group>"; };
 		32C5E73628EC78B900C5FD93 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		32C5E73928EC7AB100C5FD93 /* UIImageView+download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+download.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,7 +155,9 @@
 		32C5E73228EC782700C5FD93 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				32C5E73328EC787200C5FD93 /* EmojiService.swift */,
+				32C5E73328EC787200C5FD93 /* LiveEmojiService.swift */,
+				32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */,
+				32B8285328EED8FC00EDFFF1 /* EmojiService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -255,17 +261,19 @@
 				32C5E73728EC78B900C5FD93 /* NetworkManager.swift in Sources */,
 				32823CA328E6E04100596B98 /* EmojiAPI.swift in Sources */,
 				3206C80628DE062500397C95 /* Coordinator.swift in Sources */,
+				32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */,
 				3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */,
 				32823CA628E6F42B00596B98 /* EmojiMock.swift in Sources */,
 				3206C80928DE067000397C95 /* EmojisListViewController.swift in Sources */,
 				324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */,
 				3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */,
-				32C5E73428EC787200C5FD93 /* EmojiService.swift in Sources */,
+				32C5E73428EC787200C5FD93 /* LiveEmojiService.swift in Sources */,
 				324AE7DA28DB5C8700B816A7 /* AppDelegate.swift in Sources */,
 				324AE7DC28DB5C8700B816A7 /* SceneDelegate.swift in Sources */,
 				3253623328E347BD0073C59F /* EmojisListCollectionViewCell.swift in Sources */,
 				3253622B28E1C8570073C59F /* AppleReposCoordinator.swift in Sources */,
 				3253622128E1B7EB0073C59F /* ApplicationCoordinator.swift in Sources */,
+				32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */,
 				32C5E73A28EC7AB100C5FD93 /* UIImageView+download.swift in Sources */,
 				3253622E28E2EE1C0073C59F /* Emoji.swift in Sources */,
 				3253622528E1C7210073C59F /* AvatarListCoordinator.swift in Sources */,

@@ -13,6 +13,27 @@ enum Constants {
     static let cellIdentifier = "emojiCell"
 }
 
+// ------ MOCKED CLASS TO MOCKED EMOJIS COLLECTION DATA SOURCE -------
+class MockedEmojiDataSource : NSObject, UICollectionViewDataSource {
+    var emojiMocked: EmojiMocked = .init()
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return emojiMocked.mockedEmojis.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
+        
+    
+        let url = emojiMocked.mockedEmojis[indexPath.row].urlImage
+        
+        cell.setupCell(url: url)
+        
+        return cell
+    }
+}
+// -------------------------------------------------------------------
+
 class EmojisListViewController: UIViewController {
     
     private var collectionView: UICollectionView
@@ -21,6 +42,9 @@ class EmojisListViewController: UIViewController {
     var emojisList: [Emoji]?
     
     var emojiService: EmojiService?
+    
+    // ---- VARIABLE TO INJECT IN DATASOURCE PROPERTY MOCKED DATA
+    var mockedDataSource = MockedEmojiDataSource()
     
     init(){
         
@@ -133,19 +157,5 @@ extension EmojisListViewController: UICollectionViewDelegateFlowLayout{
         
         let cellWidth = view.frame.width / 3
         return CGSize(width: cellWidth - 8, height: cellWidth / 2)
-    }
-}
-
-extension String {
-    func image() -> UIImage? {
-        let size = CGSize(width: 40, height: 40)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        UIColor.white.set()
-        let rect = CGRect(origin: .zero, size: size)
-        UIRectFill(CGRect(origin: .zero, size: size))
-        (self as AnyObject).draw(in: rect, withAttributes: [.font: UIFont.systemFont(ofSize: 40)])
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
     }
 }

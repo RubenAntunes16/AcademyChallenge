@@ -30,6 +30,7 @@
 		32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */; };
 		32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285328EED8FC00EDFFF1 /* EmojiService.swift */; };
 		32BDD93F28F061F2009A644F /* String+ToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BDD93E28F061F2009A644F /* String+ToImage.swift */; };
+		32BDD94428F08AFB009A644F /* ColorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BDD94328F08AFB009A644F /* ColorProvider.swift */; };
 		32C5E73428EC787200C5FD93 /* LiveEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5E73328EC787200C5FD93 /* LiveEmojiService.swift */; };
 		32C5E73728EC78B900C5FD93 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5E73628EC78B900C5FD93 /* NetworkManager.swift */; };
 		32C5E73A28EC7AB100C5FD93 /* UIImageView+download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5E73928EC7AB100C5FD93 /* UIImageView+download.swift */; };
@@ -60,6 +61,7 @@
 		32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedEmojiService.swift; sourceTree = "<group>"; };
 		32B8285328EED8FC00EDFFF1 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
 		32BDD93E28F061F2009A644F /* String+ToImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ToImage.swift"; sourceTree = "<group>"; };
+		32BDD94328F08AFB009A644F /* ColorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorProvider.swift; sourceTree = "<group>"; };
 		32C5E73328EC787200C5FD93 /* LiveEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveEmojiService.swift; sourceTree = "<group>"; };
 		32C5E73628EC78B900C5FD93 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		32C5E73928EC7AB100C5FD93 /* UIImageView+download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+download.swift"; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		324AE7D828DB5C8700B816A7 /* AcademyChallengeApp */ = {
 			isa = PBXGroup;
 			children = (
+				32BDD94228F08ADE009A644F /* DesignSystem */,
 				32C5E73828EC7A9500C5FD93 /* Utilities */,
 				32C5E73528EC789000C5FD93 /* Network */,
 				32C5E73228EC782700C5FD93 /* Service */,
@@ -152,6 +155,14 @@
 				32823CA228E6E04000596B98 /* EmojiAPI.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		32BDD94228F08ADE009A644F /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				32BDD94328F08AFB009A644F /* ColorProvider.swift */,
+			);
+			path = DesignSystem;
 			sourceTree = "<group>";
 		};
 		32C5E73228EC782700C5FD93 /* Service */ = {
@@ -258,6 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32BDD94428F08AFB009A644F /* ColorProvider.swift in Sources */,
 				32823CA028E5DB7300596B98 /* Application.swift in Sources */,
 				3253622328E1B8620073C59F /* MainViewCoordinator.swift in Sources */,
 				3253622728E1C7710073C59F /* AvatarListViewController.swift in Sources */,

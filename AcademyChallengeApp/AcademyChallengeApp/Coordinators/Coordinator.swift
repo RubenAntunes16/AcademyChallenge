@@ -10,3 +10,5 @@ import Foundation
 protocol Coordinator {
     func start()
 }
+
+var emojiSource = MockedEmojiService()

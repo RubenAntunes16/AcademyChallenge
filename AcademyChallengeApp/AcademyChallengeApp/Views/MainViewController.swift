@@ -24,7 +24,6 @@ extension CGFloat {
 }
 
 class MainViewController: UIViewController {
-
     
     private var emojisListCoordinator: EmojisListCoordinator?
     private var avatarListCoordinator: AvatarListCoordinator?
@@ -36,8 +35,6 @@ class MainViewController: UIViewController {
     private var mainStackView: UIStackView
     private var searchStackView: UIStackView
     
-    //private
-    
     private var buttonEmojisList: UIButton
     private var buttonRandomEmojis: UIButton
     private var buttonSearch: UIButton
@@ -45,7 +42,7 @@ class MainViewController: UIViewController {
     private var buttonAvatarList: UIButton
     private var buttonAppleRepos: UIButton
     
-    private var emojisList: [Emoji]
+    var emojiService: EmojiService?
     
     
     // --------- HOW TO START ---------
@@ -76,8 +73,6 @@ class MainViewController: UIViewController {
             buttonAppleRepos
         ])
         
-        emojisList = []
-        
         // ESTE INIT É NECESSÁRIO
         super.init(nibName: nil, bundle: nil)
     }
@@ -96,19 +91,14 @@ class MainViewController: UIViewController {
         setupViews()
         addViewsToSuperview()
         setupConstraints()
-        //getAllEmojis()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        getEmojisList()
+        
+        buttonRandomEmojisTap()
     }
     
     private func setupViews(){
         // FAZER O SETUP DAS STACKVIEWS
-        title = "Main Screen"
         
-        //emojiImageView.backgroundColor = .orange
+//        emojiImageView.backgroundColor = .orange
         //emojiImageView.image = UIImage(named: "emoji_Test")
         //emojiImageView.contentMode = UIView.ContentMode.scaleToFill
         
@@ -119,31 +109,24 @@ class MainViewController: UIViewController {
         searchStackView.spacing = CGFloat(World.K.interItemSpacing)
         
         // FAZER O SETUP DOS BUTTONS
+        let buttonArray = [buttonRandomEmojis, buttonEmojisList, buttonSearch, buttonAvatarList, buttonAppleRepos]
+        buttonArray.forEach {
+            $0.configuration = .filled()
+        }
+        
         buttonRandomEmojis.setTitle("RANDOM EMOJI", for: .normal)
-        buttonRandomEmojis.configuration = .filled()
-        //buttonRandomEmojis.tintColor = .secondarySystemBackground
-        
         buttonEmojisList.setTitle("EMOJIS LIST", for: .normal)
-        buttonEmojisList.configuration = .filled()
-        //buttonRandomEmojis.tintColor = .secondarySystemBackground
-        
         buttonSearch.setTitle("SEARCH", for: .normal)
-        buttonSearch.configuration = .filled()
-        //buttonRandomEmojis.tintColor = .systemGray3
-        
         buttonAvatarList.setTitle("AVATARS LIST", for: .normal)
-        buttonAvatarList.configuration = .filled()
-        //buttonRandomEmojis.tintColor = .systemGray4
-        
         buttonAppleRepos.setTitle("APPLE REPOS", for: .normal)
-        buttonAppleRepos.configuration = .filled()
         
-        buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap(_:)), for: .touchUpInside)
+        // --------- ADD TARGETS -----------
+        buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap), for: .touchUpInside)
         
         // TouchUpInside - é o gesto vulgar de carregar no botão
         buttonEmojisList.addTarget(self, action: #selector(buttonEmojisListTap(_:)), for: .touchUpInside)
         
-        buttonAvatarList.addTarget(self, action: #selector(buttonEmojisListTap(_:)), for: .touchUpInside)
+        buttonAvatarList.addTarget(self, action: #selector(buttonAvatarListTap(_:)), for: .touchUpInside)
         
     }
     
@@ -174,122 +157,59 @@ class MainViewController: UIViewController {
             viewEmojiRandom.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: World.K.appMarginTop),
             viewEmojiRandom.bottomAnchor.constraint(equalTo: mainStackView.topAnchor,constant: World.K.interItemSpacing.symmetric),
             
+//            emojiImageView.leadingAnchor.constraint(equalTo: viewEmojiRandom.leadingAnchor, constant: World.K.appMarginTop),
+//            emojiImageView.trailingAnchor.constraint(equalTo: viewEmojiRandom.trailingAnchor, constant: World.K.appMarginTop.symmetric),
+//            emojiImageView.topAnchor.constraint(equalTo: viewEmojiRandom.topAnchor, constant: World.K.appMarginTop),
+//            emojiImageView.bottomAnchor.constraint(equalTo: viewEmojiRandom.bottomAnchor, constant: World.K.appMarginTop.symmetric)
+            
             emojiImageView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
             emojiImageView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
             
         ])
         
+//        emojiImageView.contentMode = .scaleAspectFit
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        
     }
     
     @objc func buttonEmojisListTap(_ sender: UIButton){
-        // SUBSTITUTE WITH COORDINATOR
-//        let emojisListView = EmojisListViewController()
-//
-//        navigationController?.pushViewController(emojisListView, animated: true)
-        
-        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!, emojisList: emojisList)
+
+        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!)
         
         emojiListCoordinator.start()
-        
+
         self.emojisListCoordinator = emojiListCoordinator
-        //self.present(emojisListView, animated: true)
     }
     
     @objc func buttonAvatarListTap(_ sender: UIButton){
-        // SUBSTITUTE WITH COORDINATOR
-//        let emojisListView = EmojisListViewController()
-//
-//        navigationController?.pushViewController(emojisListView, animated: true)
         
-//        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!)
-//
-//        emojiListCoordinator.start()
-//
-//        self.emojisListCoordinator = emojiListCoordinator
-        //self.present(emojisListView, animated: true)
-    }
-    
-    @objc func buttonRandomEmojisTap(_ sender: UIButton){
-        getRandomEmoji()
-    }
-    
-    func getRandomEmoji(){
-        let random = Int.random(in: 0...emojisList.count)
-        
-        guard let emoji = emojisList.item(at: random) else { return }
-        
-        let url = URL(string: emoji.urlImage)
-        downloadImage(from: url!)
-    }
-    
-    // -------------- NETWORKING ---------------
-    
-    
-    // -------- SWIFT VERSION ------
-    // --------- 1
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
+        let avatarListCoordinator = AvatarListCoordinator(presenter: navigationController!)
 
-   func downloadImage(from url: URL) {
-        getData(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? url.lastPathComponent)
-            // always update the UI from the main thread
-            DispatchQueue.main.async() { () in
-                self.emojiImageView.image = UIImage(data: data)
-            }
-        }
+        avatarListCoordinator.start()
+
+        self.avatarListCoordinator = avatarListCoordinator
     }
     
-    // --------- 2
-    //ir buscar ao playground networking
-    
-    //-------- ALAMOFIRE VERSION -------
-//    func getAllEmojis(){
-//        let response = AF.request("https://api.github.com/emojis")
-//
-//        response.responseJSON { (data) in print(data)}
-//    }
-    
-    private func getEmojisList(){
-        let url = URL(string: "https://api.github.com/emojis")!
-
-        var request = URLRequest(url: url)
-
-        print(request)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data {
-                let json = try? JSONSerialization.jsonObject(with: data) as? Dictionary<String,String>
-        //        print(json!)
-        //        print(data)
-                //print(String(data: data, encoding: .utf8))
-                if let array = json {
-                    print(array.count)
-                    self.emojisList = []
-                    for (emojiName,emojiUrl) in array {
-                        self.emojisList.append(Emoji(name: emojiName, urlImage: emojiUrl))
-                        //print("Item \(emojiName) - URL: \(emojiUrl)\n")
-                    }
-                    self.emojisList.sort()
-                    self.getRandomEmoji()
-                }
+    @objc func buttonRandomEmojisTap(){
+        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji],Error>) in
+            switch result{
+            case .success(let success):
                 
-                //print(String(data: data, encoding: .utf8))
-            } else if let error = error {
-                print("HTTP Request Failed \(error)")
+               guard let randomUrl = success.randomElement()?.urlImage else { return }
+                
+                self?.emojiImageView.downloadImageFromURL(from: randomUrl)
+                
+            case .failure(let failure):
+                print("Failure: \(failure)")
+                self?.emojiImageView.image = UIImage(named: "noEmoji")
             }
-        }
-
-        task.resume()
+            
+        })
     }
-     
 }
 
 extension Array{

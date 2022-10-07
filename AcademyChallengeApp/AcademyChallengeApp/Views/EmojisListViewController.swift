@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 enum Constants {
     static let cellIdentifier = "emojiCell"
@@ -19,7 +20,7 @@ class EmojisListViewController: UIViewController {
     
     var emojisList: [Emoji]?
     
-    var mockemojiList : [String] = ["😄","😇","🤩","🥳"]
+    var emojiService: EmojiService?
     
     init(){
         
@@ -40,6 +41,21 @@ class EmojisListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji],Error>) in
+            switch result{
+            case .success(let success):
+                self?.emojisList = success
+                self?.emojisList?.sort()
+                DispatchQueue.main.async { [weak self] in
+                    self?.collectionView.reloadData()
+                }
+                
+            case .failure(let failure):
+                print("Failure: \(failure)")
+            }
+            
+
+        })
     }
     
     override func viewDidLoad() {
@@ -51,7 +67,6 @@ class EmojisListViewController: UIViewController {
         setupConstraints()
         view.backgroundColor = .systemBlue
         
-        collectionView.reloadData()
     }
     
     private func setupCollectionsView(){
@@ -90,22 +105,10 @@ extension EmojisListViewController: UICollectionViewDelegate, UICollectionViewDa
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
         
-        guard let url = URL(string: (self.emojisList?[indexPath.row].urlImage)!) else { return UICollectionViewCell()}
+    
+        guard let url = emojisList?[indexPath.row].urlImage else { return UICollectionViewCell()}
         
         cell.setupCell(url: url)
-        
-        //emojiModel?.downloadImage(from: url!, emojiImageView: self.emojiImageView)
-        
-        //imageView.image = mockemojiList[indexPath.row].image()
-        //cell.contentView.addSubview(imageView)
-        //cell.addSubview(imageView)
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            imageView.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
-//            imageView.centerYAnchor.constraint(equalTo: cell.centerYAnchor)
-//        ])
-        
-        //cell.contentView.backgroundColor = .orange
         
         return cell
     }

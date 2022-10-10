@@ -85,8 +85,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        view.backgroundColor = .systemBlue
-        view.tintColor = .lightGray
+//        view.backgroundColor =  .systemBackground
+//        view.tintColor = .lightGray
         
         setupViews()
         addViewsToSuperview()
@@ -112,6 +112,7 @@ class MainViewController: UIViewController {
         let buttonArray = [buttonRandomEmojis, buttonEmojisList, buttonSearch, buttonAvatarList, buttonAppleRepos]
         buttonArray.forEach {
             $0.configuration = .filled()
+            $0.configuration?.baseBackgroundColor = .appColor(name: .primary)
         }
         
         buttonRandomEmojis.setTitle("RANDOM EMOJI", for: .normal)

@@ -24,7 +24,7 @@ class ApplicationCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
-        
+        rootViewController.navigationBar.tintColor = .appColor(name: .primary)
         mainViewCoordinator = MainViewCoordinator(presenter: rootViewController)
     }
     

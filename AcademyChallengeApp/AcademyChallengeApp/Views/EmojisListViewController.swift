@@ -90,6 +90,7 @@ class EmojisListViewController: UIViewController {
         addViewsToSuperview()
         setupConstraints()
 //        view.backgroundColor = .systemBlue
+        view.backgroundColor = .appColor(name: .surface)
         
     }
     

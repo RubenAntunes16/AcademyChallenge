@@ -18,6 +18,7 @@ class LiveEmojiService : EmojiService{
     
     func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void){
         var fetchedEmojis : [NSManagedObject] = []
+
         fetchedEmojis = persistence.fetch()
         
         
@@ -25,6 +26,7 @@ class LiveEmojiService : EmojiService{
             let emojis = fetchedEmojis.map({ item in
                 return Emoji(name: item.value(forKey: "name") as! String, urlImage: URL(string: item.value(forKey: "imageUrl") as! String)!)
             })
+            
             resultHandler(.success(emojis))
             
         }else {

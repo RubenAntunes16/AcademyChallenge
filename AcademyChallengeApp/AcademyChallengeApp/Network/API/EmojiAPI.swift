@@ -46,14 +46,3 @@ struct EmojiAPICallResult: Decodable{
     }
 }
 
-struct EmojiPersistenceDecode: Decodable {
-    var emojis: [Emoji] = []
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let emojisAsEmoji = try container.decode([Emoji].self)
-        
-        emojis = emojisAsEmoji
-    }
-}
-

@@ -17,25 +17,22 @@ class EmojiPersistence {
         
         // IT'S NECESSARY TO GET DELEGATE SO WE CAN GET ACCESS TO THE MANAGED CONTEXT
         // WE NEED TO GET THE APPLICATION DELEGATE SO WE CAN GET A REFERENCE TO THE MANAGED CONTEXT
-        guard let appDelegate =
-                UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
+//        DispatchQueue.main.async {
+//            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+//        }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         
         // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
         let managedContext = appDelegate.persistentContainer.viewContext
         
         // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
-        let entity =
-        NSEntityDescription.entity(forEntityName: "EmojiEntity",
-                                   in: managedContext)!
+        let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity",in: managedContext)!
         
-        let emoji = NSManagedObject(entity: entity,
-                                     insertInto: managedContext)
+        let emoji = NSManagedObject(entity: entity,insertInto: managedContext)
         
         // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
         emoji.setValue(name, forKeyPath: "name")
-        emoji.setValue(urlImage, forKey: "imageUrl")
+        emoji.setValue(urlImage, forKeyPath: "imageUrl")
         
         // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
         // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
@@ -47,7 +44,27 @@ class EmojiPersistence {
         }
     }
     
-    func fetch(){
+    func fetch() -> [NSManagedObject] {
+        var array: [NSManagedObject] = []
+        guard let appDelegate =
+          UIApplication.shared.delegate as? AppDelegate else {
+            return array
+        }
         
+        let managedContext =
+          appDelegate.persistentContainer.viewContext
+        
+        // FETCH ALL THE DATA FROM THE ENTITY PERSON
+        let fetchRequest =
+          NSFetchRequest<NSManagedObject>(entityName: "EmojiEntity")
+        
+        // WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO SEND ALL THE DATA FROM THE PERSON ENTITY
+        do {
+            array = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+          print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        return array
     }
 }

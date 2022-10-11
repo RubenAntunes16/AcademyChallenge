@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Emoji: CustomDebugStringConvertible {
+struct Emoji: CustomDebugStringConvertible, Decodable {
     
     var name: String
     var urlImage: URL

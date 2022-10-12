@@ -30,6 +30,7 @@ class MainViewController: UIViewController {
     private var appleReposCoordinator: AppleReposCoordinator?
     
     private var viewEmojiRandom: UIView
+    private var spinnerView: UIActivityIndicatorView
     private var emojiImageView: UIImageView
     
     private var mainStackView: UIStackView
@@ -54,6 +55,7 @@ class MainViewController: UIViewController {
     // 1 - CREATE VIEWS
     init(){
         viewEmojiRandom = .init(frame: .zero)
+        spinnerView = .init(style: .large)
         emojiImageView = .init(frame: .zero)
         
         buttonEmojisList = .init(type: .system)
@@ -91,6 +93,8 @@ class MainViewController: UIViewController {
         setupViews()
         addViewsToSuperview()
         setupConstraints()
+        
+        spinnerView.startAnimating()
         
         buttonRandomEmojisTap()
     }
@@ -133,7 +137,7 @@ class MainViewController: UIViewController {
     
     // 2 - ADD TO THE SUPERVIEW
     private func addViewsToSuperview(){
-        viewEmojiRandom.addSubview(emojiImageView)
+        viewEmojiRandom.addSubview(spinnerView)
         view.addSubview(mainStackView)
         view.addSubview(viewEmojiRandom)
     }
@@ -143,6 +147,7 @@ class MainViewController: UIViewController {
         // THIS IS ALWAYS NECESSARY TO THE UI OBJECTS APPEAR IN THE VIEW
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         viewEmojiRandom.translatesAutoresizingMaskIntoConstraints = false
+        spinnerView.translatesAutoresizingMaskIntoConstraints = false
         emojiImageView.translatesAutoresizingMaskIntoConstraints = false
        
         
@@ -162,9 +167,8 @@ class MainViewController: UIViewController {
 //            emojiImageView.trailingAnchor.constraint(equalTo: viewEmojiRandom.trailingAnchor, constant: World.K.appMarginTop.symmetric),
 //            emojiImageView.topAnchor.constraint(equalTo: viewEmojiRandom.topAnchor, constant: World.K.appMarginTop),
 //            emojiImageView.bottomAnchor.constraint(equalTo: viewEmojiRandom.bottomAnchor, constant: World.K.appMarginTop.symmetric)
-            
-            emojiImageView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
-            emojiImageView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
+            spinnerView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
+            spinnerView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
             
         ])
         
@@ -200,16 +204,32 @@ class MainViewController: UIViewController {
             switch result{
             case .success(let success):
                 
-               guard let randomUrl = success.randomElement()?.urlImage else { return }
-                
+                guard let randomUrl = success.randomElement()?.urlImage else { return }
+        
                 self?.emojiImageView.downloadImageFromURL(from: randomUrl)
                 
+                DispatchQueue.main.async {
+                    self?.removeSpinner()
+                }
             case .failure(let failure):
                 print("Failure: \(failure)")
                 self?.emojiImageView.image = UIImage(named: "noEmoji")
             }
             
         })
+    }
+    
+    private func removeSpinner() {
+        if spinnerView.isAnimating {
+            spinnerView.stopAnimating()
+            spinnerView.removeFromSuperview()
+            viewEmojiRandom.addSubview(emojiImageView)
+            
+            NSLayoutConstraint.activate([
+                emojiImageView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
+                emojiImageView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
+            ])
+        }
     }
 }
 
@@ -218,4 +238,6 @@ extension Array{
         count > at ? self[at] : nil
     }
 }
+
+
 

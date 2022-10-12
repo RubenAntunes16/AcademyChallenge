@@ -31,14 +31,17 @@ extension EmojiAPI: APIProtocol {
 }
 
 struct EmojiAPICallResult: Decodable{
-    let emojis: [Emoji]
+//    let emojis: [Emoji]
+    var emojis: [Emoji] = []
+    let persistence: EmojiPersistence = EmojiPersistence()
     
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let emojiAsDictionary = try container.decode([String: String].self)
         
         emojis = emojiAsDictionary.map({ (key: String, value: String) in
-            Emoji(name: key, urlImage: URL(string: value)!)
+            persistence.persist(name: key, urlImage: value)
+            return Emoji(name: key, urlImage: URL(string: value)!)
         })
     }
 }

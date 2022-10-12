@@ -11,4 +11,4 @@ protocol Coordinator {
     func start()
 }
 
-var emojiSource = MockedEmojiService()
+var emojiSource = LiveEmojiService()

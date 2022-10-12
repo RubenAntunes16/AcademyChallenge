@@ -8,6 +8,13 @@
 import Foundation
 
 class NetworkManager {
+    static func initialize() {
+//        let sessionConfiguration = URLSessionConfiguration.default
+//        sessionConfiguration.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        URLSession.shared.configuration.urlCache?.diskCapacity = 100 * 1024 * 1024
+//        urlSession = URLSession(configuration: sessionConfiguration)
+        
+    }
     
     func executeNetworkCall<ResultType: Decodable>(_ call: APIProtocol, _ resultHandler: @escaping (Result<ResultType, Error>) -> Void) {
         let decoder = JSONDecoder()

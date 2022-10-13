@@ -224,7 +224,18 @@ class MainViewController: UIViewController {
     }
     
     @objc func buttonSearchTap(){
-        print(searchBar.text)
+        avatarService?.getAvatar(searchText: searchBarText, { (result: Result<Avatar, Error>) in
+            switch result {
+            case .success(let success):
+                
+                let avatarUrl = success.avatarUrl
+                
+                self.emojiImageView.downloadImageFromURL(from: avatarUrl)
+                
+            case .failure(let failure):
+                print("Failure to Get Avatar: \(failure)")
+            }
+        })
     }
     
     private func removeSpinner() {

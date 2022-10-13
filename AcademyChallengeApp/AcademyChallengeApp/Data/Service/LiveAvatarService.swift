@@ -53,6 +53,27 @@ class LiveAvatarService {
                     //                        resultHandler(.failure(failure))
                     //                    }
                     //                }
+                    
+                    let decoder = JSONDecoder()
+                    var request = URLRequest(url: URL(string: "https://api.github.com/users/\(searchText)")!)
+//                    request.httpMethod = call.method.rawValue
+//                    call.headers.forEach { (key: String, value: String) in
+//                        request.setValue(value, forHTTPHeaderField: key)
+//                    }
+
+//                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//                        if let data = data {
+//                            if let result = try? decoder.decode(ResultType.self, from: data) {
+//                                resultHandler(.success(result))
+//                            } else {
+//                                resultHandler(.failure(APIError.unknownError))
+//                            }
+//                        } else if let error = error {
+//                            resultHandler(.failure(error))
+//                        }
+//                    }
+
+//                    task.resume()
                 }
             case .failure(let failure):
                 print("Failure to verify if avatar exists in Core data: \(failure)")

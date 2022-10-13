@@ -14,6 +14,7 @@ class MainViewCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var mainViewController: MainViewController?
     private var emojis: [Emoji]?
+    private let avatarService: LiveAvatarService = .init()
     
     init(presenter: UINavigationController){
         self.presenter = presenter
@@ -28,9 +29,11 @@ class MainViewCoordinator: Coordinator {
         // CREATE THE VIEW CONTROLLER TO PRESENT
         let mainViewController = MainViewController()
         mainViewController.title = "Main Page"
+        
         mainViewController.emojiService = emojiSource
-//        mainViewController.emojisStorage = emojisStorage
-        // PUSH THE NEW VIEW CONTROLLER SO IT CAN BE PRESENT
+        
+        mainViewController.avatarService = avatarService
+        
         presenter.pushViewController(mainViewController, animated: true)
         
         self.mainViewController = mainViewController

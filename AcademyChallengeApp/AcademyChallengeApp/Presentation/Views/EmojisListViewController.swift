@@ -94,6 +94,8 @@ class EmojisListViewController: UIViewController {
         
     }
     
+    
+    
     private func setupCollectionsView(){
         collectionView.delegate = self
         collectionView.dataSource = self

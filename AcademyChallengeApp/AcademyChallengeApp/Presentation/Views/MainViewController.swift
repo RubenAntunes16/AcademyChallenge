@@ -44,7 +44,9 @@ class MainViewController: UIViewController {
     private var buttonAppleRepos: UIButton
     
     var emojiService: EmojiService?
+    var avatarService: LiveAvatarService?
     
+    var searchBarText: String = ""
     
     // --------- HOW TO START ---------
     // 1 - CREATE THE VIEWS
@@ -133,6 +135,8 @@ class MainViewController: UIViewController {
         
         buttonAvatarList.addTarget(self, action: #selector(buttonAvatarListTap(_:)), for: .touchUpInside)
         
+        buttonSearch.addTarget(self, action: #selector(buttonSearchTap), for: .touchUpInside)
+        
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -217,6 +221,10 @@ class MainViewController: UIViewController {
             }
             
         })
+    }
+    
+    @objc func buttonSearchTap(){
+        print(searchBar.text)
     }
     
     private func removeSpinner() {

@@ -9,6 +9,8 @@ import UIKit
 
 class AvatarListViewController: UIViewController {
     
+    var avatarService: LiveAvatarService?
+    var avatarList: [Avatar] = []
 //    init(){
 //
 //        super.init(nibName: nil, bundle: nil)
@@ -27,5 +29,8 @@ class AvatarListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        avatarService?.fetchAvatarList({ (result: [Avatar]) in
+            self.avatarList = result
+        })
     }
 }

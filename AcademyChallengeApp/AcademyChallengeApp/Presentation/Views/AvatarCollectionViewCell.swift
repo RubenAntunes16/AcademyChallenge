@@ -41,7 +41,15 @@ class AvatarCollectionViewCell: UICollectionViewCell {
             emojiImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
         
-        emojiImageView.layer.cornerRadius = 20.0
+        emojiImageView.layer.cornerRadius = 20
+        
+        self.layer.shadowColor = UIColor.darkGray.cgColor
+        self.layer.shadowRadius = 5
+        self.layer.shadowOpacity = 1
+        self.layer.shadowOffset = CGSize.zero
+//        emojiImageView.layer.borderWidth = 4
+//        emojiImageView.layer.borderColor = UIColor.black.cgColor
+        
     }
     
     override func prepareForReuse() {

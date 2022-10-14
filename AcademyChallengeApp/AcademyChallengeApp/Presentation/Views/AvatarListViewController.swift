@@ -88,18 +88,30 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let avatar = avatarList[indexPath.row]
+        
+        avatarService?.deleteAvatar(avatarToDelete: avatar, { (result: [Avatar]) in
+            self.avatarList = result
+            
+        })
+        collectionView.reloadData()
+
+    }
+    
     
 }
 
 extension AvatarListViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
+        return UIEdgeInsets(top: 1, left: 16, bottom: 1, right: 16)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let cellWidth = view.frame.width / 3
-        return CGSize(width: cellWidth - 8, height: cellWidth)
+        let cellWidth = view.frame.width / 2
+        return CGSize(width: cellWidth - 20, height: cellWidth)
     }
 }

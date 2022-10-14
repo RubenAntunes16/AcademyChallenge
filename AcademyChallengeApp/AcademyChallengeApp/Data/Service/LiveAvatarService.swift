@@ -16,16 +16,22 @@ class LiveAvatarService {
     
     func fetchAvatarList(_ resultHandler: @escaping ([Avatar]) -> Void){
         
-        persistence.fetch() { (result: [NSManagedObject]) in
-            if result.count != 0 {
-                // TRANSFORM NSMANAGEDOBJECT ARRAY TO AVATAR ARRAY
-                let avatars = result.map({ item in
-                    return item.ToAvatar()
-                })
+        persistence.fetch() { (result: Result<[NSManagedObject],Error>) in
+            switch result {
+            case .success(let success):
+                var avatars: [Avatar] = []
+                if success.count != 0 {
+                    // TRANSFORM NSMANAGEDOBJECT ARRAY TO AVATAR ARRAY
+                    avatars = success.map({ item in
+                        return item.ToAvatar()
+                    })
+                }
                 
                 resultHandler(avatars)
-                
+            case .failure(let failure):
+                print("[FETCH AVATAR LIST] Error to get avatars from memory: \(failure)")
             }
+            
         }
     }
     
@@ -81,5 +87,13 @@ class LiveAvatarService {
             }
         }
         
+    }
+    
+    func deleteAvatar(avatarToDelete: Avatar, _ resultHandler: @escaping ([Avatar]) -> Void) {
+        
+        persistence.delete(avatarObject: avatarToDelete)
+        fetchAvatarList { (result: [Avatar]) in
+            resultHandler(result)
+        }
     }
 }

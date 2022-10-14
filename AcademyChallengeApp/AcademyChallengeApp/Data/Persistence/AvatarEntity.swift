@@ -119,7 +119,7 @@ class AvatarPersistence {
 //
 //    }
     
-    func fetch(_ resulthandler: @escaping ([NSManagedObject]) -> Void) {
+    func fetch(_ resulthandler: @escaping (Result<[NSManagedObject],Error>) -> Void) {
         var array: [NSManagedObject]
 //        guard let appDelegate =
 //          UIApplication.shared.delegate as? AppDelegate else {
@@ -135,10 +135,35 @@ class AvatarPersistence {
         // WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO SEND ALL THE DATA FROM THE PERSON ENTITY
         do {
             array = try managedContext.fetch(fetchRequest)
-            resulthandler(array)
+            resulthandler(.success(array))
         } catch let error as NSError {
           print("Could not fetch. \(error), \(error.userInfo)")
+            resulthandler(.failure(error))
         }
+    }
+    
+    func delete(avatarObject: Avatar) {
+        
+        let managedContext = self.appDelegate.persistentContainer.viewContext
+        
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+
+        fetchRequest.predicate = NSPredicate(format: "name = %@", avatarObject.name)
+    
+        
+        do {
+            let avatarToDelete = try managedContext.fetch(fetchRequest)
+            if avatarToDelete.count == 1 {
+                guard let avatar = avatarToDelete.first else { return }
+                managedContext.delete(avatar)
+                try managedContext.save()
+            }
+            
+        } catch let error as NSError {
+            print("[DELETE AVATAR] Error to delete avatar: \(error)")
+        }
+        
     }
 }
 

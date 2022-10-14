@@ -10,7 +10,8 @@ import UIKit
 import SwiftUI
 
 enum Constants {
-    static let cellIdentifier = "emojiCell"
+    static let emojiCellIdentifier = "emojiCell"
+    static let avatarCellIdentifier = "avatarCell"
 }
 
 // ------ MOCKED CLASS TO MOCKED EMOJIS COLLECTION DATA SOURCE -------
@@ -22,7 +23,7 @@ class MockedEmojiDataSource : NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.emojiCellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
         
     
         let url = emojiMocked.mockedEmojis[indexPath.row].urlImage
@@ -102,7 +103,7 @@ class EmojisListViewController: UIViewController {
         collectionView.frame = view.bounds
         
         collectionView.backgroundColor = .none
-        collectionView.register(EmojisListCollectionViewCell.self, forCellWithReuseIdentifier: Constants.cellIdentifier)
+        collectionView.register(EmojisListCollectionViewCell.self, forCellWithReuseIdentifier: Constants.emojiCellIdentifier)
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -130,7 +131,7 @@ extension EmojisListViewController: UICollectionViewDelegate, UICollectionViewDa
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.emojiCellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
         
     
         guard let url = emojisList?[indexPath.row].urlImage else { return UICollectionViewCell()}

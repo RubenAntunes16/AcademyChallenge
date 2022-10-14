@@ -1,14 +1,13 @@
 //
-//  EmojisListCollectionViewCell.swift
+//  AvatarCollectionViewCell.swift
 //  AcademyChallengeApp
 //
-//  Created by Rúben Antunes on 27/09/2022.
+//  Created by Rúben Antunes on 14/10/2022.
 //
 
-import Foundation
 import UIKit
 
-class EmojisListCollectionViewCell : UICollectionViewCell{
+class AvatarCollectionViewCell: UICollectionViewCell {
     
     private var emojiImageView: UIImageView
     var dataTask: URLSessionTask?
@@ -50,4 +49,5 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
         // Em caso de placeholders, o nil será substituido por uma imagem que será o placeholder
         emojiImageView.image = nil
     }
+    
 }

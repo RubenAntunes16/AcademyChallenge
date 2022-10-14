@@ -45,8 +45,7 @@ class MainViewController: UIViewController {
     
     var emojiService: EmojiService?
     var avatarService: LiveAvatarService?
-    
-    var searchBarText: String = ""
+
     
     // --------- HOW TO START ---------
     // 1 - CREATE THE VIEWS
@@ -224,6 +223,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func buttonSearchTap(){
+        guard let searchBarText = searchBar.text else { return }
         avatarService?.getAvatar(searchText: searchBarText, { (result: Result<Avatar, Error>) in
             switch result {
             case .success(let success):

@@ -17,7 +17,7 @@ class LiveAvatarService {
     func fetchAvatarList(_ resultHandler: @escaping ([Avatar]) -> Void){
         
         persistence.fetch() { (result: [NSManagedObject]) in
-            if !result.isEmpty {
+            if result.count != 0 {
                 // TRANSFORM NSMANAGEDOBJECT ARRAY TO AVATAR ARRAY
                 let avatars = result.map({ item in
                     return item.ToAvatar()
@@ -34,7 +34,7 @@ class LiveAvatarService {
         persistence.verifyAvatarExist(searchText: searchText) { ( result: Result<[NSManagedObject], Error>) in
             switch result {
             case .success(let success):
-                if !success.isEmpty {
+                if success.count != 0 {
                     
                     guard let avatarFound = success.first else { return }
                     
@@ -56,24 +56,25 @@ class LiveAvatarService {
                     
                     let decoder = JSONDecoder()
                     var request = URLRequest(url: URL(string: "https://api.github.com/users/\(searchText)")!)
-//                    request.httpMethod = call.method.rawValue
+                    request.httpMethod = Method.get.rawValue
 //                    call.headers.forEach { (key: String, value: String) in
 //                        request.setValue(value, forHTTPHeaderField: key)
 //                    }
 
-//                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//                        if let data = data {
-//                            if let result = try? decoder.decode(ResultType.self, from: data) {
-//                                resultHandler(.success(result))
-//                            } else {
-//                                resultHandler(.failure(APIError.unknownError))
-//                            }
-//                        } else if let error = error {
-//                            resultHandler(.failure(error))
-//                        }
-//                    }
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        if let data = data {
+                            if let result = try? decoder.decode(Avatar.self, from: data) {
+                                self.persistence.persist(currentAvatar: result)
+                                resultHandler(.success(result))
+                            } else {
+                                resultHandler(.failure(APIError.unknownError))
+                            }
+                        } else if let error = error {
+                            resultHandler(.failure(error))
+                        }
+                    }
 
-//                    task.resume()
+                    task.resume()
                 }
             case .failure(let failure):
                 print("Failure to verify if avatar exists in Core data: \(failure)")

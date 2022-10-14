@@ -21,8 +21,8 @@ class AvatarPersistence {
         let managedContext = self.appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
-        
-        fetchRequest.predicate = NSPredicate(format: "name=%@", searchText)
+
+        fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
         
         do {
             let result = try managedContext.fetch(fetchRequest)
@@ -34,7 +34,7 @@ class AvatarPersistence {
         
     }
     
-    func persist(name: String, avatarUrl: String, id: Int, _ resultHandler: @escaping (Result<Avatar,Error>) -> Void) {
+    func persist(currentAvatar: Avatar) {
         
         
         let managedContext = self.appDelegate.persistentContainer.viewContext
@@ -44,23 +44,48 @@ class AvatarPersistence {
         
         let avatar = NSManagedObject(entity: entity,insertInto: managedContext)
         
-        // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
-        avatar.setValue(name, forKeyPath: "name")
-        avatar.setValue(avatarUrl, forKeyPath: "avatarUrl")
-        avatar.setValue(id, forKeyPath: "id")
+        avatar.setValue(currentAvatar.name, forKeyPath: "name")
+        avatar.setValue(currentAvatar.avatarUrl.absoluteString, forKeyPath: "avatarUrl")
+        avatar.setValue(currentAvatar.id, forKeyPath: "id")
         
         // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
         // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
         do {
             try managedContext.save()
-            resultHandler(.success(avatar.ToAvatar()))
         } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-            resultHandler(.failure(error))
+            print("[PERSIST] Could not save. \(error), \(error.userInfo)")
         }
         
         
     }
+    
+//    func persist(currentAvatar: Avatar, _ resultHandler: @escaping (Result<Avatar,Error>) -> Void) {
+//
+//
+//        let managedContext = self.appDelegate.persistentContainer.viewContext
+//
+//        // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
+//        let entity = NSEntityDescription.entity(forEntityName: "AvatarEntity",in: managedContext)!
+//
+//        let avatar = NSManagedObject(entity: entity,insertInto: managedContext)
+//
+//        // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
+//        avatar.setValue(currentAvatar.name, forKeyPath: "name")
+//        avatar.setValue(currentAvatar.avatarUrl, forKeyPath: "avatarUrl")
+//        avatar.setValue(currentAvatar.id, forKeyPath: "id")
+//
+//        // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
+//        // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
+//        do {
+//            try managedContext.save()
+//            resultHandler(.success(avatar.ToAvatar()))
+//        } catch let error as NSError {
+//            print("Could not save. \(error), \(error.userInfo)")
+//            resultHandler(.failure(error))
+//        }
+//
+//
+//    }
     
 //    func persist(name: String, urlImage: String) {
 //

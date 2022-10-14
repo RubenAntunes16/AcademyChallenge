@@ -14,7 +14,6 @@ class MainViewCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var mainViewController: MainViewController?
     private var emojis: [Emoji]?
-    private let avatarService: LiveAvatarService = .init()
     
     init(presenter: UINavigationController){
         self.presenter = presenter

@@ -19,7 +19,9 @@ class AvatarCollectionViewCell: UICollectionViewCell {
         //self.emojiImageView = emoji
         super.init(frame: .zero)
         self.contentView.addSubview(emojiImageView)
+        
         setupConstraints()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -38,6 +40,8 @@ class AvatarCollectionViewCell: UICollectionViewCell {
             emojiImageView.topAnchor.constraint(equalTo: self.topAnchor),
             emojiImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+        
+        emojiImageView.layer.cornerRadius = 20.0
     }
     
     override func prepareForReuse() {

@@ -35,7 +35,7 @@ class AvatarListViewController: UIViewController {
         setupCollectionsView()
         addViewsToSuperview()
         setupConstraints()
-        view.backgroundColor = .purple
+        view.backgroundColor = .appColor(name: .surface)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +100,6 @@ extension AvatarListViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let cellWidth = view.frame.width / 3
-        return CGSize(width: cellWidth - 8, height: cellWidth / 2)
+        return CGSize(width: cellWidth - 8, height: cellWidth)
     }
 }

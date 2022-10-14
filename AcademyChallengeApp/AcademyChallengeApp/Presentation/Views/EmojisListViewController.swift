@@ -159,7 +159,7 @@ extension EmojisListViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let cellWidth = view.frame.width / 3
-        return CGSize(width: cellWidth - 8, height: cellWidth / 2)
+        let cellWidth = view.frame.width / 4
+        return CGSize(width: cellWidth - 8, height: cellWidth)
     }
 }

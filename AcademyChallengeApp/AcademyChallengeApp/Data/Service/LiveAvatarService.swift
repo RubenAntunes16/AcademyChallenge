@@ -89,11 +89,8 @@ class LiveAvatarService {
         
     }
     
-    func deleteAvatar(avatarToDelete: Avatar, _ resultHandler: @escaping ([Avatar]) -> Void) {
+    func deleteAvatar(avatarToDelete: Avatar) {
         
         persistence.delete(avatarObject: avatarToDelete)
-        fetchAvatarList { (result: [Avatar]) in
-            resultHandler(result)
-        }
     }
 }

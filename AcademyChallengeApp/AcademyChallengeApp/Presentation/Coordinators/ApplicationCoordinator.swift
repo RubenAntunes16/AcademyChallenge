@@ -25,6 +25,7 @@ class ApplicationCoordinator: Coordinator {
         self.window = window
         rootViewController = UINavigationController()
         rootViewController.navigationBar.tintColor = .appColor(name: .primary)
+        rootViewController.navigationBar.prefersLargeTitles = true
         mainViewCoordinator = MainViewCoordinator(presenter: rootViewController)
     }
     

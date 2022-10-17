@@ -12,8 +12,10 @@ enum World {
     struct K {
 //        static let appMargin: CGFloat = 20
         static let appMargin: CGFloat = 0.0535
+        static let randomImageMargin: CGFloat = 0.25
         static let appMarginTop: CGFloat = 20
         static let interItemSpacing: CGFloat = 15
+        static let stackViewPositionPer: CGFloat = 0.15
     }
 }
 
@@ -44,7 +46,8 @@ class MainViewController: UIViewController {
     private var buttonAppleRepos: UIButton
     
     var emojiService: EmojiService?
-    
+    var avatarService: LiveAvatarService?
+
     
     // --------- HOW TO START ---------
     // 1 - CREATE THE VIEWS
@@ -133,6 +136,8 @@ class MainViewController: UIViewController {
         
         buttonAvatarList.addTarget(self, action: #selector(buttonAvatarListTap(_:)), for: .touchUpInside)
         
+        buttonSearch.addTarget(self, action: #selector(buttonSearchTap), for: .touchUpInside)
+        
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -154,7 +159,7 @@ class MainViewController: UIViewController {
         // THIS WILL CENTER IN THE SUPERVIEW THE STACK VIEW
         NSLayoutConstraint.activate([
             mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: 50),
+            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: World.K.stackViewPositionPer * view.frame.height),
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: World.K.appMargin * view.frame.width),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: World.K.appMargin.symmetric * view.frame.width),
             
@@ -162,17 +167,13 @@ class MainViewController: UIViewController {
             viewEmojiRandom.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: World.K.appMargin.symmetric * view.frame.width),
             viewEmojiRandom.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: World.K.appMarginTop),
             viewEmojiRandom.bottomAnchor.constraint(equalTo: mainStackView.topAnchor,constant: World.K.interItemSpacing.symmetric),
-            
-//            emojiImageView.leadingAnchor.constraint(equalTo: viewEmojiRandom.leadingAnchor, constant: World.K.appMarginTop),
-//            emojiImageView.trailingAnchor.constraint(equalTo: viewEmojiRandom.trailingAnchor, constant: World.K.appMarginTop.symmetric),
-//            emojiImageView.topAnchor.constraint(equalTo: viewEmojiRandom.topAnchor, constant: World.K.appMarginTop),
-//            emojiImageView.bottomAnchor.constraint(equalTo: viewEmojiRandom.bottomAnchor, constant: World.K.appMarginTop.symmetric)
+        
             spinnerView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
             spinnerView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
             
         ])
         
-//        emojiImageView.contentMode = .scaleAspectFit
+        emojiImageView.contentMode = .scaleAspectFit
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -219,6 +220,22 @@ class MainViewController: UIViewController {
         })
     }
     
+    @objc func buttonSearchTap(){
+        guard let searchBarText = searchBar.text else { return }
+        avatarService?.getAvatar(searchText: searchBarText, { (result: Result<Avatar, Error>) in
+            switch result {
+            case .success(let success):
+                
+                let avatarUrl = success.avatarUrl
+                
+                self.emojiImageView.downloadImageFromURL(from: avatarUrl)
+                
+            case .failure(let failure):
+                print("Failure to Get Avatar: \(failure)")
+            }
+        })
+    }
+    
     private func removeSpinner() {
         if spinnerView.isAnimating {
             spinnerView.stopAnimating()
@@ -226,8 +243,12 @@ class MainViewController: UIViewController {
             viewEmojiRandom.addSubview(emojiImageView)
             
             NSLayoutConstraint.activate([
-                emojiImageView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
-                emojiImageView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
+//                emojiImageView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
+//                emojiImageView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
+                emojiImageView.leadingAnchor.constraint(equalTo: viewEmojiRandom.leadingAnchor, constant: World.K.randomImageMargin * viewEmojiRandom.frame.width),
+                emojiImageView.trailingAnchor.constraint(equalTo: viewEmojiRandom.trailingAnchor, constant: World.K.randomImageMargin.symmetric * viewEmojiRandom.frame.width),
+                emojiImageView.topAnchor.constraint(equalTo: viewEmojiRandom.topAnchor, constant: World.K.randomImageMargin * viewEmojiRandom.frame.height),
+                emojiImageView.bottomAnchor.constraint(equalTo: viewEmojiRandom.bottomAnchor, constant: World.K.randomImageMargin.symmetric * viewEmojiRandom.frame.height)
             ])
         }
     }

@@ -28,19 +28,7 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     }
     
     func setupCell(url: URL){
-        //downloadImage(from: url)
         self.emojiImageView.downloadImageFromURL(from: url)
-//        downloadImageFromURL(from: url) { (result: Result<UIImage, Error>) in
-//            switch result {
-//            case .success(let success):
-//                DispatchQueue.main.async {
-//                    self.emojiImageView.image = success
-//                }
-//                
-//            case .failure(let failure):
-//                print("Cannot get image from url: \(failure)")
-//            }
-//        }
     }
     
     func setupConstraints(){
@@ -51,32 +39,6 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
             emojiImageView.topAnchor.constraint(equalTo: self.topAnchor),
             emojiImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-    }
-    
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        dataTask?.cancel()
-        dataTask = Application.urlSession?.dataTask(with: url, completionHandler: completion)
-        dataTask?.resume()
-    }
-    
-    func downloadImage(from url: URL) {
-        // CALL DOWNLOAD IMAGE FUNCTION (CLASS EMOJI API)
-        getData(from: url) { [weak self] data, response, error in
-            if let error = error {
-                DispatchQueue.main.async() {
-                    self?.emojiImageView.image = nil
-                    self?.dataTask = nil
-                }
-                return
-            }
-            DispatchQueue.main.async() { () in
-                self?.emojiImageView.image = nil
-                self?.dataTask = nil
-                guard let data = data, error == nil else { return }
-                // always update the UI from the main thread
-                self?.emojiImageView.image = UIImage(data: data)
-            }
-        }
     }
     
     override func prepareForReuse() {

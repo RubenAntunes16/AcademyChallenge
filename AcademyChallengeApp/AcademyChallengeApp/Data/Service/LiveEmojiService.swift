@@ -19,7 +19,9 @@ class LiveEmojiService : EmojiService{
     func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void){
         var fetchedEmojis : [NSManagedObject] = []
 
-        fetchedEmojis = persistence.fetch()
+        persistence.fetch() { (result: [NSManagedObject]) in
+            fetchedEmojis = result
+        }
         
         
         if !fetchedEmojis.isEmpty {

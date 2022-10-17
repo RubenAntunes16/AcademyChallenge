@@ -12,3 +12,4 @@ protocol Coordinator {
 }
 
 var emojiSource = LiveEmojiService()
+var avatarService = LiveAvatarService()

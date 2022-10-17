@@ -22,13 +22,11 @@ struct EmojiPersist : EntityToPersist{
 
 class EmojiPersistence {
     
-    var persistenceArray : [NSManagedObject] = []
-    
     func persist(name: String, urlImage: String) {
         
         // IT'S NECESSARY TO GET DELEGATE SO WE CAN GET ACCESS TO THE MANAGED CONTEXT
         // WE NEED TO GET THE APPLICATION DELEGATE SO WE CAN GET A REFERENCE TO THE MANAGED CONTEXT
-       DispatchQueue.main.async { [weak self] in
+       DispatchQueue.main.async {
            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
            // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
            let managedContext = appDelegate.persistentContainer.viewContext
@@ -47,7 +45,6 @@ class EmojiPersistence {
            // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
            do {
                try managedContext.save()
-               self?.persistenceArray.append(emoji)
            } catch let error as NSError {
                print("Could not save. \(error), \(error.userInfo)")
            }

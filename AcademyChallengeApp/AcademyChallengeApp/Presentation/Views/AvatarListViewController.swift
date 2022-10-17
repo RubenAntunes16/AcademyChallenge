@@ -71,6 +71,10 @@ class AvatarListViewController: UIViewController {
         ])
         
     }
+    
+    func showAlertWithDistructiveButton() {
+        
+    }
 }
 
 extension AvatarListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -89,14 +93,24 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Delete Avatar", message: "Are you sure you want delete the avatar?", preferredStyle: .alert)
         
-        let avatar = avatarList[indexPath.row]
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { _ in
+            //Cancel Action
+        }))
         
-        avatarService?.deleteAvatar(avatarToDelete: avatar, { (result: [Avatar]) in
-            self.avatarList = result
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {(_: UIAlertAction!) in
+            let avatar = self.avatarList[indexPath.row]
             
-        })
-        collectionView.reloadData()
+            self.avatarService?.deleteAvatar(avatarToDelete: avatar, { (result: [Avatar]) in
+                self.avatarList = result
+                
+            })
+            collectionView.reloadData()
+        }))
+        self.present(alert, animated: true, completion: nil)
+        
+        
 
     }
     

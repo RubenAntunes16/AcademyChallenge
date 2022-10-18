@@ -12,7 +12,7 @@ class LiveAppleReposService {
     private let networkManager: NetworkManager = .init()
     
     func getAppleRepos(_ resultHandler: @escaping (Result<[AppleRepos],Error>) -> Void){
-        networkManager.executeNetworkCall(AppleReposAPI.getAppleRepos) { (result: Result<[AppleRepos], Error>) in
+        networkManager.executeNetworkCall(AppleReposAPI.getAppleRepos(perPage: Constants.AppleReposPagination.perPage, page: Constants.AppleReposPagination.numPage)) { (result: Result<[AppleRepos], Error>) in
             switch result {
             case .success(let success):
                 resultHandler(.success(success))

@@ -8,16 +8,26 @@
 import Foundation
 
 enum AppleReposAPI {
-    case getAppleRepos
+    case getAppleRepos(perPage: Int,page: Int)
 }
 
 extension AppleReposAPI: APIProtocol {
     var url: URL {
-        get {
-            URL(string: "https://api.github.com/users/apple/repos")!
-        }
-        set {
+        switch self {
+        case .getAppleRepos(let perPage, let page):
+            var urlComponents = URLComponents(string: "https://api.github.com/users/apple/repos")
+
+            urlComponents?.queryItems = [
+                URLQueryItem(name: "per_page", value: String(perPage)),
+                URLQueryItem(name: "page", value: String(page))
+            ]
             
+            guard let url = urlComponents?.url else {
+                print("ERROR TO CONVERT TO URL")
+                return URL(string: "")!
+            }
+            
+            return url
         }
     }
     

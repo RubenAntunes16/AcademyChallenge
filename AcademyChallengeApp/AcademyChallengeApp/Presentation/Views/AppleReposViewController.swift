@@ -60,7 +60,7 @@ class AppleReposViewController: UIViewController {
         tableView.frame = view.bounds
         tableView.backgroundColor = .none
         
-        tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: Constants.appleReposCellIdentifier)
+        tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier)
     }
     
     private func addToSuperView() {
@@ -87,7 +87,7 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
         
         cell.setupCell(repoName: appleReposList[indexPath.row].fullName)
         

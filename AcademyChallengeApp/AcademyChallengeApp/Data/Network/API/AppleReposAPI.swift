@@ -12,9 +12,13 @@ enum AppleReposAPI {
 }
 
 extension AppleReposAPI: APIProtocol {
-    
     var url: URL {
-        URL(string: "https://api.github.com/users/apple/repos")!
+        get {
+            URL(string: "https://api.github.com/users/apple/repos")!
+        }
+        set {
+            
+        }
     }
     
     var method: Method{

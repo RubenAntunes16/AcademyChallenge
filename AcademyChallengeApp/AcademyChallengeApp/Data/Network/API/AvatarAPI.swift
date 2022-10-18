@@ -7,22 +7,11 @@
 
 import Foundation
 
-enum AvatarAPI {
-    case getAvatars
-}
-
-extension AvatarAPI: APIProtocol {
+struct AvatarAPI: APIProtocol {
     
-    var url: URL {
-            URL(string: "https://api.github.com/users")!
-    }
+    var url: URL = URL(string: "https://api.github.com/users/")!
     
-    var method: Method{
-        switch self{
-        case .getAvatars:
-            return .get
-        }
-    }
+    var method: Method = .get
     
     var headers: [String: String]{
         ["Content-Type":"application/json"]

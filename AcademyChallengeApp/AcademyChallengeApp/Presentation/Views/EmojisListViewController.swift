@@ -85,7 +85,7 @@ class EmojisListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Emojis List"
+        
         // Do any additional setup after loading the view.
         setupCollectionsView()
         addViewsToSuperview()

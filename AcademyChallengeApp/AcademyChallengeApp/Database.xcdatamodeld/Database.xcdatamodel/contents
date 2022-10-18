@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AppleReposEntity" representedClassName="AppleReposEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="AvatarEntity" representedClassName="AvatarEntity" syncable="YES" codeGenerationType="class">
         <attribute name="avatarUrl" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -10,7 +15,8 @@
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="EmojiEntity" positionX="-63" positionY="-18" width="128" height="59"/>
         <element name="AvatarEntity" positionX="-63" positionY="0" width="128" height="74"/>
+        <element name="EmojiEntity" positionX="-63" positionY="-18" width="128" height="59"/>
+        <element name="AppleReposEntity" positionX="-54" positionY="27" width="128" height="74"/>
     </elements>
 </model>

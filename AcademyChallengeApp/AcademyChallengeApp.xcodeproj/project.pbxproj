@@ -39,6 +39,9 @@
 		32B5640428F84B200088D24C /* AvatarMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640328F84B200088D24C /* AvatarMock.swift */; };
 		32B5640628F874310088D24C /* NSManagedObject+ToAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640528F874310088D24C /* NSManagedObject+ToAvatar.swift */; };
 		32B5640828F975C80088D24C /* AvatarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640728F975C80088D24C /* AvatarCollectionViewCell.swift */; };
+		32B5640C28FDA3AE0088D24C /* AppleRepos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640B28FDA3AE0088D24C /* AppleRepos.swift */; };
+		32B5640E28FDAB8F0088D24C /* LiveAppleReposService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640D28FDAB8F0088D24C /* LiveAppleReposService.swift */; };
+		32B5641028FDB0A60088D24C /* AppleReposAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640F28FDB0A60088D24C /* AppleReposAPI.swift */; };
 		32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */; };
 		32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285328EED8FC00EDFFF1 /* EmojiService.swift */; };
 		32BDD93F28F061F2009A644F /* String+ToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BDD93E28F061F2009A644F /* String+ToImage.swift */; };
@@ -82,6 +85,9 @@
 		32B5640328F84B200088D24C /* AvatarMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarMock.swift; sourceTree = "<group>"; };
 		32B5640528F874310088D24C /* NSManagedObject+ToAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+ToAvatar.swift"; sourceTree = "<group>"; };
 		32B5640728F975C80088D24C /* AvatarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCollectionViewCell.swift; sourceTree = "<group>"; };
+		32B5640B28FDA3AE0088D24C /* AppleRepos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleRepos.swift; sourceTree = "<group>"; };
+		32B5640D28FDAB8F0088D24C /* LiveAppleReposService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAppleReposService.swift; sourceTree = "<group>"; };
+		32B5640F28FDB0A60088D24C /* AppleReposAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposAPI.swift; sourceTree = "<group>"; };
 		32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedEmojiService.swift; sourceTree = "<group>"; };
 		32B8285328EED8FC00EDFFF1 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
 		32BDD93E28F061F2009A644F /* String+ToImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ToImage.swift"; sourceTree = "<group>"; };
@@ -172,6 +178,7 @@
 				32823CA528E6F42B00596B98 /* EmojiMock.swift */,
 				32B563F928F71B060088D24C /* Avatar.swift */,
 				32B5640328F84B200088D24C /* AvatarMock.swift */,
+				32B5640B28FDA3AE0088D24C /* AppleRepos.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,6 +188,7 @@
 			children = (
 				32823CA228E6E04000596B98 /* EmojiAPI.swift */,
 				32B5640128F846190088D24C /* AvatarAPI.swift */,
+				32B5640F28FDB0A60088D24C /* AppleReposAPI.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -237,6 +245,7 @@
 				32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */,
 				32B8285328EED8FC00EDFFF1 /* EmojiService.swift */,
 				32B563FB28F721E50088D24C /* LiveAvatarService.swift */,
+				32B5640D28FDAB8F0088D24C /* LiveAppleReposService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -351,15 +360,18 @@
 				3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */,
 				32B5640628F874310088D24C /* NSManagedObject+ToAvatar.swift in Sources */,
 				32823CA628E6F42B00596B98 /* EmojiMock.swift in Sources */,
+				32B5641028FDB0A60088D24C /* AppleReposAPI.swift in Sources */,
 				3206C80928DE067000397C95 /* EmojisListViewController.swift in Sources */,
 				32B516EA28F4721800043127 /* Database.xcdatamodeld in Sources */,
 				324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */,
 				32B516F028F5B38000043127 /* NSManagedObject+ToEmoji.swift in Sources */,
 				32B5640028F808DF0088D24C /* EntityToPersist.swift in Sources */,
 				32B563FE28F7268C0088D24C /* AvatarEntity.swift in Sources */,
+				32B5640E28FDAB8F0088D24C /* LiveAppleReposService.swift in Sources */,
 				3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */,
 				32C5E73428EC787200C5FD93 /* LiveEmojiService.swift in Sources */,
 				324AE7DA28DB5C8700B816A7 /* AppDelegate.swift in Sources */,
+				32B5640C28FDA3AE0088D24C /* AppleRepos.swift in Sources */,
 				32B563FA28F71B060088D24C /* Avatar.swift in Sources */,
 				32B5640428F84B200088D24C /* AvatarMock.swift in Sources */,
 				32B563FC28F721E50088D24C /* LiveAvatarService.swift in Sources */,

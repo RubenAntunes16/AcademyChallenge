@@ -18,6 +18,10 @@ class AppleReposCoordinator: Coordinator {
     func start() {
         let appleReposViewController = AppleReposViewController()
         
+        appleReposViewController.title = "Apple Repos"
+        
+        appleReposViewController.appleReposService = LiveAppleReposService()
+        
         presenter.pushViewController(appleReposViewController, animated: true)
         
         self.appleReposViewController = appleReposViewController

@@ -7,12 +7,6 @@
 
 import Foundation
 import UIKit
-import SwiftUI
-
-enum Constants {
-    static let emojiCellIdentifier = "emojiCell"
-    static let avatarCellIdentifier = "avatarCell"
-}
 
 // ------ MOCKED CLASS TO MOCKED EMOJIS COLLECTION DATA SOURCE -------
 class MockedEmojiDataSource : NSObject, UICollectionViewDataSource {
@@ -118,7 +112,7 @@ class EmojisListViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
     }

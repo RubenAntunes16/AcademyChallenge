@@ -12,7 +12,6 @@ class LiveAvatarService {
     
     private var networkManager: NetworkManager = .init()
     private let persistence: AvatarPersistence = .init()
-    private var avatarAPI : AvatarAPI = .init()
     
     
     func fetchAvatarList(_ resultHandler: @escaping ([Avatar]) -> Void){
@@ -49,10 +48,8 @@ class LiveAvatarService {
                     resultHandler(.success(avatarFound.ToAvatar()))
                 } else {
                     // GET THE AVATAR FROM API
-                    
-                    self.avatarAPI.url = URL(string: "https://api.github.com/users/\(searchText)")!
 
-                    self.networkManager.executeNetworkCall(self.avatarAPI) { (result: Result<Avatar, Error>) in
+                    self.networkManager.executeNetworkCall(AvatarAPI.getAvatars(searchText)) { (result: Result<Avatar, Error>) in
                         switch result{
                         case .success(let success):
                             self.persistence.persist(currentAvatar: success)

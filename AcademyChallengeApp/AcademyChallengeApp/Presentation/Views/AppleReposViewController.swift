@@ -15,6 +15,8 @@ class AppleReposViewController: UIViewController {
     
     var appleReposList: [AppleRepos] = []
     
+    var page: Int = 1
+    
     init(){
         tableView = .init(frame: .zero)
         super.init(nibName: nil, bundle: nil)
@@ -38,7 +40,7 @@ class AppleReposViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
-        appleReposService?.getAppleRepos({ (result: Result<[AppleRepos], Error>) in
+        appleReposService?.getAppleRepos(page: page, size: Constants.AppleReposPagination.perPage){ (result: Result<[AppleRepos], Error>) in
             switch result {
             case .success(let success):
                 self.appleReposList = success
@@ -49,7 +51,7 @@ class AppleReposViewController: UIViewController {
             case .failure(let failure):
                 print("[APPLE REPOS] Error to get List: \(failure)")
             }
-        })
+        }
         
         
     }
@@ -57,9 +59,10 @@ class AppleReposViewController: UIViewController {
     private func setupTableView(){
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.prefetchDataSource = self
         tableView.frame = view.bounds
         tableView.backgroundColor = .none
-        
+        tableView.rowHeight = 64
         tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier)
     }
     
@@ -95,4 +98,27 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     
+}
+
+extension AppleReposViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        
+        page += 1
+        appleReposService?.getAppleRepos(page: page, size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
+            switch result {
+            case .success(let success):
+                self.appleReposList.append(contentsOf: success)
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.reloadData()
+                }
+                
+            case .failure(let failure):
+                print("[PREFETCH] Error : \(failure)")
+            }
+        })
+    }
+    
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        print("ESTOU ALIIIII!!!! :)")
+    }
 }

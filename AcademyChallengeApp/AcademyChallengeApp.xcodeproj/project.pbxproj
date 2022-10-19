@@ -44,6 +44,7 @@
 		32B5641028FDB0A60088D24C /* AppleReposAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640F28FDB0A60088D24C /* AppleReposAPI.swift */; };
 		32B5641228FEA2B60088D24C /* ProjectConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641128FEA2B60088D24C /* ProjectConstants.swift */; };
 		32B5641428FEA6C80088D24C /* AppleReposViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641328FEA6C80088D24C /* AppleReposViewCell.swift */; };
+		32B5641629002CC80088D24C /* MockedAppleReposService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641529002CC80088D24C /* MockedAppleReposService.swift */; };
 		32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */; };
 		32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285328EED8FC00EDFFF1 /* EmojiService.swift */; };
 		32BDD93F28F061F2009A644F /* String+ToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BDD93E28F061F2009A644F /* String+ToImage.swift */; };
@@ -92,6 +93,7 @@
 		32B5640F28FDB0A60088D24C /* AppleReposAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposAPI.swift; sourceTree = "<group>"; };
 		32B5641128FEA2B60088D24C /* ProjectConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectConstants.swift; sourceTree = "<group>"; };
 		32B5641328FEA6C80088D24C /* AppleReposViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposViewCell.swift; sourceTree = "<group>"; };
+		32B5641529002CC80088D24C /* MockedAppleReposService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedAppleReposService.swift; sourceTree = "<group>"; };
 		32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedEmojiService.swift; sourceTree = "<group>"; };
 		32B8285328EED8FC00EDFFF1 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
 		32BDD93E28F061F2009A644F /* String+ToImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ToImage.swift"; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				32B8285328EED8FC00EDFFF1 /* EmojiService.swift */,
 				32B563FB28F721E50088D24C /* LiveAvatarService.swift */,
 				32B5640D28FDAB8F0088D24C /* LiveAppleReposService.swift */,
+				32B5641529002CC80088D24C /* MockedAppleReposService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				32B5640428F84B200088D24C /* AvatarMock.swift in Sources */,
 				32B563FC28F721E50088D24C /* LiveAvatarService.swift in Sources */,
 				32BDD93F28F061F2009A644F /* String+ToImage.swift in Sources */,
+				32B5641629002CC80088D24C /* MockedAppleReposService.swift in Sources */,
 				324AE7DC28DB5C8700B816A7 /* SceneDelegate.swift in Sources */,
 				3253623328E347BD0073C59F /* EmojisListCollectionViewCell.swift in Sources */,
 				3253622B28E1C8570073C59F /* AppleReposCoordinator.swift in Sources */,

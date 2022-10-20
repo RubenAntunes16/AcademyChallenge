@@ -15,7 +15,7 @@ class AppleReposViewController: UIViewController {
     
     var appleReposList: [AppleRepos] = []
     
-    var page: Int = 1
+    var page: Int = Constants.AppleRepos.AppleReposPagination.numPage
     
     var reposAux: [AppleRepos] = []
     
@@ -46,7 +46,7 @@ class AppleReposViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
-        appleReposService?.getAppleRepos(page: page, size: Constants.AppleReposPagination.perPage){ (result: Result<[AppleRepos], Error>) in
+        appleReposService?.getAppleRepos(page: page, size: Constants.AppleRepos.AppleReposPagination.perPage){ (result: Result<[AppleRepos], Error>) in
             switch result {
             case .success(let success):
                 self.appleReposList = success
@@ -68,7 +68,7 @@ class AppleReposViewController: UIViewController {
         //        tableView.prefetchDataSource = self
         tableView.frame = view.bounds
         tableView.backgroundColor = .none
-        tableView.rowHeight = CGFloat(Constants.appleReposListRowHeigth)
+        tableView.rowHeight = CGFloat(Constants.AppleRepos.appleReposListRowHeigth)
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier)
@@ -98,12 +98,12 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
         let offset = scrollView.contentOffset.y
         let heightVisibleScroll = scrollView.frame.size.height
         let heightTable = scrollView.contentSize.height
-        let heightCell = CGFloat(Constants.appleReposListRowHeigth * 4)
+        let heightCell = CGFloat(Constants.AppleRepos.appleReposListRowHeigth * 4)
         
         if((offset + heightVisibleScroll + (heightCell)) > heightTable && addedToView && !isEnd) {
             addedToView = false
             self.page += 1
-            self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
+            self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleRepos.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
                 switch result {
                 case .success(let success):
                     self.appleReposList.append(contentsOf: success)
@@ -112,7 +112,7 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
                         self?.tableView.reloadData()
                     }
                     
-                    if success.count < Constants.AppleReposPagination.perPage {
+                    if success.count < Constants.AppleRepos.AppleReposPagination.perPage {
                         self.isEnd = true
                     }
                     

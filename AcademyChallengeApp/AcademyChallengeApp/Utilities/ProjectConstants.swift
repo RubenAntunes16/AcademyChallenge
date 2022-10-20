@@ -14,10 +14,13 @@ enum Constants {
         static let appleReposCellIdentifier = "appleReposCell"
     }
     
-    struct AppleReposPagination{
-        static let perPage = 10
-        static let numPage = 1
+    struct AppleRepos {
+        struct AppleReposPagination{
+            static let perPage = 10
+            static let numPage = 1
+        }
+        
+        static let appleReposListRowHeigth = 64
     }
     
-    static let appleReposListRowHeigth = 64
 }

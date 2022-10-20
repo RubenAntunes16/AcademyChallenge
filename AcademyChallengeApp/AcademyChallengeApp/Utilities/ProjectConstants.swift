@@ -19,4 +19,5 @@ enum Constants {
         static let numPage = 1
     }
     
+    static let appleReposListRowHeigth = 64
 }

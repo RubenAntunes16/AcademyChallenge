@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LiveAppleReposService {
+class LiveAppleReposService : AppleReposService{
     
     private let networkManager: NetworkManager = .init()
     

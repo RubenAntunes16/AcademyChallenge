@@ -11,11 +11,13 @@ class AppleReposViewController: UIViewController {
     
     let tableView: UITableView
     
-    var appleReposService: LiveAppleReposService?
+    var appleReposService: AppleReposService?
     
     var appleReposList: [AppleRepos] = []
     
     var page: Int = 1
+    
+    var reposAux: [AppleRepos] = []
     
     init(){
         tableView = .init(frame: .zero)
@@ -102,12 +104,19 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension AppleReposViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        
-        page += 1
-        appleReposService?.getAppleRepos(page: page, size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
+        let newCells = indexPaths.filter({ $0.row >= appleReposList.count - 1})
+               
+        self.page += 1
+        self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
             switch result {
             case .success(let success):
-                self.appleReposList.append(contentsOf: success)
+                self.reposAux.append(contentsOf: success)
+
+                newCells.forEach({ indexPath in
+                    
+                    self.appleReposList.append(self.reposAux[self.appleReposList.count - indexPath.row])
+                })
+                
                 DispatchQueue.main.async { [weak self] in
                     self?.tableView.reloadData()
                 }
@@ -116,9 +125,44 @@ extension AppleReposViewController: UITableViewDataSourcePrefetching {
                 print("[PREFETCH] Error : \(failure)")
             }
         })
+
+        
+        // NÃO SEI SE AQUI ESTÁ CERTO, PORQUE ASSIM POR CADA NOVA CELL A SER PREFETCHED VAI SER FEITA UM NOVO REQUEST À API
+        
+        
     }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         print("ESTOU ALIIIII!!!! :)")
+        indexPaths.forEach { indexPath in
+            self.appleReposList.remove(at: indexPath.row)
+        }
     }
 }
+
+//class AppleReposDataSourceMocked: NSObject, UITableViewDataSourcePrefetching {
+//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+//        let filtered = indexPaths.filter({ $0.row >= appleReposList.count - 1})
+//
+//        filtered.forEach({_ in
+//            self.page += 1
+//            self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
+//                switch result {
+//                case .success(let success):
+//                    self.appleReposList.append(contentsOf: success)
+//                    DispatchQueue.main.async { [weak self] in
+//                        self?.tableView.reloadData()
+//                    }
+//
+//                case .failure(let failure):
+//                    print("[PREFETCH] Error : \(failure)")
+//                }
+//            })
+//        })
+//
+//    }
+//
+//    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+//        print("ESTOU ALIIIII!!!! :)")
+//    }
+//}

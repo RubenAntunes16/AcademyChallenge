@@ -20,7 +20,7 @@ class AppleReposCoordinator: Coordinator {
         
         appleReposViewController.title = "Apple Repos"
         
-        appleReposViewController.appleReposService = LiveAppleReposService()
+        appleReposViewController.appleReposService = appleReposService
         
         presenter.pushViewController(appleReposViewController, animated: true)
         

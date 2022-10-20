@@ -19,8 +19,11 @@ class AppleReposViewCell: UITableViewCell{
     }
     
     func setupCell(repoName: String){
-        let splittedString = repoName.components(separatedBy: "/")
-        self.textLabel?.text = splittedString[1]
+        
+        let splittedString = repoName.split(separator: "/")
+        
+        self.textLabel?.text = String(splittedString[splittedString.count-1])
+        
         self.backgroundColor = .clear
     }
 }

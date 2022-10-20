@@ -45,6 +45,8 @@
 		32B5641228FEA2B60088D24C /* ProjectConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641128FEA2B60088D24C /* ProjectConstants.swift */; };
 		32B5641428FEA6C80088D24C /* AppleReposViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641328FEA6C80088D24C /* AppleReposViewCell.swift */; };
 		32B5641629002CC80088D24C /* MockedAppleReposService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641529002CC80088D24C /* MockedAppleReposService.swift */; };
+		32B5641829002DCC0088D24C /* AppleReposMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641729002DCC0088D24C /* AppleReposMock.swift */; };
+		32B5641A29002E2A0088D24C /* AppleReposService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5641929002E2A0088D24C /* AppleReposService.swift */; };
 		32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */; };
 		32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285328EED8FC00EDFFF1 /* EmojiService.swift */; };
 		32BDD93F28F061F2009A644F /* String+ToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BDD93E28F061F2009A644F /* String+ToImage.swift */; };
@@ -94,6 +96,8 @@
 		32B5641128FEA2B60088D24C /* ProjectConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectConstants.swift; sourceTree = "<group>"; };
 		32B5641328FEA6C80088D24C /* AppleReposViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposViewCell.swift; sourceTree = "<group>"; };
 		32B5641529002CC80088D24C /* MockedAppleReposService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedAppleReposService.swift; sourceTree = "<group>"; };
+		32B5641729002DCC0088D24C /* AppleReposMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposMock.swift; sourceTree = "<group>"; };
+		32B5641929002E2A0088D24C /* AppleReposService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposService.swift; sourceTree = "<group>"; };
 		32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedEmojiService.swift; sourceTree = "<group>"; };
 		32B8285328EED8FC00EDFFF1 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
 		32BDD93E28F061F2009A644F /* String+ToImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ToImage.swift"; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				32B563F928F71B060088D24C /* Avatar.swift */,
 				32B5640328F84B200088D24C /* AvatarMock.swift */,
 				32B5640B28FDA3AE0088D24C /* AppleRepos.swift */,
+				32B5641729002DCC0088D24C /* AppleReposMock.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -254,6 +259,7 @@
 				32B563FB28F721E50088D24C /* LiveAvatarService.swift */,
 				32B5640D28FDAB8F0088D24C /* LiveAppleReposService.swift */,
 				32B5641529002CC80088D24C /* MockedAppleReposService.swift */,
+				32B5641929002E2A0088D24C /* AppleReposService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -366,6 +372,7 @@
 				32C5E73728EC78B900C5FD93 /* NetworkManager.swift in Sources */,
 				32823CA328E6E04100596B98 /* EmojiAPI.swift in Sources */,
 				3206C80628DE062500397C95 /* Coordinator.swift in Sources */,
+				32B5641A29002E2A0088D24C /* AppleReposService.swift in Sources */,
 				32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */,
 				3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */,
 				32B5640628F874310088D24C /* NSManagedObject+ToAvatar.swift in Sources */,
@@ -374,6 +381,7 @@
 				3206C80928DE067000397C95 /* EmojisListViewController.swift in Sources */,
 				32B516EA28F4721800043127 /* Database.xcdatamodeld in Sources */,
 				32B5641428FEA6C80088D24C /* AppleReposViewCell.swift in Sources */,
+				32B5641829002DCC0088D24C /* AppleReposMock.swift in Sources */,
 				324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */,
 				32B516F028F5B38000043127 /* NSManagedObject+ToEmoji.swift in Sources */,
 				32B5640028F808DF0088D24C /* EntityToPersist.swift in Sources */,

@@ -17,9 +17,7 @@ class AppleReposViewController: UIViewController {
     
     var page: Int = Constants.AppleRepos.AppleReposPagination.numPage
     
-    var reposAux: [AppleRepos] = []
-    
-    var addedToView : Bool = true
+    var finishedFetchData : Bool = true
     
     var isEnd: Bool = false
     
@@ -46,10 +44,11 @@ class AppleReposViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
-        appleReposService?.getAppleRepos(page: page, size: Constants.AppleRepos.AppleReposPagination.perPage){ (result: Result<[AppleRepos], Error>) in
+        appleReposService?.getAppleRepos(page: page, size: Constants.AppleRepos.AppleReposPagination.perPage){ [weak self] (result: Result<[AppleRepos], Error>) in
+            
             switch result {
             case .success(let success):
-                self.appleReposList = success
+                self?.appleReposList = success
                 DispatchQueue.main.async { [weak self] in
                     self?.tableView.reloadData()
                 }
@@ -68,7 +67,7 @@ class AppleReposViewController: UIViewController {
         //        tableView.prefetchDataSource = self
         tableView.frame = view.bounds
         tableView.backgroundColor = .none
-        tableView.rowHeight = CGFloat(Constants.AppleRepos.appleReposListRowHeigth)
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier)
@@ -100,8 +99,12 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
         let heightTable = scrollView.contentSize.height
         let heightCell = CGFloat(Constants.AppleRepos.appleReposListRowHeigth * 4)
         
-        if((offset + heightVisibleScroll + (heightCell)) > heightTable && addedToView && !isEnd) {
-            addedToView = false
+        print("offset: \(offset)   --    content size: \(heightTable)   --   height scroll: \(heightVisibleScroll)")
+        
+        print("ROW HEIGHT: \(tableView)  --- ESTIMATED: \(tableView.estimatedRowHeight)")
+        
+        if(offset > 0 && (offset + heightVisibleScroll + heightCell) > heightTable && finishedFetchData && !isEnd) {
+            finishedFetchData = false
             self.page += 1
             self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleRepos.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
                 switch result {
@@ -110,6 +113,7 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
                     
                     DispatchQueue.main.async { [weak self] in
                         self?.tableView.reloadData()
+                        self?.finishedFetchData = true
                     }
                     
                     if success.count < Constants.AppleRepos.AppleReposPagination.perPage {
@@ -124,7 +128,7 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.addedToView = true
+        
         return appleReposList.count
     }
     
@@ -138,8 +142,6 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
-    
-    
 }
 
 //extension AppleReposViewController: UITableViewDataSourcePrefetching {

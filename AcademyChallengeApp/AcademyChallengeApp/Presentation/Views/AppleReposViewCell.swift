@@ -19,6 +19,7 @@ class AppleReposViewCell: UITableViewCell{
     }
     
     func setupCell(repoName: String){
+        self.textLabel?.numberOfLines = 0
         
         let splittedString = repoName.split(separator: "/")
         

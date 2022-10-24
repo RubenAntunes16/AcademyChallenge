@@ -15,7 +15,7 @@ class AppleReposViewController: UIViewController {
     
     var appleReposList: [AppleRepos] = []
     
-    var page: Int = Constants.AppleRepos.AppleReposPagination.numPage
+    var page: Int = 0
     
     var finishedFetchData : Bool = true
     
@@ -43,22 +43,13 @@ class AppleReposViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        
-        appleReposService?.getAppleRepos(page: page, size: Constants.AppleRepos.AppleReposPagination.perPage){ [weak self] (result: Result<[AppleRepos], Error>) in
-            
-            switch result {
-            case .success(let success):
-                self?.appleReposList = success
-                DispatchQueue.main.async { [weak self] in
-                    self?.tableView.reloadData()
-                }
-                
-            case .failure(let failure):
-                print("[APPLE REPOS] Error to get List: \(failure)")
-            }
+        fetchDataTableView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if tableView.contentSize.height < tableView.frame.size.height  {
+            fetchDataTableView()
         }
-        
-        
     }
     
     private func setupTableView(){
@@ -88,6 +79,28 @@ class AppleReposViewController: UIViewController {
         ])
     }
     
+    func fetchDataTableView(){
+        self.page += 1
+        self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleRepos.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
+            switch result {
+            case .success(let success):
+                self.appleReposList.append(contentsOf: success)
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.reloadData()
+                    self?.finishedFetchData = true
+                }
+                
+                if success.count < Constants.AppleRepos.AppleReposPagination.perPage {
+                    self.isEnd = true
+                }
+                
+            case .failure(let failure):
+                print("[PREFETCH] Error : \(failure)")
+            }
+        })
+    }
+    
 }
 
 extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
@@ -97,33 +110,13 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
         let offset = scrollView.contentOffset.y
         let heightVisibleScroll = scrollView.frame.size.height
         let heightTable = scrollView.contentSize.height
-        let heightCell = CGFloat(Constants.AppleRepos.appleReposListRowHeigth * 4)
         
-        print("offset: \(offset)   --    content size: \(heightTable)   --   height scroll: \(heightVisibleScroll)")
+        // I WANT TO SCROLL WHEN SCROLL REACH 10% OF THE END OF THE VIEW
+        let offsetNewFetch = heightVisibleScroll * 0.25
         
-        print("ROW HEIGHT: \(tableView)  --- ESTIMATED: \(tableView.estimatedRowHeight)")
-        
-        if(offset > 0 && (offset + heightVisibleScroll + heightCell) > heightTable && finishedFetchData && !isEnd) {
+        if(offset > 0 && (offset + heightVisibleScroll + offsetNewFetch) > heightTable && finishedFetchData && !isEnd) {
             finishedFetchData = false
-            self.page += 1
-            self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleRepos.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
-                switch result {
-                case .success(let success):
-                    self.appleReposList.append(contentsOf: success)
-                    
-                    DispatchQueue.main.async { [weak self] in
-                        self?.tableView.reloadData()
-                        self?.finishedFetchData = true
-                    }
-                    
-                    if success.count < Constants.AppleRepos.AppleReposPagination.perPage {
-                        self.isEnd = true
-                    }
-                    
-                case .failure(let failure):
-                    print("[PREFETCH] Error : \(failure)")
-                }
-            })
+            fetchDataTableView()
         }
     }
     
@@ -133,9 +126,7 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard indexPath.row < appleReposList.count else {
-            return UITableViewCell()
-        }
+       
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
         
         cell.setupCell(repoName: appleReposList[indexPath.row].fullName)
@@ -143,6 +134,8 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
+
+// ------- PREFETCHING FUNCTIONS TO SCROLL AND FETCH DATA IN TABLE VIEW ------
 
 //extension AppleReposViewController: UITableViewDataSourcePrefetching {
 //    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
@@ -171,12 +164,6 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
 //                }
 //            })
 //        }
-//
-//
-//
-//        // NÃO SEI SE AQUI ESTÁ CERTO, PORQUE ASSIM POR CADA NOVA CELL A SER PREFETCHED VAI SER FEITA UM NOVO REQUEST À API
-//
-//
 //    }
 //
 //    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
@@ -195,6 +182,7 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
 //    }
 //}
 
+// ------ MOCKED DATA SOURCE ------
 //class AppleReposDataSourceMocked: NSObject, UITableViewDataSourcePrefetching {
 //    private var reposMocked: AppleReposMock = .init()
 //    var mockedRepos: [AppleRepos] = []

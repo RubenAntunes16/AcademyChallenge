@@ -46,12 +46,6 @@ class AppleReposViewController: UIViewController {
         fetchDataTableView()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        if tableView.contentSize.height < tableView.frame.size.height  {
-            fetchDataTableView()
-        }
-    }
-    
     private func setupTableView(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -87,8 +81,13 @@ class AppleReposViewController: UIViewController {
                 self.appleReposList.append(contentsOf: success)
                 
                 DispatchQueue.main.async { [weak self] in
-                    self?.tableView.reloadData()
-                    self?.finishedFetchData = true
+                    guard let self = self else { return }
+                    self.tableView.reloadData()
+                    self.finishedFetchData = true
+                    // THIS IS TO FILL TABLE VIEW IF THE TABLE HAS SPACE TO DO IT
+                    if self.tableView.contentSize.height < self.tableView.frame.size.height  {
+                        self.fetchDataTableView()
+                    }
                 }
                 
                 if success.count < Constants.AppleRepos.AppleReposPagination.perPage {

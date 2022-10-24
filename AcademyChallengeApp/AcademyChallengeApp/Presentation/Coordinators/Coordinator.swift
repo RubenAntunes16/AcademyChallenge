@@ -13,4 +13,4 @@ protocol Coordinator {
 
 let emojiSource = LiveEmojiService()
 let avatarService = LiveAvatarService()
-let appleReposService = LiveAppleReposService()
+let appleReposService = MockedAppleReposService()

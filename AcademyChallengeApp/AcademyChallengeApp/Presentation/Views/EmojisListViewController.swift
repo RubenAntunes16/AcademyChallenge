@@ -17,8 +17,9 @@ class MockedEmojiDataSource : NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ConstantEmojiCell.emojiCellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
         
+        // CUSTOM FUNCTION WITH REUSABLE VIEW
+        let cell : EmojisListCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
     
         let url = emojiMocked.mockedEmojis[indexPath.row].urlImage
         
@@ -28,11 +29,6 @@ class MockedEmojiDataSource : NSObject, UICollectionViewDataSource {
     }
 }
 // -------------------------------------------------------------------
-
-// ------- Constant
-enum ConstantEmojiCell {
-    static let emojiCellIdentifier = "emojiCell"
-}
 
 class EmojisListViewController: UIViewController {
     
@@ -102,7 +98,7 @@ class EmojisListViewController: UIViewController {
         collectionView.frame = view.bounds
         
         collectionView.backgroundColor = .none
-        collectionView.register(EmojisListCollectionViewCell.self, forCellWithReuseIdentifier: ConstantEmojiCell.emojiCellIdentifier)
+        collectionView.register(EmojisListCollectionViewCell.self, forCellWithReuseIdentifier: EmojisListCollectionViewCell.reuseCellIdentifier)
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -130,7 +126,9 @@ extension EmojisListViewController: UICollectionViewDelegate, UICollectionViewDa
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ConstantEmojiCell.emojiCellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
+        // CUSTOM FUNCTION WITH REUSABLE VIEW
+        let cell : EmojisListCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ConstantEmojiCell.emojiCellIdentifier, for: index⁄Path) as! EmojisListCollectionViewCell
         
     
         guard let url = emojisList?[indexPath.row].urlImage else { return UICollectionViewCell()}

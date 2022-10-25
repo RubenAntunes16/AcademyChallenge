@@ -22,13 +22,7 @@ extension AppleReposAPI: APIProtocol {
                 URLQueryItem(name: "page", value: String(page))
             ]
             
-            do {
-                let url = try urlComponents?.url
-                
-            } catch let error as NSError {
-                print("ERROR To construct URL: \(error)")
-            }
-            
+            guard let url = urlComponents?.url else { fatalError("[URLComponents] Cannot Convert to URL")}
             
             return url
         }

@@ -7,10 +7,6 @@
 
 import UIKit
 
-enum ConstantAvatarCell {
-    static let avatarCellIdentifier = "avatarCell"
-}
-
 class AvatarListViewController: UIViewController {
     
     var avatarService: LiveAvatarService?
@@ -56,7 +52,7 @@ class AvatarListViewController: UIViewController {
         collectionView.frame = view.bounds
         
         collectionView.backgroundColor = .none
-        collectionView.register(AvatarCollectionViewCell.self, forCellWithReuseIdentifier: ConstantAvatarCell.avatarCellIdentifier)
+        collectionView.register(AvatarCollectionViewCell.self, forCellWithReuseIdentifier: AvatarCollectionViewCell.reuseCellIdentifier)
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -83,7 +79,10 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ConstantAvatarCell.avatarCellIdentifier, for: indexPath) as! AvatarCollectionViewCell
+        
+        // CUSTOM FUNCTION WITH REUSABLE VIEW
+        let cell : AvatarCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ConstantAvatarCell.avatarCellIdentifier, for: indexPath) as! AvatarCollectionViewCell
         
         let url = avatarList[indexPath.row].avatarUrl
         

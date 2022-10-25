@@ -7,10 +7,6 @@
 
 import UIKit
 
-enum ConstantAppleRepos {
-    static let appleReposCellIdentifier = "appleReposCell"
-}
-
 class AppleReposViewController: UIViewController {
     
     let tableView: UITableView
@@ -59,7 +55,7 @@ class AppleReposViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: ConstantAppleRepos.appleReposCellIdentifier)
+        tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: AppleReposViewCell.reuseCellIdentifier)
     }
     
     private func addToSuperView() {
@@ -130,7 +126,9 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
-        let cell = tableView.dequeueReusableCell(withIdentifier: ConstantAppleRepos.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
+        // CUSTOM FUNCTION WITH REUSABLE VIEW
+        let cell : AppleReposViewCell = tableView.dequeueReusableCell(for: indexPath)
+//        let cell = tableView.dequeueReusableCell(withIdentifier: ConstantAppleRepos.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
         
         cell.setupCell(repoName: appleReposList[indexPath.row].fullName)
         

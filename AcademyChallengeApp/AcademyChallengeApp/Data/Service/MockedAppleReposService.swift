@@ -22,12 +22,17 @@ class MockedAppleReposService : AppleReposService {
         let endIndex = size * page
         let startIndex = endIndex - size
         
-        for i in startIndex...endIndex - 1{
-            if i < mockedRepos.count {
-                repos.append(mockedRepos[i])
-            }
-            
+        if endIndex <= mockedRepos.count {
+            repos = Array<AppleRepos>(mockedRepos[startIndex...endIndex-1])
         }
+        
+//        repos.replaceSubrange(startIndex...endIndex - 1, with: mockedRepos.)
+//        for i in startIndex...endIndex - 1{
+//            if i < mockedRepos.count {
+//                repos.append(mockedRepos[i])
+//            }
+//
+//        }
         
         resultHandler(.success(repos))
         

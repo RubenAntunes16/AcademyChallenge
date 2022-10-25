@@ -41,6 +41,7 @@ class AppleReposMock {
             AppleRepos(id: 30, fullName: "Repos 30, This a test to verify if the cell resize by itself", isPrivate: true),
             AppleRepos(id: 31, fullName: "Repos 31", isPrivate: true),
             AppleRepos(id: 32, fullName: "Repos 32, This a test to verify if the cell resize by itself", isPrivate: true),
+            AppleRepos(id: 33, fullName: "Repos 33", isPrivate: true),
             AppleRepos(id: 34, fullName: "Repos 34", isPrivate: true),
             AppleRepos(id: 35, fullName: "Repos 35, This a test to verify if the cell resize by itself", isPrivate: true),
             AppleRepos(id: 36, fullName: "Repos 36", isPrivate: true),

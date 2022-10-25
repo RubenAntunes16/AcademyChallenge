@@ -10,9 +10,12 @@ import UIKit
 
 class AppleReposViewCell: UITableViewCell{
     
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.textLabel?.numberOfLines = 0
+        self.backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {
@@ -20,12 +23,10 @@ class AppleReposViewCell: UITableViewCell{
     }
     
     func setupCell(repoName: String){
-        self.textLabel?.numberOfLines = 0
         
         let splittedString = repoName.split(separator: "/")
         
         self.textLabel?.text = String(splittedString[splittedString.count-1])
         
-        self.backgroundColor = .clear
     }
 }

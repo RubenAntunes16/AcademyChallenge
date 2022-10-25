@@ -8,11 +8,7 @@
 import Foundation
 
 enum Constants {
-    struct CellIdentifiers {
-        static let emojiCellIdentifier = "emojiCell"
-        static let avatarCellIdentifier = "avatarCell"
-        static let appleReposCellIdentifier = "appleReposCell"
-    }
+    static let baseURL = "https://api.github.com"
     
     struct AppleRepos {
         struct AppleReposPagination{
@@ -20,7 +16,6 @@ enum Constants {
             static let numPage = 1
         }
         
-        static let appleReposListRowHeigth = 64
     }
     
 }

@@ -7,6 +7,10 @@
 
 import UIKit
 
+enum ConstantAppleRepos {
+    static let appleReposCellIdentifier = "appleReposCell"
+}
+
 class AppleReposViewController: UIViewController {
     
     let tableView: UITableView
@@ -55,7 +59,7 @@ class AppleReposViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier)
+        tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: ConstantAppleRepos.appleReposCellIdentifier)
     }
     
     private func addToSuperView() {
@@ -126,7 +130,7 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ConstantAppleRepos.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
         
         cell.setupCell(repoName: appleReposList[indexPath.row].fullName)
         
@@ -178,43 +182,5 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
 ////            self.appleReposList.remove(at: indexPath.row - auxIndex)
 //            auxIndex += 1
 //        }
-//    }
-//}
-
-// ------ MOCKED DATA SOURCE ------
-//class AppleReposDataSourceMocked: NSObject, UITableViewDataSourcePrefetching {
-//    private var reposMocked: AppleReposMock = .init()
-//    var mockedRepos: [AppleRepos] = []
-//    var page = 1
-//    var size = 10
-//
-//    override init(){
-//        mockedRepos = reposMocked.mockedAppleRepos
-//    }
-//
-//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-//        let filtered = indexPaths.filter({ $0.row >= mockedRepos.count - 1})
-//
-//        var repos: [AppleRepos] = []
-//        self.page += 1
-//
-//        let endIndex = size * page
-//        let startIndex = endIndex - size
-//
-//        for i in startIndex...endIndex - 1{
-//            if i < mockedRepos.count {
-//                repos.append(mockedRepos[i])
-//            }
-//
-//        }
-//
-//        filtered.forEach({_ in
-//
-//        })
-//
-//    }
-//
-//    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-//        print("ESTOU ALIIIII!!!! :)")
 //    }
 //}

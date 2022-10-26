@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImageView {
     
-    func downloadImageFromURL(from url: URL) {
+    func createDownloadDataTask(from url: URL) -> URLSessionTask{
         let task = URLSession.shared.dataTask(with: url){ data, response, error in
             if let data = data {
                 if let image = UIImage(data: data) {
@@ -22,6 +22,7 @@ extension UIImageView {
                 print("UIImage Download ERROR: \(error)")
             }
         }
-        task.resume()
+        return task
+        
     }
 }

@@ -13,6 +13,8 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     private var emojiImageView: UIImageView
     var dataTask: URLSessionTask?
     
+    let shared = URLSession.shared
+    
     let blurEffect : UIBlurEffect
     let blurEffectView : UIVisualEffectView
     
@@ -38,8 +40,9 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     }
     
     func setupCell(url: URL){
-        self.emojiImageView.downloadImageFromURL(from: url)
         
+        dataTask = self.emojiImageView.createDownloadDataTask(from: url)
+        dataTask?.resume()
     }
     
     func setupConstraints(){
@@ -61,7 +64,6 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     
     override func prepareForReuse() {
         // vamos ter que fazer aqui o cancel do download acaso a imagem não va ser mostrada
-        
         super.prepareForReuse()
         dataTask?.cancel()
         // NOTE: - Don't forget to clear your cell before reusing it!

@@ -7,12 +7,6 @@
 
 import Foundation
 import UIKit
-import SwiftUI
-
-enum Constants {
-    static let emojiCellIdentifier = "emojiCell"
-    static let avatarCellIdentifier = "avatarCell"
-}
 
 // ------ MOCKED CLASS TO MOCKED EMOJIS COLLECTION DATA SOURCE -------
 class MockedEmojiDataSource : NSObject, UICollectionViewDataSource {
@@ -23,8 +17,9 @@ class MockedEmojiDataSource : NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.emojiCellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
         
+        // CUSTOM FUNCTION WITH REUSABLE VIEW
+        let cell : EmojisListCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
     
         let url = emojiMocked.mockedEmojis[indexPath.row].urlImage
         
@@ -85,7 +80,7 @@ class EmojisListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Emojis List"
+        
         // Do any additional setup after loading the view.
         setupCollectionsView()
         addViewsToSuperview()
@@ -103,7 +98,7 @@ class EmojisListViewController: UIViewController {
         collectionView.frame = view.bounds
         
         collectionView.backgroundColor = .none
-        collectionView.register(EmojisListCollectionViewCell.self, forCellWithReuseIdentifier: Constants.emojiCellIdentifier)
+        collectionView.register(EmojisListCollectionViewCell.self, forCellWithReuseIdentifier: EmojisListCollectionViewCell.reuseCellIdentifier)
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -118,7 +113,7 @@ class EmojisListViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
     }
@@ -131,7 +126,9 @@ extension EmojisListViewController: UICollectionViewDelegate, UICollectionViewDa
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.emojiCellIdentifier, for: indexPath) as! EmojisListCollectionViewCell
+        // CUSTOM FUNCTION WITH REUSABLE VIEW
+        let cell : EmojisListCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ConstantEmojiCell.emojiCellIdentifier, for: index⁄Path) as! EmojisListCollectionViewCell
         
     
         guard let url = emojisList?[indexPath.row].urlImage else { return UICollectionViewCell()}

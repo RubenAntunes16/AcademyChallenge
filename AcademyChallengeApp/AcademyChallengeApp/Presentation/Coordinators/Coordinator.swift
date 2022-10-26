@@ -11,5 +11,6 @@ protocol Coordinator {
     func start()
 }
 
-var emojiSource = LiveEmojiService()
-var avatarService = LiveAvatarService()
+let emojiSource = LiveEmojiService()
+let avatarService = LiveAvatarService()
+let appleReposService = LiveAppleReposService()

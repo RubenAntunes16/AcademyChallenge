@@ -52,7 +52,7 @@ class AvatarListViewController: UIViewController {
         collectionView.frame = view.bounds
         
         collectionView.backgroundColor = .none
-        collectionView.register(AvatarCollectionViewCell.self, forCellWithReuseIdentifier: Constants.avatarCellIdentifier)
+        collectionView.register(AvatarCollectionViewCell.self, forCellWithReuseIdentifier: AvatarCollectionViewCell.reuseCellIdentifier)
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -67,12 +67,8 @@ class AvatarListViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
-    }
-    
-    func showAlertWithDistructiveButton() {
         
     }
 }
@@ -83,7 +79,10 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.avatarCellIdentifier, for: indexPath) as! AvatarCollectionViewCell
+        
+        // CUSTOM FUNCTION WITH REUSABLE VIEW
+        let cell : AvatarCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ConstantAvatarCell.avatarCellIdentifier, for: indexPath) as! AvatarCollectionViewCell
         
         let url = avatarList[indexPath.row].avatarUrl
         

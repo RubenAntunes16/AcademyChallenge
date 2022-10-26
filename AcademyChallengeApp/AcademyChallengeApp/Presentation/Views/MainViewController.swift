@@ -138,6 +138,8 @@ class MainViewController: UIViewController {
         
         buttonSearch.addTarget(self, action: #selector(buttonSearchTap), for: .touchUpInside)
         
+        buttonAppleRepos.addTarget(self, action: #selector(buttonAppleReposListTap), for: .touchUpInside)
+        
     }
     
     // 2 - ADD TO THE SUPERVIEW
@@ -234,6 +236,15 @@ class MainViewController: UIViewController {
                 print("Failure to Get Avatar: \(failure)")
             }
         })
+    }
+    
+    @objc func buttonAppleReposListTap(_ sender: UIButton){
+        
+        let appleReposListCoordinator = AppleReposCoordinator(presenter: navigationController!)
+
+        appleReposListCoordinator.start()
+
+        self.appleReposCoordinator = appleReposListCoordinator
     }
     
     private func removeSpinner() {

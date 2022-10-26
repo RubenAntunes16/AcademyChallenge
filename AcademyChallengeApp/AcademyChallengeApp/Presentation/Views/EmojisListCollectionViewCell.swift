@@ -13,13 +13,23 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     private var emojiImageView: UIImageView
     var dataTask: URLSessionTask?
     
+    let blurEffect : UIBlurEffect
+    let blurEffectView : UIVisualEffectView
+    
     override init(frame: CGRect) {
         emojiImageView = .init(frame: .zero)
         emojiImageView.contentMode = .scaleAspectFit
         emojiImageView.clipsToBounds = true
+        
+        blurEffect = .init(style: .light)
+        
+        blurEffectView = .init(effect: blurEffect)
+        
         //self.emojiImageView = emoji
         super.init(frame: .zero)
-        self.contentView.addSubview(emojiImageView)
+        contentView.addSubview(blurEffectView)
+        contentView.addSubview(emojiImageView)
+        
         setupConstraints()
     }
     
@@ -29,11 +39,19 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     
     func setupCell(url: URL){
         self.emojiImageView.downloadImageFromURL(from: url)
+        
     }
     
     func setupConstraints(){
         emojiImageView.translatesAutoresizingMaskIntoConstraints = false
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
+            blurEffectView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            blurEffectView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            blurEffectView.topAnchor.constraint(equalTo: self.topAnchor),
+            blurEffectView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
             emojiImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             emojiImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             emojiImageView.topAnchor.constraint(equalTo: self.topAnchor),

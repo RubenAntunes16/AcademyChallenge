@@ -8,13 +8,16 @@
 import Foundation
 
 enum AvatarAPI {
-    case getAvatars
+    // ASSOCIATED VALUES
+    case getAvatars(String)
 }
 
 extension AvatarAPI: APIProtocol {
-    
     var url: URL {
-            URL(string: "https://api.github.com/users")!
+        switch self {
+        case .getAvatars(let name):
+            return URL(string: "\(Constants.baseURL)/users/\(name)")!
+        }
     }
     
     var method: Method{

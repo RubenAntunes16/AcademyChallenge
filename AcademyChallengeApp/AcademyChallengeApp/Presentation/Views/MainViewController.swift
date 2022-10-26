@@ -209,7 +209,8 @@ class MainViewController: UIViewController {
                 
                 guard let randomUrl = success.randomElement()?.urlImage else { return }
         
-                self?.emojiImageView.downloadImageFromURL(from: randomUrl)
+                let dataTask = self?.emojiImageView.createDownloadDataTask(from: randomUrl)
+                dataTask?.resume()
                 
                 DispatchQueue.main.async {
                     self?.removeSpinner()
@@ -230,7 +231,8 @@ class MainViewController: UIViewController {
                 
                 let avatarUrl = success.avatarUrl
                 
-                self.emojiImageView.downloadImageFromURL(from: avatarUrl)
+                let dataTask = self.emojiImageView.createDownloadDataTask(from: avatarUrl)
+                dataTask?.resume()
                 
             case .failure(let failure):
                 print("Failure to Get Avatar: \(failure)")

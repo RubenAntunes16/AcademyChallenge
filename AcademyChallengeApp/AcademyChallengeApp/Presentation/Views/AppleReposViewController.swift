@@ -11,6 +11,12 @@ class AppleReposViewController: UIViewController {
     
     let tableView: UITableView
     
+    let loadingSpinner : UIActivityIndicatorView
+//
+//    let loadingFooterText: UILabel
+    
+    let footerView = FooterLoadingAppleRepos(frame: .zero)
+    
     var appleReposService: AppleReposService?
     
     var appleReposList: [AppleRepos] = []
@@ -23,6 +29,7 @@ class AppleReposViewController: UIViewController {
     
     init(){
         tableView = .init(frame: .zero)
+        loadingSpinner = .init(style: .large)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -54,8 +61,9 @@ class AppleReposViewController: UIViewController {
         tableView.backgroundColor = .none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
-        tableView.contentInsetAdjustmentBehavior = .never
+        
         tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: AppleReposViewCell.reuseCellIdentifier)
+        tableView.tableFooterView = loadingSpinner
     }
     
     private func addToSuperView() {
@@ -74,6 +82,7 @@ class AppleReposViewController: UIViewController {
     }
     
     func fetchDataTableView(){
+        loadingSpinner.startAnimating()
         self.page += 1
         self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleRepos.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
             switch result {
@@ -88,6 +97,7 @@ class AppleReposViewController: UIViewController {
                     if self.tableView.contentSize.height < self.tableView.frame.size.height  {
                         self.fetchDataTableView()
                     }
+                    self.loadingSpinner.stopAnimating()
                 }
                 
                 if success.count < Constants.AppleRepos.AppleReposPagination.perPage {

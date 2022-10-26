@@ -29,7 +29,8 @@ class AvatarCollectionViewCell: UICollectionViewCell {
     }
     
     func setupCell(url: URL){
-        self.emojiImageView.createDownloadDataTask(from: url)
+        dataTask = self.emojiImageView.createDownloadDataTask(from: url)
+        dataTask?.resume()
     }
     
     func setupConstraints(){

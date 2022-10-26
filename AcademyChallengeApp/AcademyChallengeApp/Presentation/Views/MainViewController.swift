@@ -232,7 +232,7 @@ class MainViewController: UIViewController {
                 let avatarUrl = success.avatarUrl
                 
                 let dataTask = self.emojiImageView.createDownloadDataTask(from: avatarUrl)
-                dataTask?.resume()
+                dataTask.resume()
                 
             case .failure(let failure):
                 print("Failure to Get Avatar: \(failure)")

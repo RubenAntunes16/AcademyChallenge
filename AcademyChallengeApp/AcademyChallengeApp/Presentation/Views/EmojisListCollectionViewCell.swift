@@ -40,7 +40,7 @@ class EmojisListCollectionViewCell : UICollectionViewCell{
     }
     
     func setupCell(url: URL){
-        print("[EMOJI_LIST_VIEW_CONTROLLER] URLSession.shared: \(URLSession.shared)")
+        
         dataTask = self.emojiImageView.createDownloadDataTask(from: url)
         dataTask?.resume()
     }

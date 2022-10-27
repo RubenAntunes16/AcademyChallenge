@@ -17,9 +17,6 @@ class MainViewCoordinator: Coordinator {
     
     init(presenter: UINavigationController){
         self.presenter = presenter
-//        self.emojis = emojis
-//        self.emojisStorage = emojiStorage
-//        self.emojisStorage?.delegate = self
     }
     
     // THIS THE ABSTRACT FUNCTION FROM COORDINATOR INTERFACE
@@ -29,20 +26,16 @@ class MainViewCoordinator: Coordinator {
         let mainViewController = MainViewController()
         mainViewController.title = "Main Page"
         
-        mainViewController.emojiService = emojiSource
+        let viewModel = MainViewModel()
         
-        mainViewController.avatarService = avatarService
+        viewModel.emojiService = emojiSource
+        
+        viewModel.avatarService = avatarService
+        
+        mainViewController.viewModel = viewModel
         
         presenter.pushViewController(mainViewController, animated: true)
         
         self.mainViewController = mainViewController
     }
 }
-
-//extension MainViewCoordinator: EmojiStorageDelegate {
-//    func emojiListUpdated() {
-//        presenter.viewControllers.forEach {
-//            ($0 as? EmojiPresenter)?.emojiListUpdated()
-//        }
-//    }
-//}

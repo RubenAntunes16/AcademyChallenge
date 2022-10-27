@@ -45,7 +45,8 @@ class MainViewController: UIViewController {
     private var buttonAvatarList: UIButton
     private var buttonAppleRepos: UIButton
     
-    var emojiService: EmojiService?
+    var viewModel : MainViewModel?
+    
     var avatarService: LiveAvatarService?
 
     
@@ -89,13 +90,26 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-//        view.backgroundColor =  .systemBackground
-//        view.tintColor = .lightGray
+        
+        viewModel?.imageUrl.bind(listener: { url in
+            guard let url = url else {
+                return
+            }
+            // falta colocar quando não consegue fazer um download do emoji
+            let dataTask = self.emojiImageView.createDownloadDataTask(from: url)
+            
+            dataTask.resume()
+            DispatchQueue.main.async {
+                self.removeSpinner()
+            }
+           
+            
+        })
         
         setupViews()
         addViewsToSuperview()
         setupConstraints()
+        
         
         spinnerView.startAnimating()
         
@@ -203,41 +217,12 @@ class MainViewController: UIViewController {
     }
     
     @objc func buttonRandomEmojisTap(){
-        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji],Error>) in
-            switch result{
-            case .success(let success):
-                
-                guard let randomUrl = success.randomElement()?.urlImage else { return }
-        
-                let dataTask = self?.emojiImageView.createDownloadDataTask(from: randomUrl)
-                dataTask?.resume()
-                
-                DispatchQueue.main.async {
-                    self?.removeSpinner()
-                }
-            case .failure(let failure):
-                print("Failure: \(failure)")
-                self?.emojiImageView.image = UIImage(named: "noEmoji")
-            }
-            
-        })
+        viewModel?.getRandomEmoji()
     }
     
     @objc func buttonSearchTap(){
         guard let searchBarText = searchBar.text else { return }
-        avatarService?.getAvatar(searchText: searchBarText, { (result: Result<Avatar, Error>) in
-            switch result {
-            case .success(let success):
-                
-                let avatarUrl = success.avatarUrl
-                
-                let dataTask = self.emojiImageView.createDownloadDataTask(from: avatarUrl)
-                dataTask.resume()
-                
-            case .failure(let failure):
-                print("Failure to Get Avatar: \(failure)")
-            }
-        })
+        viewModel?.searchText.value = searchBarText
     }
     
     @objc func buttonAppleReposListTap(_ sender: UIButton){
@@ -256,8 +241,6 @@ class MainViewController: UIViewController {
             viewEmojiRandom.addSubview(emojiImageView)
             
             NSLayoutConstraint.activate([
-//                emojiImageView.centerXAnchor.constraint(equalTo: viewEmojiRandom.centerXAnchor),
-//                emojiImageView.centerYAnchor.constraint(equalTo: viewEmojiRandom.centerYAnchor)
                 emojiImageView.leadingAnchor.constraint(equalTo: viewEmojiRandom.leadingAnchor, constant: World.K.randomImageMargin * viewEmojiRandom.frame.width),
                 emojiImageView.trailingAnchor.constraint(equalTo: viewEmojiRandom.trailingAnchor, constant: World.K.randomImageMargin.symmetric * viewEmojiRandom.frame.width),
                 emojiImageView.topAnchor.constraint(equalTo: viewEmojiRandom.topAnchor, constant: World.K.randomImageMargin * viewEmojiRandom.frame.height),

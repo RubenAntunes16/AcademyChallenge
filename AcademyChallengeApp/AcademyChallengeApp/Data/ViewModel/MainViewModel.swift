@@ -16,6 +16,7 @@ class MainViewModel {
     var imageUrl : Wrapper<URL?> = Wrapper(nil)
     var searchText = Wrapper("")
     
+    
     init() {
         searchText.bind { [weak self] _ in
             self?.getAvatar()
@@ -56,4 +57,6 @@ class MainViewModel {
             }
         })
     }
+    
+    
 }

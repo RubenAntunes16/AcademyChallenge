@@ -46,8 +46,6 @@ class MainViewController: UIViewController {
     private var buttonAppleRepos: UIButton
     
     var viewModel : MainViewModel?
-    
-    var avatarService: LiveAvatarService?
 
     
     // --------- HOW TO START ---------
@@ -201,6 +199,8 @@ class MainViewController: UIViewController {
     @objc func buttonEmojisListTap(_ sender: UIButton){
 
         let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!)
+        
+        emojiListCoordinator.viewModel = viewModel
         
         emojiListCoordinator.start()
 

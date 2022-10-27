@@ -37,7 +37,7 @@ class EmojisListViewController: UIViewController {
     
     var emojisList: [Emoji]?
     
-    var emojiService: EmojiService?
+    var viewModel : EmojiViewModel?
     
     // ---- VARIABLE TO INJECT IN DATASOURCE PROPERTY MOCKED DATA
     var mockedDataSource = MockedEmojiDataSource()
@@ -61,21 +61,19 @@ class EmojisListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji],Error>) in
-            switch result{
-            case .success(let success):
-                self?.emojisList = success
-                self?.emojisList?.sort()
-                DispatchQueue.main.async { [weak self] in
-                    self?.collectionView.reloadData()
-                }
-                
-            case .failure(let failure):
-                print("Failure: \(failure)")
+        
+        viewModel?.emojisList.bind(listener: { [weak self] emojisList in
+            guard let self = self else { return }
+            
+            self.emojisList = emojisList
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
             }
             
-
         })
+        
+        viewModel?.getEmojisList()
     }
     
     override func viewDidLoad() {
@@ -85,7 +83,6 @@ class EmojisListViewController: UIViewController {
         setupCollectionsView()
         addViewsToSuperview()
         setupConstraints()
-//        view.backgroundColor = .systemBlue
         view.backgroundColor = .appColor(name: .surface)
         
     }
@@ -115,11 +112,7 @@ class EmojisListViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
     }
-    
-    
-    
 }
 
 extension EmojisListViewController: UICollectionViewDelegate, UICollectionViewDataSource{

@@ -12,6 +12,8 @@ class EmojisListCoordinator: Coordinator {
     
     private let presenter: UINavigationController
     private var emojisListViewController: EmojisListViewController?
+    
+    var viewModel: MainViewModel?
 //    private var emojiList: EmojiStorage
 //    private var emojiList: [Emoji]
     
@@ -25,7 +27,11 @@ class EmojisListCoordinator: Coordinator {
         
         emojisListViewController.title = "Emojis List"
         
-        emojisListViewController.emojiService = emojiSource
+        let viewModel = EmojiViewModel()
+        
+        viewModel.emojiService = emojiSource
+        
+        emojisListViewController.viewModel = viewModel
         
         presenter.pushViewController(emojisListViewController, animated: true)
         

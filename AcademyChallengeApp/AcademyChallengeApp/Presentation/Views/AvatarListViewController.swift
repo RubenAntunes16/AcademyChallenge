@@ -9,7 +9,7 @@ import UIKit
 
 class AvatarListViewController: UIViewController {
     
-    var avatarService: LiveAvatarService?
+    var viewModel : AvatarViewModel?
     var avatarList: [Avatar] = []
     
     private var collectionView: UICollectionView
@@ -29,6 +29,7 @@ class AvatarListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented.")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -41,9 +42,19 @@ class AvatarListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        avatarService?.fetchAvatarList({ (result: [Avatar]) in
-            self.avatarList = result
+        
+        viewModel?.avatarList.bind(listener: { [weak self] avatarList in
+            guard
+                let self = self,
+                let avatarList = avatarList else { return }
+            
+            self.avatarList = avatarList
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         })
+        viewModel?.getAvatars()
     }
     
     private func setupCollectionsView(){
@@ -100,11 +111,7 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
             
             let avatar = self.avatarList[indexPath.row]
             
-            self.avatarService?.deleteAvatar(avatarToDelete: avatar)
-            
-            self.avatarList.remove(at: indexPath.row)
-            
-            collectionView.reloadData()
+            self.viewModel?.deleteAvatar(avatar: avatar, at: indexPath.row)
             
         }))
         

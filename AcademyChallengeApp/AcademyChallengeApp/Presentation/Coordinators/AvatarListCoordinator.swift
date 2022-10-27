@@ -19,7 +19,11 @@ class AvatarListCoordinator: Coordinator {
         let avatarListViewController = AvatarListViewController()
         avatarListViewController.title = "Avatar List"
         
-        avatarListViewController.avatarService = avatarService
+        let viewModel = AvatarViewModel()
+        
+        viewModel.avatarService = avatarService
+        
+        avatarListViewController.viewModel = viewModel
         
         presenter.pushViewController(avatarListViewController, animated: true)
         

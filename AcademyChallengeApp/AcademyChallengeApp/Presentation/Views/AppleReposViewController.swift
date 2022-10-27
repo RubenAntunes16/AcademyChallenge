@@ -10,24 +10,24 @@ import UIKit
 class AppleReposViewController: UIViewController {
     
     let tableView: UITableView
-    
-    let loadingSpinner : UIActivityIndicatorView
+
+    let loadingSpinner: UIActivityIndicatorView
 //
 //    let loadingFooterText: UILabel
     
     let footerView = FooterLoadingAppleRepos(frame: .zero)
     
-    var appleReposService: AppleReposService?
-    
     var appleReposList: [AppleRepos] = []
-    
+
     var page: Int = 0
     
-    var finishedFetchData : Bool = true
+    var finishedFetchData: Bool = true
     
     var isEnd: Bool = false
     
-    init(){
+    var viewModel: AppleReposViewModel?
+    
+    init() {
         tableView = .init(frame: .zero)
         loadingSpinner = .init(style: .large)
         super.init(nibName: nil, bundle: nil)
@@ -46,14 +46,34 @@ class AppleReposViewController: UIViewController {
         view.backgroundColor = .appColor(name: .surface)
         
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        fetchDataTableView()
+        
+        viewModel?.appleReposList.bind(listener: { [weak self] reposList in
+            guard
+                let self = self,
+                let reposList = reposList else { return }
+            self.appleReposList = reposList
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.tableView.reloadData()
+                self.finishedFetchData = true
+                // THIS IS TO FILL TABLE VIEW IF THE TABLE HAS SPACE TO DO IT
+                if self.tableView.contentSize.height < self.tableView.frame.size.height {
+                    self.fetchDataTableView()
+                }
+                self.loadingSpinner.stopAnimating()
+            }
+        })
+        viewModel?.isEnd.bind(listener: { [weak self] ended in
+            guard let self = self else { return }
+            self.isEnd = ended
+        })
     }
-    
-    private func setupTableView(){
+
+    private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
         //        tableView.prefetchDataSource = self
@@ -61,18 +81,18 @@ class AppleReposViewController: UIViewController {
         tableView.backgroundColor = .none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
-        
+
         tableView.register(AppleReposViewCell.self, forCellReuseIdentifier: AppleReposViewCell.reuseCellIdentifier)
         tableView.tableFooterView = loadingSpinner
     }
-    
+
     private func addToSuperView() {
         view.addSubview(tableView)
     }
-    
-    private func setupConstraints(){
+
+    private func setupConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -80,68 +100,42 @@ class AppleReposViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    func fetchDataTableView(){
+
+    func fetchDataTableView() {
         loadingSpinner.startAnimating()
-        self.page += 1
-        self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleRepos.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
-            switch result {
-            case .success(let success):
-                self.appleReposList.append(contentsOf: success)
-                
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.tableView.reloadData()
-                    self.finishedFetchData = true
-                    // THIS IS TO FILL TABLE VIEW IF THE TABLE HAS SPACE TO DO IT
-                    if self.tableView.contentSize.height < self.tableView.frame.size.height  {
-                        self.fetchDataTableView()
-                    }
-                    self.loadingSpinner.stopAnimating()
-                }
-                
-                if success.count < Constants.AppleRepos.AppleReposPagination.perPage {
-                    self.isEnd = true
-                }
-                
-            case .failure(let failure):
-                print("[PREFETCH] Error : \(failure)")
-            }
-        })
+        viewModel?.getAppleRepos()
     }
-    
 }
 
 extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
-    
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+
         let offset = scrollView.contentOffset.y
         let heightVisibleScroll = scrollView.frame.size.height
         let heightTable = scrollView.contentSize.height
-        
+
         // I WANT TO SCROLL WHEN SCROLL REACH 10% OF THE END OF THE VIEW
         let offsetNewFetch = heightVisibleScroll * 0.25
-        
-        if(offset > 0 && (offset + heightVisibleScroll + offsetNewFetch) > heightTable && finishedFetchData && !isEnd) {
+
+        if offset > 0 && (offset + heightVisibleScroll + offsetNewFetch) > heightTable && finishedFetchData && !isEnd {
             finishedFetchData = false
             fetchDataTableView()
         }
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+
         return appleReposList.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
+
         // CUSTOM FUNCTION WITH REUSABLE VIEW
-        let cell : AppleReposViewCell = tableView.dequeueReusableCell(for: indexPath)
-//        let cell = tableView.dequeueReusableCell(withIdentifier: ConstantAppleRepos.appleReposCellIdentifier, for: indexPath) as! AppleReposViewCell
-        
+        let cell: AppleReposViewCell = tableView.dequeueReusableCell(for: indexPath)
+
         cell.setupCell(repoName: appleReposList[indexPath.row].fullName)
-        
+
         return cell
     }
 }

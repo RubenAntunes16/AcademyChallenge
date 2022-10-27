@@ -55,6 +55,7 @@
 		32B6D4C42909944E00319867 /* Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C32909944E00319867 /* Wrapper.swift */; };
 		32B6D4C6290A920E00319867 /* EmojiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C5290A920E00319867 /* EmojiViewModel.swift */; };
 		32B6D4C8290ABEED00319867 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C7290ABEED00319867 /* AvatarViewModel.swift */; };
+		32B6D4CA290AD1A800319867 /* AppleReposViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C9290AD1A800319867 /* AppleReposViewModel.swift */; };
 		32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */; };
 		32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285328EED8FC00EDFFF1 /* EmojiService.swift */; };
 		32BDD93F28F061F2009A644F /* String+ToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BDD93E28F061F2009A644F /* String+ToImage.swift */; };
@@ -114,6 +115,7 @@
 		32B6D4C32909944E00319867 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		32B6D4C5290A920E00319867 /* EmojiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiViewModel.swift; sourceTree = "<group>"; };
 		32B6D4C7290ABEED00319867 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
+		32B6D4C9290AD1A800319867 /* AppleReposViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleReposViewModel.swift; sourceTree = "<group>"; };
 		32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedEmojiService.swift; sourceTree = "<group>"; };
 		32B8285328EED8FC00EDFFF1 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
 		32BDD93E28F061F2009A644F /* String+ToImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ToImage.swift"; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				32B6D4C1290992FC00319867 /* MainViewModel.swift */,
 				32B6D4C5290A920E00319867 /* EmojiViewModel.swift */,
 				32B6D4C7290ABEED00319867 /* AvatarViewModel.swift */,
+				32B6D4C9290AD1A800319867 /* AppleReposViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 324AE7EA28DB5C8900B816A7 /* Build configuration list for PBXNativeTarget "AcademyChallengeApp" */;
 			buildPhases = (
+				32B6D4CB290AE7A900319867 /* SwiftLint */,
 				324AE7D228DB5C8700B816A7 /* Sources */,
 				324AE7D328DB5C8700B816A7 /* Frameworks */,
 				324AE7D428DB5C8700B816A7 /* Resources */,
@@ -389,6 +393,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		32B6D4CB290AE7A900319867 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		324AE7D228DB5C8700B816A7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -397,6 +422,7 @@
 				32BDD94428F08AFB009A644F /* ColorProvider.swift in Sources */,
 				32B516EE28F4802B00043127 /* EmojiEntity.swift in Sources */,
 				32823CA028E5DB7300596B98 /* Application.swift in Sources */,
+				32B6D4CA290AD1A800319867 /* AppleReposViewModel.swift in Sources */,
 				32B5640228F846190088D24C /* AvatarAPI.swift in Sources */,
 				32B6D4C42909944E00319867 /* Wrapper.swift in Sources */,
 				3253622328E1B8620073C59F /* MainViewCoordinator.swift in Sources */,

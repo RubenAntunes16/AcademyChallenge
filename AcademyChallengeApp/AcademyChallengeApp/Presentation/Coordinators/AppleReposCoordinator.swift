@@ -14,13 +14,17 @@ class AppleReposCoordinator: Coordinator {
     init(presenter: UINavigationController){
         self.presenter = presenter
     }
-    
+
     func start() {
         let appleReposViewController = AppleReposViewController()
         
         appleReposViewController.title = "Apple Repos"
         
-        appleReposViewController.appleReposService = appleReposService
+        let viewModel = AppleReposViewModel()
+        
+        viewModel.appleReposService = appleReposService
+        
+        appleReposViewController.viewModel = viewModel
         
         presenter.pushViewController(appleReposViewController, animated: true)
         

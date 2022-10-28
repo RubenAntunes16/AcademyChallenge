@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 struct Emoji: CustomDebugStringConvertible, Decodable {
-    
+
     var name: String
     var urlImage: URL
-    
+
     var debugDescription: String {
         "\(name): \(urlImage)"
     }
@@ -21,7 +21,5 @@ struct Emoji: CustomDebugStringConvertible, Decodable {
 extension Emoji: Comparable {
     static func < (lhs: Emoji, rhs: Emoji) -> Bool {
         lhs.name < rhs.name
-    } 
+    }
 }
-
-

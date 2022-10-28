@@ -7,25 +7,24 @@
 
 import Foundation
 
-class MockedAppleReposService : AppleReposService {
-    
+class MockedAppleReposService: AppleReposService {
+
     private var reposMocked: AppleReposMock = .init()
-    private let mockedRepos : [AppleRepos]
-    
-    init(){
+    private let mockedRepos: [AppleRepos]
+
+    init() {
         mockedRepos = reposMocked.mockedAppleRepos
     }
-    
-    func getAppleRepos(page: Int, size: Int, _ resultHandler: @escaping (Result<[AppleRepos], Error>) -> Void)
-    {
+
+    func getAppleRepos(page: Int, size: Int, _ resultHandler: @escaping (Result<[AppleRepos], Error>) -> Void) {
         var repos: [AppleRepos] = []
         let endIndex = size * page
         let startIndex = endIndex - size
-        
+
         if endIndex <= mockedRepos.count {
-            repos = Array<AppleRepos>(mockedRepos[startIndex...endIndex-1])
+            repos = [AppleRepos](mockedRepos[startIndex...endIndex-1])
         }
-        
+
 //        repos.replaceSubrange(startIndex...endIndex - 1, with: mockedRepos.)
 //        for i in startIndex...endIndex - 1{
 //            if i < mockedRepos.count {
@@ -33,10 +32,9 @@ class MockedAppleReposService : AppleReposService {
 //            }
 //
 //        }
-        
+
         resultHandler(.success(repos))
-        
+
     }
-    
-    
+
 }

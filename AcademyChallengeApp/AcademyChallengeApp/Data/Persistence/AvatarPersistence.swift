@@ -9,45 +9,51 @@ import UIKit
 import CoreData
 
 class AvatarPersistence {
-    
-    var persistenceArray : [NSManagedObject] = []
-    var appDelegate: AppDelegate
-    
-    init() {
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
+
+    var persistenceArray: [NSManagedObject] = []
+    var persistentContainer: NSPersistentContainer
+
+    init(persistentContainer: NSPersistentContainer) {
+        self.persistentContainer = persistentContainer
     }
-    
-    func verifyAvatarExist(searchText: String, _ resultHandler: @escaping (Result<[NSManagedObject],Error>) -> Void) {
-        let managedContext = self.appDelegate.persistentContainer.viewContext
-        
+
+    func verifyAvatarExist(searchText: String, _ resultHandler: @escaping (Result<[Avatar], Error>) -> Void) {
+        let managedContext = self.persistentContainer.viewContext
+
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
         fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
-        
+
         do {
             let result = try managedContext.fetch(fetchRequest)
-            resultHandler(.success(result))
+
+            var toAvatarList: [Avatar] = []
+
+            result.forEach { item in
+                guard let avatar = item.toAvatar() else { return }
+                toAvatarList.append(avatar)
+            }
+
+            resultHandler(.success(toAvatarList))
         } catch {
             print(error)
             resultHandler(.failure(error))
         }
-        
     }
-    
+
     func persist(currentAvatar: Avatar) {
-        
-        
-        let managedContext = self.appDelegate.persistentContainer.viewContext
-        
+
+        let managedContext = self.persistentContainer.viewContext
+
         // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
-        let entity = NSEntityDescription.entity(forEntityName: "AvatarEntity",in: managedContext)!
-        
-        let avatar = NSManagedObject(entity: entity,insertInto: managedContext)
-        
+        let entity = NSEntityDescription.entity(forEntityName: "AvatarEntity", in: managedContext)!
+
+        let avatar = NSManagedObject(entity: entity, insertInto: managedContext)
+
         avatar.setValue(currentAvatar.name, forKeyPath: "name")
         avatar.setValue(currentAvatar.avatarUrl.absoluteString, forKeyPath: "avatarUrl")
         avatar.setValue(currentAvatar.id, forKeyPath: "id")
-        
+
         // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
         // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
         do {
@@ -55,10 +61,8 @@ class AvatarPersistence {
         } catch let error as NSError {
             print("[PERSIST] Could not save. \(error), \(error.userInfo)")
         }
-        
-        
     }
-    
+
 //    func persist(currentAvatar: Avatar, _ resultHandler: @escaping (Result<Avatar,Error>) -> Void) {
 //
 //
@@ -86,7 +90,7 @@ class AvatarPersistence {
 //
 //
 //    }
-    
+
 //    func persist(name: String, urlImage: String) {
 //
 //        // IT'S NECESSARY TO GET DELEGATE SO WE CAN GET ACCESS TO THE MANAGED CONTEXT
@@ -114,25 +118,26 @@ class AvatarPersistence {
 //               print("Could not save. \(error), \(error.userInfo)")
 //           }
 //        }
-////        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 //
 //
 //    }
-    
-    func fetch(_ resulthandler: @escaping (Result<[NSManagedObject],Error>) -> Void) {
+
+    func fetch(_ resulthandler: @escaping (Result<[NSManagedObject], Error>) -> Void) {
         var array: [NSManagedObject]
 //        guard let appDelegate =
 //          UIApplication.shared.delegate as? AppDelegate else {
 //            return
 //        }
 
-        let managedContext = self.appDelegate.persistentContainer.viewContext
+        let managedContext = self.persistentContainer.viewContext
 
         // FETCH ALL THE DATA FROM THE ENTITY PERSON
         let fetchRequest =
         NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
-        // WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO SEND ALL THE DATA FROM THE PERSON ENTITY
+        /* WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
+         SEND ALL THE DATA FROM THE PERSON ENTITY */
         do {
             array = try managedContext.fetch(fetchRequest)
             resulthandler(.success(array))
@@ -141,17 +146,15 @@ class AvatarPersistence {
             resulthandler(.failure(error))
         }
     }
-    
+
     func delete(avatarObject: Avatar) {
-        
-        let managedContext = self.appDelegate.persistentContainer.viewContext
-        
-        
+
+        let managedContext = self.persistentContainer.viewContext
+
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
         fetchRequest.predicate = NSPredicate(format: "name = %@", avatarObject.name)
-    
-        
+
         do {
             let avatarToDelete = try managedContext.fetch(fetchRequest)
             if avatarToDelete.count == 1 {
@@ -159,11 +162,10 @@ class AvatarPersistence {
                 managedContext.delete(avatar)
                 try managedContext.save()
             }
-            
+
         } catch let error as NSError {
             print("[DELETE AVATAR] Error to delete avatar: \(error)")
         }
-        
+
     }
 }
-

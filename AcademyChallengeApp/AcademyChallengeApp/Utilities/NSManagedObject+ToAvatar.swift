@@ -9,10 +9,14 @@ import Foundation
 import CoreData
 
 extension NSManagedObject {
-    func ToAvatar() -> Avatar{
+    func toAvatar() -> Avatar? {
+        guard let name = self.value(forKey: "name") as? String else { return nil }
+        guard let id = self.value(forKey: "id") as? Int else { return nil }
+        guard let url = self.value(forKey: "avatarUrl") as? String else { return nil }
+        guard let avatarUrl = URL(string: url) else { return nil }
         return Avatar(
-            name: self.value(forKey: "name") as! String,
-            id: self.value(forKey: "id") as! Int,
-            avatarUrl: URL(string: self.value(forKey: "avatarUrl") as! String)!)
+            name: name,
+            id: id,
+            avatarUrl: avatarUrl)
     }
 }

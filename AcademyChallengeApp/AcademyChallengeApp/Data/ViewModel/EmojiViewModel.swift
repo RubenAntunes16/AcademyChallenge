@@ -8,22 +8,21 @@
 import Foundation
 
 class EmojiViewModel {
-    
+
     var emojiService: EmojiService?
-    
+
     var emojisList: Wrapper<[Emoji]?> = Wrapper([])
-    
+
     func getEmojisList() {
-        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji],Error>) in
-            switch result{
+        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
+            switch result {
             case .success(var success):
                 success.sort()
                 self?.emojisList.value = success
-                
+
             case .failure(let failure):
                 print("Failure: \(failure)")
             }
-            
 
         })
     }

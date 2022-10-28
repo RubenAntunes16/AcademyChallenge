@@ -8,6 +8,6 @@
 import Foundation
 
 protocol AppleReposService {
-    
-    func getAppleRepos(page: Int, size: Int,_ resultHandler: @escaping (Result<[AppleRepos],Error>) -> Void)
+
+    func getAppleRepos(page: Int, size: Int, _ resultHandler: @escaping (Result<[AppleRepos], Error>) -> Void)
 }

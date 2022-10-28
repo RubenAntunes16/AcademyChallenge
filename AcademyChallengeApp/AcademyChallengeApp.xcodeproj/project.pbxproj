@@ -29,11 +29,11 @@
 		32823CA628E6F42B00596B98 /* EmojiMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32823CA528E6F42B00596B98 /* EmojiMock.swift */; };
 		32B516E728F4164C00043127 /* ColorSet.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32B516E628F4164C00043127 /* ColorSet.xcassets */; };
 		32B516EA28F4721800043127 /* Database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32B516E828F4721800043127 /* Database.xcdatamodeld */; };
-		32B516EE28F4802B00043127 /* EmojiEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B516ED28F4802B00043127 /* EmojiEntity.swift */; };
+		32B516EE28F4802B00043127 /* EmojiPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B516ED28F4802B00043127 /* EmojiPersistence.swift */; };
 		32B516F028F5B38000043127 /* NSManagedObject+ToEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B516EF28F5B38000043127 /* NSManagedObject+ToEmoji.swift */; };
 		32B563FA28F71B060088D24C /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563F928F71B060088D24C /* Avatar.swift */; };
 		32B563FC28F721E50088D24C /* LiveAvatarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FB28F721E50088D24C /* LiveAvatarService.swift */; };
-		32B563FE28F7268C0088D24C /* AvatarEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FD28F7268C0088D24C /* AvatarEntity.swift */; };
+		32B563FE28F7268C0088D24C /* AvatarPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FD28F7268C0088D24C /* AvatarPersistence.swift */; };
 		32B5640028F808DF0088D24C /* EntityToPersist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FF28F808DF0088D24C /* EntityToPersist.swift */; };
 		32B5640228F846190088D24C /* AvatarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640128F846190088D24C /* AvatarAPI.swift */; };
 		32B5640428F84B200088D24C /* AvatarMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640328F84B200088D24C /* AvatarMock.swift */; };
@@ -89,11 +89,11 @@
 		32823CA528E6F42B00596B98 /* EmojiMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMock.swift; sourceTree = "<group>"; };
 		32B516E628F4164C00043127 /* ColorSet.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ColorSet.xcassets; sourceTree = "<group>"; };
 		32B516E928F4721800043127 /* Database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database.xcdatamodel; sourceTree = "<group>"; };
-		32B516ED28F4802B00043127 /* EmojiEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiEntity.swift; sourceTree = "<group>"; };
+		32B516ED28F4802B00043127 /* EmojiPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPersistence.swift; sourceTree = "<group>"; };
 		32B516EF28F5B38000043127 /* NSManagedObject+ToEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+ToEmoji.swift"; sourceTree = "<group>"; };
 		32B563F928F71B060088D24C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		32B563FB28F721E50088D24C /* LiveAvatarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAvatarService.swift; sourceTree = "<group>"; };
-		32B563FD28F7268C0088D24C /* AvatarEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarEntity.swift; sourceTree = "<group>"; };
+		32B563FD28F7268C0088D24C /* AvatarPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPersistence.swift; sourceTree = "<group>"; };
 		32B563FF28F808DF0088D24C /* EntityToPersist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityToPersist.swift; sourceTree = "<group>"; };
 		32B5640128F846190088D24C /* AvatarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarAPI.swift; sourceTree = "<group>"; };
 		32B5640328F84B200088D24C /* AvatarMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarMock.swift; sourceTree = "<group>"; };
@@ -228,8 +228,8 @@
 		32B516EC28F4800900043127 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				32B516ED28F4802B00043127 /* EmojiEntity.swift */,
-				32B563FD28F7268C0088D24C /* AvatarEntity.swift */,
+				32B516ED28F4802B00043127 /* EmojiPersistence.swift */,
+				32B563FD28F7268C0088D24C /* AvatarPersistence.swift */,
 				32B563FF28F808DF0088D24C /* EntityToPersist.swift */,
 			);
 			path = Persistence;
@@ -420,7 +420,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32BDD94428F08AFB009A644F /* ColorProvider.swift in Sources */,
-				32B516EE28F4802B00043127 /* EmojiEntity.swift in Sources */,
+				32B516EE28F4802B00043127 /* EmojiPersistence.swift in Sources */,
 				32823CA028E5DB7300596B98 /* Application.swift in Sources */,
 				32B6D4CA290AD1A800319867 /* AppleReposViewModel.swift in Sources */,
 				32B5640228F846190088D24C /* AvatarAPI.swift in Sources */,
@@ -448,7 +448,7 @@
 				32B516F028F5B38000043127 /* NSManagedObject+ToEmoji.swift in Sources */,
 				32B6D4BF29083EBB00319867 /* FooterLoadingAppleRepos.swift in Sources */,
 				32B5640028F808DF0088D24C /* EntityToPersist.swift in Sources */,
-				32B563FE28F7268C0088D24C /* AvatarEntity.swift in Sources */,
+				32B563FE28F7268C0088D24C /* AvatarPersistence.swift in Sources */,
 				32B5640E28FDAB8F0088D24C /* LiveAppleReposService.swift in Sources */,
 				3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */,
 				32C5E73428EC787200C5FD93 /* LiveEmojiService.swift in Sources */,

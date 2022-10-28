@@ -8,34 +8,36 @@
 import UIKit
 
 class MainViewCoordinator: Coordinator {
-    
+
 //    var emojisStorage: EmojiStorage?
-    
+
     private let presenter: UINavigationController
     private var mainViewController: MainViewController?
     private var emojis: [Emoji]?
-    
-    init(presenter: UINavigationController){
+    private let applicationStarter: Application
+
+    init(presenter: UINavigationController, application: Application) {
         self.presenter = presenter
+        self.applicationStarter = application
     }
-    
+
     // THIS THE ABSTRACT FUNCTION FROM COORDINATOR INTERFACE
     func start() {
-        
+
         // CREATE THE VIEW CONTROLLER TO PRESENT
         let mainViewController = MainViewController()
         mainViewController.title = "Main Page"
-        
-        let viewModel = MainViewModel()
-        
-        viewModel.emojiService = emojiSource
-        
-        viewModel.avatarService = avatarService
-        
+
+        let viewModel = MainViewModel(application: applicationStarter)
+
+        viewModel.application.emojiSource = applicationStarter.emojiSource
+
+        viewModel.application.avatarService = applicationStarter.avatarService
+
         mainViewController.viewModel = viewModel
-        
+
         presenter.pushViewController(mainViewController, animated: true)
-        
+
         self.mainViewController = mainViewController
     }
 }

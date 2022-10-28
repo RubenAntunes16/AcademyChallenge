@@ -8,20 +8,20 @@
 import Foundation
 
 class AvatarViewModel {
-    
+
     var avatarService: LiveAvatarService?
-    
-    var avatarList : Wrapper<[Avatar]?> = Wrapper([])
-    
+
+    var avatarList: Wrapper<[Avatar]?> = Wrapper([])
+
     func getAvatars() {
         avatarService?.fetchAvatarList({ (result: [Avatar]) in
             self.avatarList.value = result
         })
     }
-    
+
     func deleteAvatar(avatar: Avatar, at index: Int) {
         self.avatarService?.deleteAvatar(avatarToDelete: avatar)
-        
+
         self.avatarList.value?.remove(at: index)
     }
 }

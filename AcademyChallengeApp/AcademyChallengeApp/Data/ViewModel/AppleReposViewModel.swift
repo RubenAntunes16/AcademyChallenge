@@ -8,7 +8,7 @@
 import Foundation
 
 class AppleReposViewModel {
-    
+
     var appleReposService: AppleReposService?
     var appleReposList: Wrapper<[AppleRepos]?> = Wrapper([])
     var isEnd = Wrapper(false)

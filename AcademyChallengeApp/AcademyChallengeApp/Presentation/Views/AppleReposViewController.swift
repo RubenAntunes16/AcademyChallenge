@@ -8,35 +8,35 @@
 import UIKit
 
 class AppleReposViewController: UIViewController {
-    
+
     let tableView: UITableView
 
     let loadingSpinner: UIActivityIndicatorView
 //
 //    let loadingFooterText: UILabel
-    
+
     let footerView = FooterLoadingAppleRepos(frame: .zero)
-    
+
     var appleReposList: [AppleRepos] = []
 
     var page: Int = 0
-    
+
     var finishedFetchData: Bool = true
-    
+
     var isEnd: Bool = false
-    
+
     var viewModel: AppleReposViewModel?
-    
+
     init() {
         tableView = .init(frame: .zero)
         loadingSpinner = .init(style: .large)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented.")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -44,13 +44,13 @@ class AppleReposViewController: UIViewController {
         addToSuperView()
         setupConstraints()
         view.backgroundColor = .appColor(name: .surface)
-        
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        
+
         viewModel?.appleReposList.bind(listener: { [weak self] reposList in
             guard
                 let self = self,
@@ -142,16 +142,17 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
 
 // ------- PREFETCHING FUNCTIONS TO SCROLL AND FETCH DATA IN TABLE VIEW ------
 
-//extension AppleReposViewController: UITableViewDataSourcePrefetching {
+// extension AppleReposViewController: UITableViewDataSourcePrefetching {
 //    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
 //        let newCells = indexPaths.filter({ $0.row >= appleReposList.count - 1})
 //
 //        if newCells.count > 0 {
 //            self.page += 1
-//            self.appleReposService?.getAppleRepos(page: self.page, size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
+//            self.appleReposService?.getAppleRepos(page: self.page,
+//size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
 //                switch result {
 //                case .success(let success):
-////                    self.isReadyToShow = true
+//                    self.isReadyToShow = true
 //                    self.reposAux.append(contentsOf: success)
 //
 //                    newCells.forEach({ indexPath in
@@ -181,8 +182,8 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
 //            print("Indice da cell: \(indexPath.row)")
 //            print("Indice da cell - auxIndex: \(indexPath.row - auxIndex)")
 //            print("appleReposList count: \(self.appleReposList.count)")
-////            self.appleReposList.remove(at: indexPath.row - auxIndex)
+//            self.appleReposList.remove(at: indexPath.row - auxIndex)
 //            auxIndex += 1
 //        }
 //    }
-//}
+// }

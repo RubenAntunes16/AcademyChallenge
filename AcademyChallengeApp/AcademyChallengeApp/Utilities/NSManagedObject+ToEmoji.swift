@@ -9,9 +9,10 @@ import Foundation
 import CoreData
 
 extension NSManagedObject {
-    func ToEmoji() -> Emoji{
-        print("NAME: \(self.value(forKey: "name"))  !!  URL IMAGE: \(self.value(forKey: "imageUrl"))")
-        return Emoji(name: self.value(forKey: "name") as! String,
-                     urlImage: URL(string: self.value(forKey: "imageUrl") as! String)!)
+    func toEmoji() -> Emoji? {
+        guard let name = self.value(forKey: "name") as? String else { return nil }
+        guard let url = self.value(forKey: "imageUrl") as? String else { return nil }
+        guard let urlImage = URL(string: url) else { return nil }
+        return Emoji(name: name, urlImage: urlImage)
     }
 }

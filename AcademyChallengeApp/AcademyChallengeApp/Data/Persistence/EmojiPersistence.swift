@@ -91,8 +91,9 @@ class EmojiPersistence {
 //
 //    }
 
-    func fetch(_ resulthandler: @escaping ([NSManagedObject]) -> Void) {
-        var array: [NSManagedObject] = []
+    func fetch(_ resulthandler: @escaping ([Emoji]) -> Void) {
+        var resultFetch: [NSManagedObject] = []
+        var result: [Emoji] = []
 
         let managedContext = persistentContainer.viewContext
 
@@ -102,8 +103,13 @@ class EmojiPersistence {
         // WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
         // SEND ALL THE DATA FROM THE PERSON ENTITY
         do {
-            array = try managedContext.fetch(fetchRequest)
-            resulthandler(array)
+            resultFetch = try managedContext.fetch(fetchRequest)
+
+            result = resultFetch.compactMap({ item -> Emoji? in
+                item.toEmoji()
+            })
+
+            resulthandler(result)
         } catch let error as NSError {
           print("Could not fetch. \(error), \(error.userInfo)")
         }

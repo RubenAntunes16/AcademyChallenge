@@ -19,18 +19,10 @@ class LiveAvatarService {
 
     func fetchAvatarList(_ resultHandler: @escaping ([Avatar]) -> Void) {
 
-        persistence.fetch { (result: Result<[NSManagedObject], Error>) in
+        persistence.fetch { (result: Result<[Avatar], Error>) in
             switch result {
             case .success(let success):
-                var avatars: [Avatar] = []
-                if success.count != 0 {
-                    // TRANSFORM NSMANAGEDOBJECT ARRAY TO AVATAR ARRAY
-                    avatars = success.compactMap({ item in
-                        return item.toAvatar()
-                    })
-                }
-
-                resultHandler(avatars)
+                resultHandler(success)
             case .failure(let failure):
                 print("[FETCH AVATAR LIST] Error to get avatars from memory: \(failure)")
             }

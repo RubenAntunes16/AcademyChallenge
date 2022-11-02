@@ -27,20 +27,15 @@ class LiveEmojiService: EmojiService {
     }
 
     func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void) {
-        var fetchedEmojis: [NSManagedObject] = []
+        var fetchedEmojis: [Emoji] = []
 
-        persistence.fetch { (result: [NSManagedObject]) in
+        persistence.fetch { (result: [Emoji]) in
             fetchedEmojis = result
         }
 
         if !fetchedEmojis.isEmpty {
 
-            // IGNORE NIL CASES
-            let emojis = fetchedEmojis.compactMap({ item in
-                item.toEmoji()
-            })
-
-            resultHandler(.success(emojis))
+            resultHandler(.success(fetchedEmojis))
 
         } else {
             // METHOD IN EMOJI API

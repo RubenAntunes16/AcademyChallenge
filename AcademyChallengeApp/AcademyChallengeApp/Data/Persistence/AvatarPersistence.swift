@@ -123,8 +123,9 @@ class AvatarPersistence {
 //
 //    }
 
-    func fetch(_ resulthandler: @escaping (Result<[NSManagedObject], Error>) -> Void) {
-        var array: [NSManagedObject]
+    func fetch(_ resulthandler: @escaping (Result<[Avatar], Error>) -> Void) {
+        var resultFetch: [NSManagedObject]
+        var result: [Avatar] = []
 //        guard let appDelegate =
 //          UIApplication.shared.delegate as? AppDelegate else {
 //            return
@@ -139,8 +140,13 @@ class AvatarPersistence {
         /* WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
          SEND ALL THE DATA FROM THE PERSON ENTITY */
         do {
-            array = try managedContext.fetch(fetchRequest)
-            resulthandler(.success(array))
+            resultFetch = try managedContext.fetch(fetchRequest)
+
+            result = resultFetch.compactMap({ item -> Avatar? in
+                item.toAvatar()
+            })
+
+            resulthandler(.success(result))
         } catch let error as NSError {
           print("Could not fetch. \(error), \(error.userInfo)")
             resulthandler(.failure(error))

@@ -5,7 +5,6 @@
 //  Created by Rúben Antunes on 11/10/2022.
 //
 
-import Foundation
 import CoreData
 
 extension NSManagedObject {

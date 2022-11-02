@@ -202,7 +202,7 @@ class MainViewController: UIViewController {
 
     @objc func buttonEmojisListTap(_ sender: UIButton) {
 
-        guard let emojiService = viewModel?.application.emojiSource else { return }
+        guard let emojiService = viewModel?.application.emojiService else { return }
         let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!, emojiService: emojiService)
 
         emojiListCoordinator.start()

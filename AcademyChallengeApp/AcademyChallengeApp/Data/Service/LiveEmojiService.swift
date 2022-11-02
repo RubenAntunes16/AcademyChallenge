@@ -22,15 +22,21 @@ class LiveEmojiService: EmojiService {
 
     private func persistEmojis(emojis: [Emoji]) {
         emojis.forEach { emoji in
-            persistence.persist(name: emoji.name, urlImage: emoji.urlImage.absoluteString)
+            persistence.persist(object: emoji)
         }
     }
 
     func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void) {
         var fetchedEmojis: [Emoji] = []
 
-        persistence.fetch { (result: [Emoji]) in
-            fetchedEmojis = result
+        persistence.fetch { (result: Result<[Emoji], Error>) in
+            switch result {
+            case .success(let success):
+                fetchedEmojis = success
+            case .failure(let failure):
+                resultHandler(.failure(failure))
+            }
+
         }
 
         if !fetchedEmojis.isEmpty {

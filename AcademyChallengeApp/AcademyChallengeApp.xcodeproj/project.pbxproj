@@ -34,7 +34,7 @@
 		32B563FA28F71B060088D24C /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563F928F71B060088D24C /* Avatar.swift */; };
 		32B563FC28F721E50088D24C /* LiveAvatarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FB28F721E50088D24C /* LiveAvatarService.swift */; };
 		32B563FE28F7268C0088D24C /* AvatarPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FD28F7268C0088D24C /* AvatarPersistence.swift */; };
-		32B5640028F808DF0088D24C /* EntityToPersist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FF28F808DF0088D24C /* EntityToPersist.swift */; };
+		32B5640028F808DF0088D24C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B563FF28F808DF0088D24C /* Persistence.swift */; };
 		32B5640228F846190088D24C /* AvatarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640128F846190088D24C /* AvatarAPI.swift */; };
 		32B5640428F84B200088D24C /* AvatarMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640328F84B200088D24C /* AvatarMock.swift */; };
 		32B5640628F874310088D24C /* NSManagedObject+ToAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5640528F874310088D24C /* NSManagedObject+ToAvatar.swift */; };
@@ -94,7 +94,7 @@
 		32B563F928F71B060088D24C /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		32B563FB28F721E50088D24C /* LiveAvatarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAvatarService.swift; sourceTree = "<group>"; };
 		32B563FD28F7268C0088D24C /* AvatarPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPersistence.swift; sourceTree = "<group>"; };
-		32B563FF28F808DF0088D24C /* EntityToPersist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityToPersist.swift; sourceTree = "<group>"; };
+		32B563FF28F808DF0088D24C /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		32B5640128F846190088D24C /* AvatarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarAPI.swift; sourceTree = "<group>"; };
 		32B5640328F84B200088D24C /* AvatarMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarMock.swift; sourceTree = "<group>"; };
 		32B5640528F874310088D24C /* NSManagedObject+ToAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+ToAvatar.swift"; sourceTree = "<group>"; };
@@ -230,7 +230,7 @@
 			children = (
 				32B516ED28F4802B00043127 /* EmojiPersistence.swift */,
 				32B563FD28F7268C0088D24C /* AvatarPersistence.swift */,
-				32B563FF28F808DF0088D24C /* EntityToPersist.swift */,
+				32B563FF28F808DF0088D24C /* Persistence.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -447,7 +447,7 @@
 				324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */,
 				32B516F028F5B38000043127 /* NSManagedObject+ToEmoji.swift in Sources */,
 				32B6D4BF29083EBB00319867 /* FooterLoadingAppleRepos.swift in Sources */,
-				32B5640028F808DF0088D24C /* EntityToPersist.swift in Sources */,
+				32B5640028F808DF0088D24C /* Persistence.swift in Sources */,
 				32B563FE28F7268C0088D24C /* AvatarPersistence.swift in Sources */,
 				32B5640E28FDAB8F0088D24C /* LiveAppleReposService.swift in Sources */,
 				3253622928E1C8320073C59F /* AppleReposViewController.swift in Sources */,

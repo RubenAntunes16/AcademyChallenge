@@ -15,7 +15,7 @@ class AppleReposViewModel {
 
     var page: Int = 0
 
-    let size = Constants.AppleRepos.AppleReposPagination.perPage
+    let size = Constants.AppleRepos.perPage
 
     func getAppleRepos() {
         self.page += 1
@@ -26,7 +26,7 @@ class AppleReposViewModel {
             case .success(let success):
                 self.appleReposList.value?.append(contentsOf: success)
 
-                if success.count < Constants.AppleRepos.AppleReposPagination.perPage {
+                if success.count < Constants.AppleRepos.perPage {
                     self.isEnd.value = true
                 }
 

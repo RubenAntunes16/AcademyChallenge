@@ -46,7 +46,7 @@ class LiveAvatarService {
                         AvatarAPI.getAvatars(searchText)) { (result: Result<Avatar, Error>) in
                         switch result {
                         case .success(let success):
-                            self.persistence.persist(currentAvatar: success)
+                            self.persistence.persist(object: success)
                             resultHandler(.success(success))
                         case .failure(let failure):
                             print("Failure: \(failure)")

@@ -23,7 +23,7 @@ class MainViewModel {
     }
 
     func getRandomEmoji() {
-        application.emojiSource.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
+        application.emojiService.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
             switch result {
             case .success(let success):
 

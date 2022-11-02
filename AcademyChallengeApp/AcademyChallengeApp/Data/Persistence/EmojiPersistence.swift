@@ -9,17 +9,7 @@ import Foundation
 import UIKit
 import CoreData
 
-// struct EmojiPersist : EntityToPersist{
-//
-//    var attributes: [String : String]
-//
-//    var entityName: String {
-//        "EmojiEntity"
-//    }
-//
-// }
-
-class EmojiPersistence {
+class EmojiPersistence: Persistence {
 
     private let persistentContainer: NSPersistentContainer
 
@@ -27,71 +17,35 @@ class EmojiPersistence {
         self.persistentContainer = persistentContainer
     }
 
-    func persist(name: String, urlImage: String) {
+    func persist(object: Emoji) {
 
-        // IT'S NECESSARY TO GET DELEGATE SO WE CAN GET ACCESS TO THE MANAGED CONTEXT
-        // WE NEED TO GET THE APPLICATION DELEGATE SO WE CAN GET A REFERENCE TO THE MANAGED CONTEXT
-       DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async { [weak self] in
 
-           guard let self = self else { return }
+            guard let self = self else { return }
 
-           // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
-           let managedContext = self.persistentContainer.viewContext
+            // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
+            let managedContext = self.persistentContainer.viewContext
 
-           // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
-           let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity", in: managedContext)!
+            // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
+            let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity", in: managedContext)!
 
-           let emoji = NSManagedObject(entity: entity, insertInto: managedContext)
+            let emoji = NSManagedObject(entity: entity, insertInto: managedContext)
 
-           // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
-           emoji.setValue(name, forKeyPath: "name")
-           emoji.setValue(urlImage, forKeyPath: "imageUrl")
+            // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
+            emoji.setValue(object.name, forKeyPath: "name")
+            emoji.setValue(object.urlImage.absoluteString, forKeyPath: "imageUrl")
 
-           // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
-           // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
-           do {
-               try managedContext.save()
-           } catch let error as NSError {
-               print("Could not save. \(error), \(error.userInfo)")
-           }
-        }
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-
+            // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
+            // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
+            do {
+                try managedContext.save()
+            } catch let error as NSError {
+                print("Could not save. \(error), \(error.userInfo)")
+            }
+         }
     }
 
-//    func persist(name: String, urlImage: String) {
-//
-//        // IT'S NECESSARY TO GET DELEGATE SO WE CAN GET ACCESS TO THE MANAGED CONTEXT
-//        // WE NEED TO GET THE APPLICATION DELEGATE SO WE CAN GET A REFERENCE TO THE MANAGED CONTEXT
-//       DispatchQueue.main.async { [weak self] in
-//           guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//           // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
-//           let managedContext = appDelegate.persistentContainer.viewContext
-//
-//           // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
-//           let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity",in: managedContext)!
-//
-//           let emoji = NSManagedObject(entity: entity,insertInto: managedContext)
-//
-//           // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
-//           emoji.setValue(name, forKeyPath: "name")
-//           emoji.setValue(urlImage, forKeyPath: "imageUrl")
-//
-//           // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
-//           // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
-//           do {
-//               try managedContext.save()
-//               self?.emojisPersistence.append(emoji)
-//           } catch let error as NSError {
-//               print("Could not save. \(error), \(error.userInfo)")
-//           }
-//        }
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//
-//
-//    }
-
-    func fetch(_ resulthandler: @escaping ([Emoji]) -> Void) {
+    func fetch(_ resulthandler: @escaping (Result<[Emoji], Error>) -> Void) {
         var resultFetch: [NSManagedObject] = []
         var result: [Emoji] = []
 
@@ -109,9 +63,10 @@ class EmojiPersistence {
                 item.toEmoji()
             })
 
-            resulthandler(result)
+            resulthandler(.success(result))
         } catch let error as NSError {
           print("Could not fetch. \(error), \(error.userInfo)")
+            resulthandler(.failure(error))
         }
     }
 }

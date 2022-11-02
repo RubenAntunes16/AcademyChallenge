@@ -30,7 +30,7 @@ class MainViewCoordinator: Coordinator {
 
         let viewModel = MainViewModel(application: applicationStarter)
 
-        viewModel.application.emojiSource = applicationStarter.emojiSource
+        viewModel.application.emojiService = applicationStarter.emojiService
 
         viewModel.application.avatarService = applicationStarter.avatarService
 

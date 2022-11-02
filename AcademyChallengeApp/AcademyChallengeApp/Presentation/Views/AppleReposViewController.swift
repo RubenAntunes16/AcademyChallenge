@@ -149,7 +149,8 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
 //        if newCells.count > 0 {
 //            self.page += 1
 //            self.appleReposService?.getAppleRepos(page: self.page,
-//size: Constants.AppleReposPagination.perPage, { ( result: Result<[AppleRepos], Error>) in
+//                                                  size: Constants.AppleReposPagination.perPage,
+//                                                  { ( result: Result<[AppleRepos], Error>) in
 //                switch result {
 //                case .success(let success):
 //                    self.isReadyToShow = true

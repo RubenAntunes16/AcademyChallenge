@@ -99,6 +99,8 @@ class MainViewController: UIViewController {
             dataTask.resume()
             DispatchQueue.main.async {
                 self.removeSpinner()
+                self.buttonRandomEmojis.isEnabled = true
+                self.buttonEmojisList.isEnabled = true
             }
 
         })
@@ -140,9 +142,11 @@ class MainViewController: UIViewController {
 
         // --------- ADD TARGETS -----------
         buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap), for: .touchUpInside)
+        buttonRandomEmojis.isEnabled = false
 
         // TouchUpInside - é o gesto vulgar de carregar no botão
         buttonEmojisList.addTarget(self, action: #selector(buttonEmojisListTap(_:)), for: .touchUpInside)
+        buttonEmojisList.isEnabled = false
 
         buttonAvatarList.addTarget(self, action: #selector(buttonAvatarListTap(_:)), for: .touchUpInside)
 

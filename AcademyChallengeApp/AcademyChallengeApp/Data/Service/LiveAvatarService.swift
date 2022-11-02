@@ -49,7 +49,7 @@ class LiveAvatarService {
                             self.persistence.persist(object: success)
                             resultHandler(.success(success))
                         case .failure(let failure):
-                            print("Failure: \(failure)")
+                            print("[Avatar Live] Failure: \(failure)")
                             resultHandler(.failure(failure))
                         }
                     }

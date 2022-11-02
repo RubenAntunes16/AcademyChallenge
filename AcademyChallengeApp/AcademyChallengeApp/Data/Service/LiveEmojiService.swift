@@ -50,10 +50,14 @@ class LiveEmojiService: EmojiService {
                 guard let self = self else { return }
                 switch result {
                 case .success(let success):
-                    self.persistEmojis(emojis: success.emojis)
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+
+                        self.persistEmojis(emojis: success.emojis)
+                    }
                     resultHandler(.success(success.emojis))
                 case .failure(let failure):
-                    print("Failure: \(failure)")
+                    print("[Emoji Live] Failure: \(failure)")
                     resultHandler(.failure(failure))
                 }
             }

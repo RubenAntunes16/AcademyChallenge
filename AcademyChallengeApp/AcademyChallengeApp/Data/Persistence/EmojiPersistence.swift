@@ -19,30 +19,25 @@ class EmojiPersistence: Persistence {
 
     func persist(object: Emoji) {
 
-        DispatchQueue.main.async { [weak self] in
+        // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
+        let managedContext = self.persistentContainer.viewContext
 
-            guard let self = self else { return }
+        // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
+        let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity", in: managedContext)!
 
-            // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
-            let managedContext = self.persistentContainer.viewContext
+        let emoji = NSManagedObject(entity: entity, insertInto: managedContext)
 
-            // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
-            let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity", in: managedContext)!
+        // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
+        emoji.setValue(object.name, forKeyPath: "name")
+        emoji.setValue(object.urlImage.absoluteString, forKeyPath: "imageUrl")
 
-            let emoji = NSManagedObject(entity: entity, insertInto: managedContext)
-
-            // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
-            emoji.setValue(object.name, forKeyPath: "name")
-            emoji.setValue(object.urlImage.absoluteString, forKeyPath: "imageUrl")
-
-            // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
-            // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
-            do {
-                try managedContext.save()
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
-            }
-         }
+        // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
+        // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
     }
 
     func fetch(_ resulthandler: @escaping (Result<[Emoji], Error>) -> Void) {

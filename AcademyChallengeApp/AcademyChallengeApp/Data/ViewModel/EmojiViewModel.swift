@@ -21,7 +21,7 @@ class EmojiViewModel {
                 self?.emojisList.value = success
 
             case .failure(let failure):
-                print("Failure: \(failure)")
+                print("[Emoji View Model] Failure: \(failure)")
             }
 
         })

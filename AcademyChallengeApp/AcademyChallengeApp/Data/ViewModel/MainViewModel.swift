@@ -17,8 +17,10 @@ class MainViewModel {
 
     init(application: Application) {
         self.application = application
-        searchText.bind { [weak self] _ in
-            self?.getAvatar()
+        searchText.bind { [weak self] text in
+            if !text.isEmpty{
+                self?.getAvatar()
+            }
         }
     }
 

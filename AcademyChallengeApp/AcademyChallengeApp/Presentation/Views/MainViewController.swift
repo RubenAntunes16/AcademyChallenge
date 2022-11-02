@@ -89,19 +89,20 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel?.imageUrl.bind(listener: { url in
-            guard let url = url else {
+        viewModel?.imageUrl.bind(listener: { [weak self] url in
+            guard let url = url, let self = self else {
                 return
             }
-            // falta colocar quando não consegue fazer um download do emoji
+
             let dataTask = self.emojiImageView.createDownloadDataTask(from: url)
 
             dataTask.resume()
-            DispatchQueue.main.async {
-                self.removeSpinner()
-                self.buttonRandomEmojis.isEnabled = true
-                self.buttonEmojisList.isEnabled = true
-            }
+
+            self.removeSpinner()
+            self.buttonRandomEmojis.isEnabled = true
+            self.buttonEmojisList.isEnabled = true
+
+            // falta colocar quando não consegue fazer um download do emoji
 
         })
 

@@ -18,7 +18,7 @@ class MainViewModel {
     init(application: Application) {
         self.application = application
         searchText.bind { [weak self] text in
-            if !text.isEmpty{
+            if !text.isEmpty {
                 self?.getAvatar()
             }
         }
@@ -32,9 +32,9 @@ class MainViewModel {
                 guard
                     let self = self,
                     let randomUrl = success.randomElement()?.urlImage else { return }
-
-                self.imageUrl.value = randomUrl
-
+                DispatchQueue.main.async {
+                    self.imageUrl.value = randomUrl
+                }
             case .failure(let failure):
                 print("Failure: \(failure)")
                 //                 self?.emojiImageView.image = UIImage(named: "noEmoji")

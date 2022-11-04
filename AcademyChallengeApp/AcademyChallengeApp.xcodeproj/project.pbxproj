@@ -56,6 +56,8 @@
 		32B6D4C6290A920E00319867 /* EmojiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C5290A920E00319867 /* EmojiViewModel.swift */; };
 		32B6D4C8290ABEED00319867 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C7290ABEED00319867 /* AvatarViewModel.swift */; };
 		32B6D4CA290AD1A800319867 /* AppleReposViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C9290AD1A800319867 /* AppleReposViewModel.swift */; };
+		32B71D4029143597009FEFAE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 32B71D3F29143597009FEFAE /* RxCocoa */; };
+		32B71D4229143597009FEFAE /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32B71D4129143597009FEFAE /* RxSwift */; };
 		32B8285228EED86500EDFFF1 /* MockedEmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285128EED86500EDFFF1 /* MockedEmojiService.swift */; };
 		32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B8285328EED8FC00EDFFF1 /* EmojiService.swift */; };
 		32BDD93F28F061F2009A644F /* String+ToImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BDD93E28F061F2009A644F /* String+ToImage.swift */; };
@@ -130,6 +132,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B71D4229143597009FEFAE /* RxSwift in Frameworks */,
+				32B71D4029143597009FEFAE /* RxCocoa in Frameworks */,
 				3253623128E31B530073C59F /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,6 +343,8 @@
 			name = AcademyChallengeApp;
 			packageProductDependencies = (
 				3253623028E31B530073C59F /* Alamofire */,
+				32B71D3F29143597009FEFAE /* RxCocoa */,
+				32B71D4129143597009FEFAE /* RxSwift */,
 			);
 			productName = AcademyChallengeApp;
 			productReference = 324AE7D628DB5C8700B816A7 /* AcademyChallengeApp.app */;
@@ -370,6 +376,7 @@
 			mainGroup = 324AE7CD28DB5C8700B816A7;
 			packageReferences = (
 				3253622F28E31B530073C59F /* XCRemoteSwiftPackageReference "Alamofire" */,
+				32B71D3E29143597009FEFAE /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 324AE7D728DB5C8700B816A7 /* Products */;
 			projectDirPath = "";
@@ -686,6 +693,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		32B71D3E29143597009FEFAE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -693,6 +708,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3253622F28E31B530073C59F /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		32B71D3F29143597009FEFAE /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32B71D3E29143597009FEFAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		32B71D4129143597009FEFAE /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32B71D3E29143597009FEFAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 

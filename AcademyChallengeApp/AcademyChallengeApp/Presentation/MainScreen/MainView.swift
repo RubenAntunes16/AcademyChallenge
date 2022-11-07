@@ -55,15 +55,13 @@ class MainView: BaseGenericView {
         ])
 
         super.init(frame: frame)
-        
-        createView()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func createView() {
+    override func createViews() {
         setupViews()
         addViewsToSuperview()
         setupConstraints()

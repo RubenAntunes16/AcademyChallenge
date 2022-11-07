@@ -32,8 +32,6 @@ class MainViewController: BaseGenericViewController<MainView> {
     private var avatarListCoordinator: AvatarListCoordinator?
     private var appleReposCoordinator: AppleReposCoordinator?
 
-    var mainView = MainView()
-
     var viewModel: MainViewModel?
 
     // 1 - CREATE VIEWS
@@ -47,45 +45,41 @@ class MainViewController: BaseGenericViewController<MainView> {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
-        view = mainView
-
-        // --------- ADD TARGETS -----------
-        mainView.buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap), for: .touchUpInside)
-        mainView.buttonRandomEmojis.isEnabled = false
-
-        // TouchUpInside - é o gesto vulgar de carregar no botão
-        mainView.buttonEmojisList.addTarget(self, action: #selector(buttonEmojisListTap(_:)), for: .touchUpInside)
-        mainView.buttonEmojisList.isEnabled = false
-
-        mainView.buttonAvatarList.addTarget(self, action: #selector(buttonAvatarListTap(_:)), for: .touchUpInside)
-
-        mainView.buttonSearch.addTarget(self, action: #selector(buttonSearchTap), for: .touchUpInside)
-
-        mainView.buttonAppleRepos.addTarget(self, action: #selector(buttonAppleReposListTap), for: .touchUpInside)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // --------- ADD TARGETS -----------
+        genericView.buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap), for: .touchUpInside)
+        genericView.buttonRandomEmojis.isEnabled = false
+
+        // TouchUpInside - é o gesto vulgar de carregar no botão
+        genericView.buttonEmojisList.addTarget(self, action: #selector(buttonEmojisListTap(_:)), for: .touchUpInside)
+        genericView.buttonEmojisList.isEnabled = false
+
+        genericView.buttonAvatarList.addTarget(self, action: #selector(buttonAvatarListTap(_:)), for: .touchUpInside)
+
+        genericView.buttonSearch.addTarget(self, action: #selector(buttonSearchTap), for: .touchUpInside)
+
+        genericView.buttonAppleRepos.addTarget(self, action: #selector(buttonAppleReposListTap), for: .touchUpInside)
 
         viewModel?.imageUrl.bind(listener: { [weak self] url in
             guard let url = url, let self = self else {
                 return
             }
 
-            let dataTask = self.mainView.emojiImageView.createDownloadDataTask(from: url)
+            let dataTask = self.genericView.emojiImageView.createDownloadDataTask(from: url)
 
             dataTask.resume()
 
-            self.mainView.removeSpinner()
-            self.mainView.buttonRandomEmojis.isEnabled = true
-            self.mainView.buttonEmojisList.isEnabled = true
+            self.genericView.removeSpinner()
+            self.genericView.buttonRandomEmojis.isEnabled = true
+            self.genericView.buttonEmojisList.isEnabled = true
 
             // falta colocar quando não consegue fazer um download do emoji
 
         })
 
-        mainView.spinnerView.startAnimating()
+        genericView.spinnerView.startAnimating()
 
         buttonRandomEmojisTap()
     }
@@ -122,7 +116,7 @@ class MainViewController: BaseGenericViewController<MainView> {
     }
 
     @objc func buttonSearchTap() {
-        guard let searchBarText = mainView.searchBar.text else { return }
+        guard let searchBarText = genericView.searchBar.text else { return }
         viewModel?.searchText.value = searchBarText
     }
 

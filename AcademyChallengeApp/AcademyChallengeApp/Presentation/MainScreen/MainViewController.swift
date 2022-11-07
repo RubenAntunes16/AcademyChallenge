@@ -48,19 +48,6 @@ class MainViewController: BaseGenericViewController<MainView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // --------- ADD TARGETS -----------
-        genericView.buttonRandomEmojis.addTarget(self, action: #selector(buttonRandomEmojisTap), for: .touchUpInside)
-        genericView.buttonRandomEmojis.isEnabled = false
-
-        // TouchUpInside - é o gesto vulgar de carregar no botão
-        genericView.buttonEmojisList.addTarget(self, action: #selector(buttonEmojisListTap(_:)), for: .touchUpInside)
-        genericView.buttonEmojisList.isEnabled = false
-
-        genericView.buttonAvatarList.addTarget(self, action: #selector(buttonAvatarListTap(_:)), for: .touchUpInside)
-
-        genericView.buttonSearch.addTarget(self, action: #selector(buttonSearchTap), for: .touchUpInside)
-
-        genericView.buttonAppleRepos.addTarget(self, action: #selector(buttonAppleReposListTap), for: .touchUpInside)
 
         viewModel?.imageUrl.bind(listener: { [weak self] url in
             guard let url = url, let self = self else {
@@ -79,7 +66,38 @@ class MainViewController: BaseGenericViewController<MainView> {
 
         })
 
+        genericView.rxRandomEmojiTap
+            .subscribe(onNext: { [weak self] _ in
+                self?.buttonRandomEmojisTap()
+            })
+            .disposed(by: disposeBag)
+        genericView.rxEmojiListTap
+            .subscribe(onNext: { [weak self] _ in
+                self?.buttonEmojisListTap()
+            })
+        genericView.rxAvatarListTap
+            .subscribe(onNext: { [weak self] _ in
+                self?.buttonAvatarListTap()
+            })
+        genericView.rxAppleReposTap
+            .subscribe(onNext: { [weak self] _ in
+                self?.buttonAppleReposListTap()
+            })
+        genericView.rxSearchTap
+            .subscribe(onNext: { [weak self] _ in
+                self?.buttonSearchTap()
+            })
+
         genericView.spinnerView.startAnimating()
+
+        viewModel?.rxEmojiImage
+            .do(onNext: { [weak self] image in
+                self?.genericView.spinnerView.stopAnimating()
+                // Arranjar forma de mudar o state das views (com cases)
+                // self?.genericView
+            })
+                .subscribe(genericView.emojiImageView.rx.image)
+                .disposed(by: disposeBag)
 
         buttonRandomEmojisTap()
     }
@@ -90,7 +108,7 @@ class MainViewController: BaseGenericViewController<MainView> {
 
     }
 
-    @objc func buttonEmojisListTap(_ sender: UIButton) {
+    func buttonEmojisListTap() {
 
         guard let emojiService = viewModel?.application.emojiService else { return }
         let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!, emojiService: emojiService)
@@ -100,7 +118,7 @@ class MainViewController: BaseGenericViewController<MainView> {
         self.emojisListCoordinator = emojiListCoordinator
     }
 
-    @objc func buttonAvatarListTap(_ sender: UIButton) {
+    func buttonAvatarListTap() {
 
         guard let avatarService = viewModel?.application.avatarService else { return }
         let avatarListCoordinator = AvatarListCoordinator(presenter: navigationController!,
@@ -111,16 +129,16 @@ class MainViewController: BaseGenericViewController<MainView> {
         self.avatarListCoordinator = avatarListCoordinator
     }
 
-    @objc func buttonRandomEmojisTap() {
+    func buttonRandomEmojisTap() {
         viewModel?.getRandomEmoji()
     }
 
-    @objc func buttonSearchTap() {
+    func buttonSearchTap() {
         guard let searchBarText = genericView.searchBar.text else { return }
         viewModel?.searchText.value = searchBarText
     }
 
-    @objc func buttonAppleReposListTap(_ sender: UIButton) {
+    func buttonAppleReposListTap() {
 
         guard let appleReposService = viewModel?.application.appleReposService else { return }
         let appleReposListCoordinator = AppleReposCoordinator(presenter: navigationController!,

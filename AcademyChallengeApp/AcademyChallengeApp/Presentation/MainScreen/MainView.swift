@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+//
+import RxCocoa
+import RxSwift
+
 class MainView: BaseGenericView {
 
     private var containerView: UIView
@@ -23,6 +27,14 @@ class MainView: BaseGenericView {
     var searchBar: UISearchBar
     var buttonAvatarList: UIButton
     var buttonAppleRepos: UIButton
+
+    //  Code for RxSwift
+    var rxRandomEmojiTap: Observable<Void> { buttonRandomEmojis.rx.tap.asObservable() }
+    var rxEmojiListTap: Observable<Void> { buttonEmojisList.rx.tap.asObservable() }
+    var rxAvatarListTap: Observable<Void> { buttonAvatarList.rx.tap.asObservable() }
+    var rxAppleReposTap: Observable<Void> { buttonAppleRepos.rx.tap.asObservable() }
+    var rxSearchTap: Observable<Void> { buttonSearch.rx.tap.asObservable() }
+    var rxSearchQuery: Observable<String?> { searchBar.rx.text.asObservable() }
 
     // --------- HOW TO START ---------
     // 1 - CREATE THE VIEWS

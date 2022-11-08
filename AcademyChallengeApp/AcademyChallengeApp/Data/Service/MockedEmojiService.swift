@@ -7,11 +7,11 @@
 
 import Foundation
 
-class MockedEmojiService : EmojiService{
-    
+class MockedEmojiService: EmojiService {
+
     private var emojiMocked: EmojiMocked = .init()
-    
-    func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void){
+
+    func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void) {
         // METHOD IN EMOJI API
         resultHandler(.success(emojiMocked.mockedEmojis))
 //        resultHandler(.failure())

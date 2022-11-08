@@ -8,7 +8,7 @@
 import Foundation
 
 enum AppleReposAPI {
-    case getAppleRepos(perPage: Int,page: Int)
+    case getAppleRepos(perPage: Int, page: Int)
 }
 
 extension AppleReposAPI: APIProtocol {
@@ -21,21 +21,21 @@ extension AppleReposAPI: APIProtocol {
                 URLQueryItem(name: "per_page", value: String(perPage)),
                 URLQueryItem(name: "page", value: String(page))
             ]
-            
+
             guard let url = urlComponents?.url else { fatalError("[URLComponents] Cannot Convert to URL")}
-            
+
             return url
         }
     }
-    
-    var method: Method{
-        switch self{
+
+    var method: Method {
+        switch self {
         case .getAppleRepos:
             return .get
         }
     }
-    
-    var headers: [String: String]{
-        ["Content-Type":"application/json"]
+
+    var headers: [String: String] {
+        ["Content-Type": "application/json"]
     }
 }

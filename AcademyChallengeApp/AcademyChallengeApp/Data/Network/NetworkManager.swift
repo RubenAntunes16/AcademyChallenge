@@ -13,10 +13,11 @@ class NetworkManager {
 //        sessionConfiguration.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         URLSession.shared.configuration.urlCache?.diskCapacity = 100 * 1024 * 1024
 //        urlSession = URLSession(configuration: sessionConfiguration)
-        
+
     }
-    
-    func executeNetworkCall<ResultType: Decodable>(_ call: APIProtocol, _ resultHandler: @escaping (Result<ResultType, Error>) -> Void) {
+
+    func executeNetworkCall<ResultType: Decodable>(_ call: APIProtocol,
+                                                   _ resultHandler: @escaping (Result<ResultType, Error>) -> Void) {
         let decoder = JSONDecoder()
         var request = URLRequest(url: call.url)
         request.httpMethod = call.method.rawValue
@@ -24,7 +25,7 @@ class NetworkManager {
             request.setValue(value, forHTTPHeaderField: key)
         }
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
                 if let result = try? decoder.decode(ResultType.self, from: data) {
                     resultHandler(.success(result))

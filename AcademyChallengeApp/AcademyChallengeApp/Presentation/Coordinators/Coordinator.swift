@@ -10,7 +10,3 @@ import Foundation
 protocol Coordinator {
     func start()
 }
-
-let emojiSource = LiveEmojiService()
-let avatarService = LiveAvatarService()
-let appleReposService = LiveAppleReposService()

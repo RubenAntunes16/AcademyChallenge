@@ -8,44 +8,59 @@
 import Foundation
 import CoreData
 
-class LiveEmojiService : EmojiService{
-    
-    private var networkManager: NetworkManager = .init()
-    private let persistence: EmojiPersistence = .init()
-//    private let decoder: EmojiPersistenceDecode = EmojiPersistenceDecode()
-    
-//    typealias T = EmojiAPICallResult
-    
-    func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void){
-        var fetchedEmojis : [NSManagedObject] = []
+class LiveEmojiService: EmojiService {
 
-        persistence.fetch() { (result: [NSManagedObject]) in
-            fetchedEmojis = result
+    private var networkManager: NetworkManager = .init()
+    private let persistentContainer: NSPersistentContainer
+    private var persistence: EmojiPersistence {
+        return .init(persistentContainer: persistentContainer)
+    }
+
+    init(persistentContainer: NSPersistentContainer) {
+        self.persistentContainer = persistentContainer
+    }
+
+    private func persistEmojis(emojis: [Emoji]) {
+        emojis.forEach { emoji in
+            persistence.persist(object: emoji)
         }
-        
-        
+    }
+
+    func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void) {
+        var fetchedEmojis: [Emoji] = []
+
+        persistence.fetch { (result: Result<[Emoji], Error>) in
+            switch result {
+            case .success(let success):
+                fetchedEmojis = success
+            case .failure(let failure):
+                resultHandler(.failure(failure))
+            }
+
+        }
+
         if !fetchedEmojis.isEmpty {
-            let emojis = fetchedEmojis.map({ item in
-                return Emoji(name: item.value(forKey: "name") as! String, urlImage: URL(string: item.value(forKey: "imageUrl") as! String)!)
-            })
-            
-            resultHandler(.success(emojis))
-            
-        }else {
+
+            resultHandler(.success(fetchedEmojis))
+
+        } else {
             // METHOD IN EMOJI API
-                networkManager.executeNetworkCall(EmojiAPI.getEmojis) { (result: Result<EmojiAPICallResult, Error>) in
-                    switch result{
-                    case .success(let success):
-    //                    print("Success: \(success.emojis)")
-                        resultHandler(.success(success.emojis))
-                    case .failure(let failure):
-                        print("Failure: \(failure)")
-                        resultHandler(.failure(failure))
+            networkManager.executeNetworkCall(
+                EmojiAPI.getEmojis) { [weak self] (result: Result<EmojiAPICallResult, Error>) in
+                guard let self = self else { return }
+                switch result {
+                case .success(let success):
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+
+                        self.persistEmojis(emojis: success.emojis)
                     }
+                    resultHandler(.success(success.emojis))
+                case .failure(let failure):
+                    print("[Emoji Live] Failure: \(failure)")
+                    resultHandler(.failure(failure))
                 }
+            }
         }
-        
     }
 }
-
-

@@ -19,15 +19,15 @@ extension AvatarAPI: APIProtocol {
             return URL(string: "\(Constants.baseURL)/users/\(name)")!
         }
     }
-    
-    var method: Method{
-        switch self{
+
+    var method: Method {
+        switch self {
         case .getAvatars:
             return .get
         }
     }
-    
-    var headers: [String: String]{
-        ["Content-Type":"application/json"]
+
+    var headers: [String: String] {
+        ["Content-Type": "application/json"]
     }
 }

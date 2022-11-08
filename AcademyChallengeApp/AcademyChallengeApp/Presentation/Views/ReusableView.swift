@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ReusableView {
-    static var reuseCellIdentifier : String { get }
+    static var reuseCellIdentifier: String { get }
 }
 
 extension ReusableView {

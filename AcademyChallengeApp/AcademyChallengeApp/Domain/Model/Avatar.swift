@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Avatar : Decodable{
+struct Avatar: Decodable {
     let name: String
     let id: Int
     let avatarUrl: URL
-    
+
     enum CodingKeys: String, CodingKey {
         case name = "login"
         case id

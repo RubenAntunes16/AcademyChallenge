@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 enum ColorProvider: String {
     case primary
     case secondary
@@ -16,7 +15,7 @@ enum ColorProvider: String {
 }
 
 extension UIColor {
-    static func appColor(name: ColorProvider) -> UIColor?{
+    static func appColor(name: ColorProvider) -> UIColor? {
         return UIColor(named: name.rawValue)
     }
 }

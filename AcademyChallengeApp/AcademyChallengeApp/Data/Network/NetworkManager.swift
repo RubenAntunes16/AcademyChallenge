@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 class NetworkManager {
     static func initialize() {
@@ -38,6 +39,26 @@ class NetworkManager {
         }
 
         task.resume()
+    }
+
+    func rxExecuteNetworkCall(_ call: APIProtocol) -> Observable<Data?> {
+        
+        var request = URLRequest(url: call.url)
+        request.httpMethod = call.method.rawValue
+        call.headers.forEach { (key: String, value: String) in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+
+        return URLSession.shared.rx.response(request: request)
+            .map { (response: HTTPURLResponse, data: Data) -> Data? in
+                guard
+                    response.statusCode == 200
+                else {
+                    return Data()
+                    
+                }
+                return data
+            }
     }
 }
 

@@ -133,7 +133,7 @@ class MainViewController: BaseGenericViewController<MainView> {
     }
 
     func buttonRandomEmojisTap() {
-        viewModel?.getRandomEmoji()
+        viewModel?.rxGetRandomEmoji()
     }
 
     func buttonSearchTap() {

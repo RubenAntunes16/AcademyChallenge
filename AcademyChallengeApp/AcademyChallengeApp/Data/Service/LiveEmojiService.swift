@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import RxSwift
 
 class LiveEmojiService: EmojiService {
 
@@ -62,5 +63,19 @@ class LiveEmojiService: EmojiService {
                 }
             }
         }
+    }
+
+    func rxGetEmojisList() -> Observable<[Emoji]?> {
+        let decoder = JSONDecoder()
+
+        return networkManager.rxExecuteNetworkCall(EmojiAPI.getEmojis)
+            .asOptional()
+            .map({ data in
+                guard
+                    let data = data,
+                    let result = try? decoder.decode(EmojiAPICallResult.self, from: data ?? Data())
+                else { return [] }
+                return result.emojis
+            })
     }
 }

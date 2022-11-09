@@ -38,7 +38,9 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
 
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.genericView.collectionView.reloadData()
+                self.genericView.collectionView.performBatchUpdates {
+                    self.genericView.collectionView.reloadData()
+                }
             }
 
         })
@@ -67,7 +69,10 @@ extension EmojisListViewController: UICollectionViewDataSource {
 
         guard let url = emojisList?[indexPath.row].urlImage else { return UICollectionViewCell()}
 
-        cell.setupCell(url: url)
+        viewModel?.imageFromUrl(url: url)
+            .asOptional()
+            .subscribe(cell.emojiImageView.rx.image)
+            .disposed(by: cell.reusableDisposeBag)
 
         return cell
     }

@@ -49,22 +49,22 @@ class MainViewController: BaseGenericViewController<MainView> {
         super.viewDidLoad()
 
 
-        viewModel?.imageUrl.bind(listener: { [weak self] url in
-            guard let url = url, let self = self else {
-                return
-            }
-
-            let dataTask = self.genericView.emojiImageView.createDownloadDataTask(from: url)
-
-            dataTask.resume()
-
-            self.genericView.removeSpinner()
-            self.genericView.buttonRandomEmojis.isEnabled = true
-            self.genericView.buttonEmojisList.isEnabled = true
-
-            // falta colocar quando não consegue fazer um download do emoji
-
-        })
+//        viewModel?.imageUrl.bind(listener: { [weak self] url in
+//            guard let url = url, let self = self else {
+//                return
+//            }
+//
+//            let dataTask = self.genericView.emojiImageView.createDownloadDataTask(from: url)
+//
+//            dataTask.resume()
+//
+//            self.genericView.removeSpinner()
+//            self.genericView.buttonRandomEmojis.isEnabled = true
+//            self.genericView.buttonEmojisList.isEnabled = true
+//
+//            // falta colocar quando não consegue fazer um download do emoji
+//
+//        })
 
         genericView.rxRandomEmojiTap
             .subscribe(onNext: { [weak self] _ in
@@ -92,7 +92,10 @@ class MainViewController: BaseGenericViewController<MainView> {
 
         viewModel?.rxEmojiImage
             .do(onNext: { [weak self] image in
-                self?.genericView.spinnerView.stopAnimating()
+                if image != UIImage() && image != nil {
+                    self?.genericView.removeSpinner()
+
+                }
                 // Arranjar forma de mudar o state das views (com cases)
                 // self?.genericView
             })

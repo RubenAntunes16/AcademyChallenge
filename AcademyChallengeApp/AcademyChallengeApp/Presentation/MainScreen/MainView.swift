@@ -83,7 +83,7 @@ class MainView: BaseGenericView {
         // FAZER O SETUP DAS STACKVIEWS
 
 //        containerView.backgroundColor = .orange
-        // emojiImageView.image = UIImage(named: "emoji_Test")
+//         emojiImageView.image = UIImage(named: "noEmoji")
         // emojiImageView.contentMode = UIView.ContentMode.scaleToFill
 
         mainStackView.axis = .vertical

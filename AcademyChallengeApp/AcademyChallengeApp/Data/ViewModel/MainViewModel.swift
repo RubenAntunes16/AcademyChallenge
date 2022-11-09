@@ -18,8 +18,8 @@ class MainViewModel {
     var imageUrl: Wrapper<URL?> = Wrapper(nil)
     var searchText = Wrapper("")
 
-    // This will 
-    let backgroundScheduler = SerialDispatchQueueScheduler(internalSerialQueueName: "MainPageViewModel.backgroundScheduler")
+    // This will
+    let backgroundScheduler = SerialDispatchQueueScheduler(internalSerialQueueName: "MainViewModel.backgroundScheduler")
 
     private var rxEmojiImageUrl: BehaviorSubject<URL?> = BehaviorSubject(value: nil)
     private var _rxEmojiImage: BehaviorSubject<UIImage?> = BehaviorSubject(value: nil)
@@ -35,6 +35,41 @@ class MainViewModel {
                 self?.getAvatar()
             }
         }
+
+        rxEmojiImageUrl
+            .debug("rxEmojiImageUrl")
+            .flatMap({ [weak self] url -> Observable<UIImage?> in
+                guard let self = self else { return Observable.never() }
+                var observable = self.ongoingRequests[url?.absoluteString ?? ""]
+
+                if observable == nil {
+                    self.ongoingRequests[url?.absoluteString ?? ""] = self.dataOfUrl(url).share(replay: 1, scope: .forever)
+                }
+
+                guard let observable = self.ongoingRequests[url?.absoluteString ?? ""] else { return Observable.never() }
+
+                return observable
+            })
+            .debug("rxEmojiImage")
+            .subscribe(_rxEmojiImage)
+            .disposed(by: disposeBag)
+
+        print("end init")
+    }
+
+    func dataOfUrl(_ url: URL?) -> Observable<UIImage?> {
+        Observable<URL?>.never().startWith(url)
+            .observe(on: backgroundScheduler)
+            .flatMapLatest { url throws -> Observable<Data> in
+                guard let url = url else { return Observable.just(Data()) }
+                guard let data = try? Data(contentsOf: url) else { return Observable.just(Data()) }
+                return Observable.just(data)
+            }
+            .map {
+                UIImage(data: $0) ?? UIImage()
+            }
+            .observe(on: MainScheduler.instance)
+            .debug("dataOfUrl")
     }
 
     func getRandomEmoji() {
@@ -45,9 +80,10 @@ class MainViewModel {
                 guard
                     let self = self,
                     let randomUrl = success.randomElement()?.urlImage else { return }
-                DispatchQueue.main.async {
-                    self.imageUrl.value = randomUrl
-                }
+                self.rxEmojiImageUrl.onNext(randomUrl)
+//                DispatchQueue.main.async {
+//                    self.imageUrl.value = randomUrl
+//                }
             case .failure(let failure):
                 print("Failure: \(failure)")
                 //                 self?.emojiImageView.image = UIImage(named: "noEmoji")
@@ -64,7 +100,8 @@ class MainViewModel {
 
                 let avatarUrl = success.avatarUrl
 
-                self.imageUrl.value = avatarUrl
+//                self.imageUrl.value = avatarUrl
+                self.rxEmojiImageUrl.onNext(avatarUrl)
 
             case .failure(let failure):
                 print("Failure to Get Avatar: \(failure)")

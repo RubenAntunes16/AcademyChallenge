@@ -31,19 +31,9 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.emojisList.bind(listener: { [weak self] emojisList in
-            guard let self = self else { return }
-
-            self.emojisList = emojisList
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.genericView.collectionView.performBatchUpdates {
-                    self.genericView.collectionView.reloadData()
-                }
-            }
-
-        })
+        viewModel?.rxEmojiList
+            .subscribe(rx.emojisList)
+            .disposed(by: disposeBag)
 
         viewModel?.getEmojisList()
     }

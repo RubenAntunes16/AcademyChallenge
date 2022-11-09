@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import RxSwift
 import UIKit
+//
+import RxSwift
 
 class EmojiViewModel {
 
@@ -19,11 +20,23 @@ class EmojiViewModel {
 
     var ongoingRequests: [String: Observable<UIImage>] = [:]
 
+    private var _rxEmojiList: PublishSubject<[Emoji]?> = PublishSubject()
+    // WE USE VARIBLE OF TYPE OBSERVALBLE, ONLY TO ACCESS OUTSIDE
+    // WE CAN'T CALL onNext() FUNCTIONS
+    var rxEmojiList: Observable<[Emoji]?> { _rxEmojiList.asObservable() }
+
+    let disposeBag = DisposeBag()
+
+    init() {
+        _rxEmojiList
+            .disposed(by: disposeBag)
+    }
+
     func imageFromUrl(url: URL) -> Observable<UIImage> {
         Observable<UIImage>
             .deferred({ [weak self] in
                 guard let self = self else { return Observable.never() }
-                var observable = self.ongoingRequests[url.absoluteString]
+                let observable = self.ongoingRequests[url.absoluteString]
 
                 if observable == nil {
                     // shared removed because we only go get emoji once
@@ -54,8 +67,8 @@ class EmojiViewModel {
             switch result {
             case .success(var success):
                 success.sort()
-                self?.emojisList.value = success
-
+//                self?.emojisList.value = success
+                self?._rxEmojiList.onNext(success)
             case .failure(let failure):
                 print("[Emoji View Model] Failure: \(failure)")
             }

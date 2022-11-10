@@ -8,6 +8,7 @@
 import UIKit
 
 class ApplicationCoordinator: Coordinator {
+    var childCoordinators: [Coordinator] = []
 
     // SETUPS IT'S PRESENTATIONS IN THE APP'S WINDOW
     let window: UIWindow

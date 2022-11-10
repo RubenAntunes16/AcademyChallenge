@@ -53,6 +53,10 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
 
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        delegate?.back()
+    }
+
 }
 
 extension EmojisListViewController: UICollectionViewDataSource {

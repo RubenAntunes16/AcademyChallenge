@@ -43,6 +43,10 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
         })
         viewModel?.getAvatars()
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        delegate?.back()
+    }
 }
 
 extension AvatarListViewController: UICollectionViewDataSource, UICollectionViewDelegate {

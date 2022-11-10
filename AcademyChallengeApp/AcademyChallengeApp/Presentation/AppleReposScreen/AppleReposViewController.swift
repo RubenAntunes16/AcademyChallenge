@@ -55,6 +55,10 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
         })
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        delegate?.back()
+    }
+
     func fetchDataTableView() {
         genericView.loadingSpinner.startAnimating()
         viewModel?.getAppleRepos()

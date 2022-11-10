@@ -8,9 +8,12 @@
 import UIKit
 
 class AppleReposCoordinator: Coordinator {
+    var childCoordinators: [Coordinator] = []
+
     private let presenter: UINavigationController
     private var appleReposViewController: AppleReposViewController?
     private let appleReposService: AppleReposService
+    weak var delegate: BackMainDelegate?
 
     init(presenter: UINavigationController, appleReposService: AppleReposService) {
         self.presenter = presenter
@@ -32,4 +35,14 @@ class AppleReposCoordinator: Coordinator {
 
         self.appleReposViewController = appleReposViewController
     }
+}
+
+extension AppleReposCoordinator: BackMainDelegate {
+    func back() {
+        self.delegate?.back()
+    }
+}
+
+protocol AppleReposListCoordinatorDelegate {
+    func navigateToAppleRepos()
 }

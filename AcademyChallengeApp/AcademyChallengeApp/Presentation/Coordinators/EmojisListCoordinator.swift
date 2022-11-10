@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 class EmojisListCoordinator: Coordinator {
-
+    var childCoordinators: [Coordinator] = []
+    weak var delegate: BackMainDelegate?
     private let presenter: UINavigationController
     private var emojisListViewController: EmojisListViewController?
 
@@ -29,6 +30,8 @@ class EmojisListCoordinator: Coordinator {
 
         emojisListViewController.title = "Emojis List"
 
+        emojisListViewController.delegate = self
+
         let viewModel = EmojiViewModel()
 
         viewModel.emojiService = emojiService
@@ -38,5 +41,11 @@ class EmojisListCoordinator: Coordinator {
         presenter.pushViewController(emojisListViewController, animated: true)
 
         self.emojisListViewController = emojisListViewController
+    }
+}
+
+extension EmojisListCoordinator: BackMainDelegate {
+    func back() {
+        self.delegate?.back()
     }
 }

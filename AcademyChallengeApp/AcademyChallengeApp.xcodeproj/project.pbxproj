@@ -10,6 +10,7 @@
 		3206C80628DE062500397C95 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80528DE062500397C95 /* Coordinator.swift */; };
 		3206C80928DE067000397C95 /* EmojisListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80828DE067000397C95 /* EmojisListViewController.swift */; };
 		3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80A28DE08D400397C95 /* EmojisListCoordinator.swift */; };
+		320A3ED7291D174100108E24 /* PresentationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320A3ED6291D174100108E24 /* PresentationCoordinator.swift */; };
 		324AE7DA28DB5C8700B816A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7D928DB5C8700B816A7 /* AppDelegate.swift */; };
 		324AE7DC28DB5C8700B816A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7DB28DB5C8700B816A7 /* SceneDelegate.swift */; };
 		324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7DD28DB5C8700B816A7 /* MainViewController.swift */; };
@@ -50,7 +51,6 @@
 		32B6D4B42907F22E00319867 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4B32907F22E00319867 /* ReusableView.swift */; };
 		32B6D4B62907F3BB00319867 /* UICollectionViewCell+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4B52907F3BB00319867 /* UICollectionViewCell+ReusableView.swift */; };
 		32B6D4B82907F3CA00319867 /* UITableViewCell+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4B72907F3CA00319867 /* UITableViewCell+ReusableView.swift */; };
-		32B6D4BF29083EBB00319867 /* FooterLoadingAppleRepos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4BE29083EBB00319867 /* FooterLoadingAppleRepos.swift */; };
 		32B6D4C2290992FC00319867 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C1290992FC00319867 /* MainViewModel.swift */; };
 		32B6D4C42909944E00319867 /* Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C32909944E00319867 /* Wrapper.swift */; };
 		32B6D4C6290A920E00319867 /* EmojiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B6D4C5290A920E00319867 /* EmojiViewModel.swift */; };
@@ -78,6 +78,7 @@
 		3206C80528DE062500397C95 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		3206C80828DE067000397C95 /* EmojisListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisListViewController.swift; sourceTree = "<group>"; };
 		3206C80A28DE08D400397C95 /* EmojisListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisListCoordinator.swift; sourceTree = "<group>"; };
+		320A3ED6291D174100108E24 /* PresentationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationCoordinator.swift; sourceTree = "<group>"; };
 		324AE7D628DB5C8700B816A7 /* AcademyChallengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AcademyChallengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		324AE7D928DB5C8700B816A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		324AE7DB28DB5C8700B816A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,7 +120,6 @@
 		32B6D4B32907F22E00319867 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		32B6D4B52907F3BB00319867 /* UICollectionViewCell+ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+ReusableView.swift"; sourceTree = "<group>"; };
 		32B6D4B72907F3CA00319867 /* UITableViewCell+ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+ReusableView.swift"; sourceTree = "<group>"; };
-		32B6D4BE29083EBB00319867 /* FooterLoadingAppleRepos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterLoadingAppleRepos.swift; sourceTree = "<group>"; };
 		32B6D4C1290992FC00319867 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		32B6D4C32909944E00319867 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		32B6D4C5290A920E00319867 /* EmojiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiViewModel.swift; sourceTree = "<group>"; };
@@ -164,6 +164,7 @@
 				3253622228E1B8620073C59F /* MainViewCoordinator.swift */,
 				3253622428E1C7210073C59F /* AvatarListCoordinator.swift */,
 				3253622A28E1C8570073C59F /* AppleReposCoordinator.swift */,
+				320A3ED6291D174100108E24 /* PresentationCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -253,7 +254,6 @@
 				32B71D4C2915741B009FEFAE /* EmojiScreen */,
 				32B71D472915319C009FEFAE /* Base */,
 				32B71D4629153189009FEFAE /* MainScreen */,
-				32B71D432915200E009FEFAE /* Controllers */,
 				3206C80428DE061100397C95 /* Coordinators */,
 				3206C80728DE065600397C95 /* Views */,
 			);
@@ -288,14 +288,6 @@
 				32B6D4C9290AD1A800319867 /* AppleReposViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		32B71D432915200E009FEFAE /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				32B6D4BE29083EBB00319867 /* FooterLoadingAppleRepos.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		32B71D4629153189009FEFAE /* MainScreen */ = {
@@ -507,6 +499,7 @@
 				32B6D4C8290ABEED00319867 /* AvatarViewModel.swift in Sources */,
 				32B71D45291520A6009FEFAE /* MainView.swift in Sources */,
 				32C5E73728EC78B900C5FD93 /* NetworkManager.swift in Sources */,
+				320A3ED7291D174100108E24 /* PresentationCoordinator.swift in Sources */,
 				32823CA328E6E04100596B98 /* EmojiAPI.swift in Sources */,
 				3206C80628DE062500397C95 /* Coordinator.swift in Sources */,
 				32B5641A29002E2A0088D24C /* AppleReposService.swift in Sources */,
@@ -527,7 +520,6 @@
 				32B71D49291531E1009FEFAE /* BaseGenericView.swift in Sources */,
 				32B516F028F5B38000043127 /* NSManagedObject+ToEmoji.swift in Sources */,
 				32B71D4B2915324F009FEFAE /* BaseGenericViewController.swift in Sources */,
-				32B6D4BF29083EBB00319867 /* FooterLoadingAppleRepos.swift in Sources */,
 				32B5640028F808DF0088D24C /* Persistence.swift in Sources */,
 				32B563FE28F7268C0088D24C /* AvatarPersistence.swift in Sources */,
 				32B71D502919213D009FEFAE /* EmojiListMockDataSource.swift in Sources */,

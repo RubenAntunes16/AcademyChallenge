@@ -54,15 +54,7 @@ class MainViewModel {
             .subscribe(_rxEmojiImage)
             .disposed(by: disposeBag)
 
-        application.emojiService.rxGetEmojisList()
-            .do(onNext: { [weak self] emojis in
-                guard
-                    let self = self,
-                    let emojis = emojis
-                    else { return }
-                let randomUrl = emojis.randomElement()?.urlImage
-                self.rxEmojiImageUrl.onNext(randomUrl)
-            })
+
 
         print("end init")
     }
@@ -105,14 +97,19 @@ class MainViewModel {
 
     func rxGetRandomEmoji() {
         application.emojiService.rxGetEmojisList()
-            .do(onNext: { [weak self] emojis in
-                guard
-                    let self = self,
-                    let emojis = emojis
-                    else { return }
-                let randomUrl = emojis.randomElement()?.urlImage
-                self.rxEmojiImageUrl.onNext(randomUrl)
-            })
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] emojis in
+                    guard
+                        let self = self
+                        else { return }
+                    let randomUrl = emojis.randomElement()?.urlImage
+                    self.rxEmojiImageUrl.onNext(randomUrl)
+            } onFailure: { error in
+                print("[GetEmojisList-ViewModel] \(error)")
+            } onDisposed: {
+                print("BUH-BYEEE!!!")
+            }
+            .disposed(by: disposeBag)
     }
 
     private func getAvatar() {

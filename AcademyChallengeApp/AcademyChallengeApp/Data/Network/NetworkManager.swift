@@ -41,23 +41,34 @@ class NetworkManager {
         task.resume()
     }
 
-    func rxExecuteNetworkCall(_ call: APIProtocol) -> Observable<Data?> {
-        
+    func rxExecuteNetworkCall<ResultType: Decodable>(_ call: APIProtocol) -> Single<ResultType> {
+        let decoder = JSONDecoder()
         var request = URLRequest(url: call.url)
         request.httpMethod = call.method.rawValue
         call.headers.forEach { (key: String, value: String) in
             request.setValue(value, forHTTPHeaderField: key)
         }
 
-        return URLSession.shared.rx.response(request: request)
-            .map { (response: HTTPURLResponse, data: Data) -> Data? in
-                guard
-                    response.statusCode == 200
-                else {
-                    return Data()
-                    
+        return Single<ResultType>.create { single in
+                let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                    if let error = error {
+                        single(.failure(error))
+                        return
+                    }
+                    print("hello")
+                    guard let data = data,
+                          let result = try? decoder.decode(ResultType.self, from: data)
+                    else {
+                        single(.failure(APIError.parseError))
+                        return
+                    }
+
+                    single(.success(result))
                 }
-                return data
+
+                task.resume()
+
+                return Disposables.create { task.cancel() }
             }
     }
 }
@@ -75,4 +86,5 @@ protocol APIProtocol {
 
 enum APIError: Error {
     case unknownError
+    case parseError
 }

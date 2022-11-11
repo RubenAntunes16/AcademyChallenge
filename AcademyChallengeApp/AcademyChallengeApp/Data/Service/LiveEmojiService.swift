@@ -65,17 +65,15 @@ class LiveEmojiService: EmojiService {
         }
     }
 
-    func rxGetEmojisList() -> Observable<[Emoji]?> {
-        let decoder = JSONDecoder()
-
+    func rxGetEmojisList() -> Single<[Emoji]> {
+        // SUBSCRIBE DESTROI OS OBSERVABLES
+        // SUBSCRIBE APENAS DEVE HAVER NO FIM
+        // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
+        // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
         return networkManager.rxExecuteNetworkCall(EmojiAPI.getEmojis)
-            .asOptional()
-            .map({ data in
-                guard
-                    let data = data,
-                    let result = try? decoder.decode(EmojiAPICallResult.self, from: data ?? Data())
-                else { return [] }
-                return result.emojis
-            })
+            .map { (emojisResult: EmojiAPICallResult) in
+                    return emojisResult.emojis
+                }
+
     }
 }

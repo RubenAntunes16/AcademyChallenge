@@ -74,41 +74,41 @@ class MainViewModel {
             .debug("dataOfUrl")
     }
 
+//    func getRandomEmoji() {
+//        application.emojiService.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
+//            switch result {
+//            case .success(let success):
+//
+//                guard
+//                    let self = self,
+//                    let randomUrl = success.randomElement()?.urlImage else { return }
+//                self.rxEmojiImageUrl.onNext(randomUrl)
+////                DispatchQueue.main.async {
+////                    self.imageUrl.value = randomUrl
+////                }
+//            case .failure(let failure):
+//                print("Failure: \(failure)")
+//                //                 self?.emojiImageView.image = UIImage(named: "noEmoji")
+//                self?.imageUrl.value = nil
+//            }
+//
+//        })
+//    }
+
     func getRandomEmoji() {
-        application.emojiService.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
-            switch result {
-            case .success(let success):
-
-                guard
-                    let self = self,
-                    let randomUrl = success.randomElement()?.urlImage else { return }
-                self.rxEmojiImageUrl.onNext(randomUrl)
-//                DispatchQueue.main.async {
-//                    self.imageUrl.value = randomUrl
-//                }
-            case .failure(let failure):
-                print("Failure: \(failure)")
-                //                 self?.emojiImageView.image = UIImage(named: "noEmoji")
-                self?.imageUrl.value = nil
-            }
-
-        })
-    }
-
-    func rxGetRandomEmoji() {
-        application.emojiService.rxGetEmojisList()
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] emojis in
+        application.emojiService.getEmojisList()
+            .subscribe(
+                onSuccess: { [weak self] emojiResult in
                     guard
                         let self = self
-                        else { return }
-                    let randomUrl = emojis.randomElement()?.urlImage
+                    else { return }
+                    let randomUrl = emojiResult.randomElement()?.urlImage
                     self.rxEmojiImageUrl.onNext(randomUrl)
-            } onFailure: { error in
-                print("[GetEmojisList-ViewModel] \(error)")
-            } onDisposed: {
-                print("BUH-BYEEE!!!")
-            }
+                }, onFailure: { error in
+                    print("[GetEmojisList-ViewModel] \(error)")
+                }, onDisposed: {
+                    print("BUH-BYEEE!!!")
+                })
             .disposed(by: disposeBag)
     }
 

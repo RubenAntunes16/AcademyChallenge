@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 // -------------------------------------------------------------------
 
@@ -31,11 +32,20 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.rxEmojiList
-            .subscribe(rx.emojisList)
+        viewModel?.getEmojisList()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] emojiList in
+                guard let self = self else { return }
+                self.emojisList = emojiList
+                self.genericView.collectionView.reloadData()
+            }, onFailure: { error in
+                print("GOT ERROR: \(error)")
+            }, onDisposed: {
+                print("Got Disposed!!  BYEEEEEE")
+            })
             .disposed(by: disposeBag)
 
-        viewModel?.getEmojisList()
+//        viewModel?.getEmojisList()
     }
 
     override func viewDidLoad() {

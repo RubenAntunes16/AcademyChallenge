@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import CoreData
+import RxSwift
 
 class EmojiPersistence: Persistence {
 
@@ -40,28 +41,35 @@ class EmojiPersistence: Persistence {
         }
     }
 
-    func fetch(_ resulthandler: @escaping (Result<[Emoji], Error>) -> Void) {
-        var resultFetch: [NSManagedObject] = []
-        var result: [Emoji] = []
+    func fetch() -> Single<[Emoji]> {
 
-        let managedContext = persistentContainer.viewContext
+        return Single<[Emoji]>.create(subscribe: { single in
 
-        // FETCH ALL THE DATA FROM THE ENTITY PERSON
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "EmojiEntity")
+            let disposable: Disposable = Disposables.create()
 
-        // WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
-        // SEND ALL THE DATA FROM THE PERSON ENTITY
-        do {
-            resultFetch = try managedContext.fetch(fetchRequest)
+            let managedContext = self.persistentContainer.viewContext
 
-            result = resultFetch.compactMap({ item -> Emoji? in
+            // FETCH ALL THE DATA FROM THE ENTITY PERSON
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "EmojiEntity")
+
+            guard
+                let resultFetch = try? managedContext.fetch(fetchRequest)
+            else {
+                single(.failure(PersistenceError.fetchError))
+                return disposable
+            }
+
+            let result = resultFetch.compactMap({ item -> Emoji? in
                 item.toEmoji()
             })
 
-            resulthandler(.success(result))
-        } catch let error as NSError {
-          print("Could not fetch. \(error), \(error.userInfo)")
-            resulthandler(.failure(error))
-        }
+            single(.success(result))
+
+            return disposable
+        })
     }
+}
+
+enum PersistenceError: Error {
+    case fetchError
 }

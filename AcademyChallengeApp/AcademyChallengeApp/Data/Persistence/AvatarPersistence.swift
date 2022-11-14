@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import RxSwift
 
 class AvatarPersistence: Persistence {
 
@@ -86,6 +87,38 @@ class AvatarPersistence: Persistence {
           print("Could not fetch. \(error), \(error.userInfo)")
             resulthandler(.failure(error))
         }
+    }
+
+    func fetch() -> Single<[Emoji]> {
+
+        return Single<[Emoji]>.create(subscribe: { [weak self] single in
+
+            let disposable: Disposable = Disposables.create()
+            guard let self = self else {
+                single(.failure(PersistenceError.fetchError))
+                return disposable
+            }
+
+            let managedContext = self.persistentContainer.viewContext
+
+            // FETCH ALL THE DATA FROM THE ENTITY PERSON
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "EmojiEntity")
+
+            guard
+                let resultFetch = try? managedContext.fetch(fetchRequest)
+            else {
+                single(.failure(PersistenceError.fetchError))
+                return disposable
+            }
+
+            let result = resultFetch.compactMap({ item -> Emoji? in
+                item.toEmoji()
+            })
+
+            single(.success(result))
+
+            return disposable
+        })
     }
 
     func delete(avatarObject: Avatar) {

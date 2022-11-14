@@ -8,6 +8,8 @@
 import UIKit
 import CoreData
 
+import RxSwift
+
 protocol Persistence {
 /* When defining a protocol, it’s sometimes useful to declare one or more associated types as part of the
  protocol’s definition. An associated type gives a placeholder name to a type that’s used as part of the protocol. The
@@ -18,5 +20,5 @@ protocol Persistence {
 
     func persist(object: ObjectType)
 
-    func fetch(_ resulthandler: @escaping (Result<[ObjectType], Error>) -> Void) 
+    func fetch() -> Single<[Emoji]>
 }

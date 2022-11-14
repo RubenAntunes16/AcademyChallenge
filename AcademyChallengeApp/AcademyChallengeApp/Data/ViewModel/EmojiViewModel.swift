@@ -27,10 +27,11 @@ class EmojiViewModel {
 
     let disposeBag = DisposeBag()
 
-    init() {
-        _rxEmojiList
-            .disposed(by: disposeBag)
-    }
+//    init() {
+//        _rxEmojiList
+//            .
+//            .disposed(by: disposeBag)
+//    }
 
     func imageFromUrl(url: URL) -> Observable<UIImage> {
         Observable<UIImage>
@@ -62,18 +63,17 @@ class EmojiViewModel {
             .observe(on: MainScheduler.instance)
     }
 
-    func getEmojisList() {
-        emojiService?.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
-            switch result {
-            case .success(var success):
-                success.sort()
-//                self?.emojisList.value = success
-                self?._rxEmojiList.onNext(success)
-            case .failure(let failure):
-                print("[Emoji View Model] Failure: \(failure)")
-            }
+    func getEmojisList() -> Single<[Emoji]> {
+        guard let emojiService = emojiService else {
+            return Single<[Emoji]>.never()
+        }
 
-        })
+        return emojiService.getEmojisList()
+            .flatMap { emojiList in
+                var emojis: [Emoji] = emojiList
+                emojis.sort()
+                return Single<[Emoji]>.just(emojis)
+            }
     }
 }
 

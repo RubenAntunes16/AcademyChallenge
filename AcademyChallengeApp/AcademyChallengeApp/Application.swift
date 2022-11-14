@@ -11,12 +11,12 @@ import CoreData
 class Application {
     static var urlSession: URLSession?
 
-    var emojiService: LiveEmojiService
+    var emojiService: EmojiService
     var avatarService: LiveAvatarService
     var appleReposService: LiveAppleReposService
 
     init() {
-        emojiService = .init(persistentContainer: persistentContainer)
+        emojiService = LiveEmojiService(persistentContainer: persistentContainer)
         avatarService = .init(persistentContainer: persistentContainer)
         appleReposService = .init()
     }

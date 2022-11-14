@@ -92,12 +92,17 @@ class MainViewController: BaseGenericViewController<MainView> {
 
         viewModel?.rxEmojiImage
             .do(onNext: { [weak self] image in
+                guard let self = self else { return }
                 if image != UIImage() && image != nil {
-                    self?.genericView.removeSpinner()
+                    self.genericView.removeSpinner()
 
                 }
                 // Arranjar forma de mudar o state das views (com cases)
                 // self?.genericView
+            },
+                onError: { [weak self] _ in
+                guard let self = self else { return }
+                self.genericView.emojiImageView.image = UIImage(named: "noEmoji")
             })
                 .subscribe(genericView.emojiImageView.rx.image)
                 .disposed(by: disposeBag)
@@ -133,7 +138,7 @@ class MainViewController: BaseGenericViewController<MainView> {
     }
 
     func buttonRandomEmojisTap() {
-        viewModel?.rxGetRandomEmoji()
+        viewModel?.getRandomEmoji()
     }
 
     func buttonSearchTap() {

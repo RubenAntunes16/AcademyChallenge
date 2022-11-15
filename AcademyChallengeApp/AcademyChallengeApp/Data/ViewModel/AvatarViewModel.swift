@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 class AvatarViewModel {
 
@@ -13,15 +14,17 @@ class AvatarViewModel {
 
     var avatarList: Wrapper<[Avatar]?> = Wrapper([])
 
-    func getAvatars() {
-        avatarService?.fetchAvatarList({ (result: [Avatar]) in
-            self.avatarList.value = result
-        })
+    func getAvatars() -> Single<[Avatar]> {
+        guard let avatarService = avatarService else {
+            return Single<[Avatar]>.error(ServiceError.cannotInstanciate)
+        }
+
+        return avatarService.fetchAvatarList()
     }
 
     func deleteAvatar(avatar: Avatar, at index: Int) {
         self.avatarService?.deleteAvatar(avatarToDelete: avatar)
 
-        self.avatarList.value?.remove(at: index)
+        self.avatarList.remove(at: index)
     }
 }

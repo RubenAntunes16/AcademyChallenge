@@ -29,19 +29,28 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.avatarList.bind(listener: { [weak self] avatarList in
-            guard
-                let self = self,
-                let avatarList = avatarList else { return }
-
-            self.avatarList = avatarList
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.genericView.collectionView.reloadData()
-            }
-        })
+//        viewModel?.avatarList.bind(listener: { [weak self] avatarList in
+//            guard
+//                let self = self,
+//                let avatarList = avatarList else { return }
+//
+//            self.avatarList = avatarList
+//
+//            DispatchQueue.main.async { [weak self] in
+//                guard let self = self else { return }
+//                self.genericView.collectionView.reloadData()
+//            }
+//        })
         viewModel?.getAvatars()
+            .subscribe(onSuccess: { avatars in
+                self.avatarList = avatars
+                self.genericView.collectionView.reloadData()
+            }, onFailure: { error in
+                print("ERROR TO GET AVATARS :\(error)")
+            }, onDisposed: {
+                print("GOT DISPOSED! BYEEEEE")
+            })
+            .disposed(by: disposeBag)
     }
 }
 

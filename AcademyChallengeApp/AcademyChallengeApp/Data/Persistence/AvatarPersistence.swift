@@ -17,28 +17,51 @@ class AvatarPersistence: Persistence {
         self.persistentContainer = persistentContainer
     }
 
-    func verifyAvatarExist(searchText: String, _ resultHandler: @escaping (Result<[Avatar], Error>) -> Void) {
-        let managedContext = self.persistentContainer.viewContext
+//    func verifyAvatarExist(searchText: String, _ resultHandler: @escaping (Result<[Avatar], Error>) -> Void) {
+//        let managedContext = self.persistentContainer.viewContext
+//
+//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+//
+//        fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
+//
+//        do {
+//            let result = try managedContext.fetch(fetchRequest)
+//
+//            var toAvatarList: [Avatar] = []
+//
+//            result.forEach { item in
+//                guard let avatar = item.toAvatar() else { return }
+//                toAvatarList.append(avatar)
+//            }
+//
+//            resultHandler(.success(toAvatarList))
+//        } catch {
+//            print(error)
+//            resultHandler(.failure(error))
+//        }
+//    }
 
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+    func verifyAvatarExist(searchText: String) -> Observable<Avatar?> {
 
-        fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
+        return Observable<Avatar?>.create({ observer in
+            let disposable: Disposable = Disposables.create()
+            let managedContext = self.persistentContainer.viewContext
 
-        do {
-            let result = try managedContext.fetch(fetchRequest)
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
-            var toAvatarList: [Avatar] = []
+            fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
 
-            result.forEach { item in
-                guard let avatar = item.toAvatar() else { return }
-                toAvatarList.append(avatar)
+            guard
+                let result: [NSManagedObject] = try? managedContext.fetch(fetchRequest)
+            else {
+                print("Fetch Error")
+                return disposable
             }
 
-            resultHandler(.success(toAvatarList))
-        } catch {
-            print(error)
-            resultHandler(.failure(error))
-        }
+            observer.onNext(result.first?.toAvatar())
+
+            return disposable
+        })
     }
 
     func persist(object: Avatar) {
@@ -63,35 +86,35 @@ class AvatarPersistence: Persistence {
         }
     }
 
-    func fetch(_ resulthandler: @escaping (Result<[Avatar], Error>) -> Void) {
-        var resultFetch: [NSManagedObject]
-        var result: [Avatar] = []
+//    func fetch(_ resulthandler: @escaping (Result<[Avatar], Error>) -> Void) {
+//        var resultFetch: [NSManagedObject]
+//        var result: [Avatar] = []
+//
+//        let managedContext = self.persistentContainer.viewContext
+//
+//        // FETCH ALL THE DATA FROM THE ENTITY PERSON
+//        let fetchRequest =
+//        NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+//
+//        /* WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
+//         SEND ALL THE DATA FROM THE PERSON ENTITY */
+//        do {
+//            resultFetch = try managedContext.fetch(fetchRequest)
+//
+//            result = resultFetch.compactMap({ item -> Avatar? in
+//                item.toAvatar()
+//            })
+//
+//            resulthandler(.success(result))
+//        } catch let error as NSError {
+//          print("Could not fetch. \(error), \(error.userInfo)")
+//            resulthandler(.failure(error))
+//        }
+//    }
 
-        let managedContext = self.persistentContainer.viewContext
+    func fetch() -> Single<[Avatar]> {
 
-        // FETCH ALL THE DATA FROM THE ENTITY PERSON
-        let fetchRequest =
-        NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
-
-        /* WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
-         SEND ALL THE DATA FROM THE PERSON ENTITY */
-        do {
-            resultFetch = try managedContext.fetch(fetchRequest)
-
-            result = resultFetch.compactMap({ item -> Avatar? in
-                item.toAvatar()
-            })
-
-            resulthandler(.success(result))
-        } catch let error as NSError {
-          print("Could not fetch. \(error), \(error.userInfo)")
-            resulthandler(.failure(error))
-        }
-    }
-
-    func fetch() -> Single<[Emoji]> {
-
-        return Single<[Emoji]>.create(subscribe: { [weak self] single in
+        return Single<[Avatar]>.create(subscribe: { [weak self] single in
 
             let disposable: Disposable = Disposables.create()
             guard let self = self else {
@@ -102,7 +125,7 @@ class AvatarPersistence: Persistence {
             let managedContext = self.persistentContainer.viewContext
 
             // FETCH ALL THE DATA FROM THE ENTITY PERSON
-            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "EmojiEntity")
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
             guard
                 let resultFetch = try? managedContext.fetch(fetchRequest)
@@ -111,8 +134,8 @@ class AvatarPersistence: Persistence {
                 return disposable
             }
 
-            let result = resultFetch.compactMap({ item -> Emoji? in
-                item.toEmoji()
+            let result = resultFetch.compactMap({ item -> Avatar? in
+                item.toAvatar()
             })
 
             single(.success(result))

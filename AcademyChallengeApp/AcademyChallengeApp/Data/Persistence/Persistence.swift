@@ -20,5 +20,5 @@ protocol Persistence {
 
     func persist(object: ObjectType)
 
-    func fetch() -> Single<[Emoji]>
+    func fetch() -> Single<[ObjectType]>
 }

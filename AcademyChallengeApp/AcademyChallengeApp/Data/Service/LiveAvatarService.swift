@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import RxSwift
 
 class LiveAvatarService {
 
@@ -17,47 +18,55 @@ class LiveAvatarService {
         self.persistence = .init(persistentContainer: persistentContainer)
     }
 
-    func fetchAvatarList(_ resultHandler: @escaping ([Avatar]) -> Void) {
+    func fetchAvatarList() -> Single<[Avatar]> {
 
-        persistence.fetch { (result: Result<[Avatar], Error>) in
-            switch result {
-            case .success(let success):
-                resultHandler(success)
-            case .failure(let failure):
-                print("[FETCH AVATAR LIST] Error to get avatars from memory: \(failure)")
-            }
-
-        }
+        return persistence.fetch()
     }
 
-    func getAvatar(searchText: String, _ resultHandler: @escaping (Result<Avatar, Error>) -> Void) {
+//    func getAvatar(searchText: String, _ resultHandler: @escaping (Result<Avatar, Error>) -> Void) {
+//
+//        persistence.verifyAvatarExist(searchText: searchText) { ( result: Result<[Avatar], Error>) in
+//            switch result {
+//            case .success(let success):
+//                if success.count != 0 {
+//
+//                    guard let avatarFound = success.first else { return }
+//
+//                    resultHandler(.success(avatarFound))
+//                } else {
+//                    // GET THE AVATAR FROM API
+//                    self.networkManager.executeNetworkCall(
+//                        AvatarAPI.getAvatars(searchText)) { (result: Result<Avatar, Error>) in
+//                        switch result {
+//                        case .success(let success):
+//                            self.persistence.persist(object: success)
+//                            resultHandler(.success(success))
+//                        case .failure(let failure):
+//                            print("[Avatar Live] Failure: \(failure)")
+//                            resultHandler(.failure(failure))
+//                        }
+//                    }
+//                }
+//            case .failure(let failure):
+//                print("Failure to verify if avatar exists in Core data: \(failure)")
+//            }
+//        }
+//    }
 
-        persistence.verifyAvatarExist(searchText: searchText) { ( result: Result<[Avatar], Error>) in
-            switch result {
-            case .success(let success):
-                if success.count != 0 {
+    func getAvatar(searchText: String) -> Observable<Avatar> {
 
-                    guard let avatarFound = success.first else { return }
-
-                    resultHandler(.success(avatarFound))
-                } else {
-                    // GET THE AVATAR FROM API
-                    self.networkManager.executeNetworkCall(
-                        AvatarAPI.getAvatars(searchText)) { (result: Result<Avatar, Error>) in
-                        switch result {
-                        case .success(let success):
-                            self.persistence.persist(object: success)
-                            resultHandler(.success(success))
-                        case .failure(let failure):
-                            print("[Avatar Live] Failure: \(failure)")
-                            resultHandler(.failure(failure))
+        return persistence.verifyAvatarExist(searchText: searchText)
+            .flatMap({ avatar -> Observable<Avatar> in
+                guard
+                    let avatar = avatar else {
+                     return self.networkManager.rxExecuteNetworkCall(AvatarAPI.getAvatars(searchText))
+                        .do { (result: Avatar) in
+                            self.persistence.persist(object: result)
                         }
-                    }
+                        .asObservable()
                 }
-            case .failure(let failure):
-                print("Failure to verify if avatar exists in Core data: \(failure)")
-            }
-        }
+                return Observable.just(avatar)
+            })
     }
 
     func deleteAvatar(avatarToDelete: Avatar) {

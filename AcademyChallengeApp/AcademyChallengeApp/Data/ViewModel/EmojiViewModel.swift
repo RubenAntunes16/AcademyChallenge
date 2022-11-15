@@ -65,15 +65,15 @@ class EmojiViewModel {
 
     func getEmojisList() -> Single<[Emoji]> {
         guard let emojiService = emojiService else {
-            return Single<[Emoji]>.never()
+            return Single<[Emoji]>.error(ServiceError.cannotInstanciate)
         }
 
         return emojiService.getEmojisList()
-            .flatMap { emojiList in
-                var emojis: [Emoji] = emojiList
+            .map({ emojiList in
+                var emojis = emojiList
                 emojis.sort()
-                return Single<[Emoji]>.just(emojis)
-            }
+                return emojis
+            })
     }
 }
 
@@ -87,4 +87,8 @@ func downloadTask(url: URL, placeholder: UIImage = UIImage()) -> Observable<UIIm
             else { return placeholder }
             return image
         }
+}
+
+enum ServiceError: Error {
+    case cannotInstanciate
 }

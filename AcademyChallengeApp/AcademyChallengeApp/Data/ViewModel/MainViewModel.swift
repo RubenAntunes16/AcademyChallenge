@@ -25,16 +25,20 @@ class MainViewModel {
     private var _rxEmojiImage: BehaviorSubject<UIImage?> = BehaviorSubject(value: nil)
     var rxEmojiImage: Observable<UIImage?> { _rxEmojiImage.asObservable() }
 
+    private var searchAvatarName: PublishSubject<String> = PublishSubject()
+    private var _searchAvatar: PublishSubject<UIImage?> = PublishSubject()
+    var searchAvatar: Observable<UIImage?> { _searchAvatar.asObservable() }
+
     let disposeBag = DisposeBag()
     var ongoingRequests: [String: Observable<UIImage?>] = [:]
 
     init(application: Application) {
         self.application = application
-        searchText.bind { [weak self] text in
-            if !text.isEmpty {
-                self?.getAvatar()
-            }
-        }
+//        searchText.bind { [weak self] text in
+//            if !text.isEmpty {
+//                self?.getAvatar()
+//            }
+//        }
 
         rxEmojiImageUrl
             .debug("rxEmojiImageUrl")
@@ -54,7 +58,17 @@ class MainViewModel {
             .subscribe(_rxEmojiImage)
             .disposed(by: disposeBag)
 
-
+        searchAvatarName
+            .debug("rxSearchAvatarName")
+            .flatMap({ searchText in
+                return application.avatarService.getAvatar(searchText: searchText)
+            })
+            .flatMap({ avatar -> Observable<UIImage?> in
+                return self.dataOfUrl(avatar.avatarUrl)
+            })
+            .debug("rxSearchAvatar")
+            .subscribe(_searchAvatar)
+            .disposed(by: disposeBag)
 
         print("end init")
     }
@@ -74,26 +88,26 @@ class MainViewModel {
             .debug("dataOfUrl")
     }
 
-//    func getRandomEmoji() {
-//        application.emojiService.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
-//            switch result {
-//            case .success(let success):
-//
-//                guard
-//                    let self = self,
-//                    let randomUrl = success.randomElement()?.urlImage else { return }
-//                self.rxEmojiImageUrl.onNext(randomUrl)
-////                DispatchQueue.main.async {
-////                    self.imageUrl.value = randomUrl
-////                }
-//            case .failure(let failure):
-//                print("Failure: \(failure)")
-//                //                 self?.emojiImageView.image = UIImage(named: "noEmoji")
-//                self?.imageUrl.value = nil
-//            }
-//
-//        })
-//    }
+    //    func getRandomEmoji() {
+    //        application.emojiService.getEmojisList({ [weak self] (result: Result<[Emoji], Error>) in
+    //            switch result {
+    //            case .success(let success):
+    //
+    //                guard
+    //                    let self = self,
+    //                    let randomUrl = success.randomElement()?.urlImage else { return }
+    //                self.rxEmojiImageUrl.onNext(randomUrl)
+    ////                DispatchQueue.main.async {
+    ////                    self.imageUrl.value = randomUrl
+    ////                }
+    //            case .failure(let failure):
+    //                print("Failure: \(failure)")
+    //                //                 self?.emojiImageView.image = UIImage(named: "noEmoji")
+    //                self?.imageUrl.value = nil
+    //            }
+    //
+    //        })
+    //    }
 
     func getRandomEmoji() {
         application.emojiService.getEmojisList()
@@ -112,19 +126,25 @@ class MainViewModel {
             .disposed(by: disposeBag)
     }
 
-    private func getAvatar() {
-        application.avatarService.getAvatar(searchText: searchText.value, { (result: Result<Avatar, Error>) in
-            switch result {
-            case .success(let success):
+    //    private func getAvatar() {
+    //        application.avatarService.getAvatar(searchText: searchText.value)
+    //        application.avatarService.getAvatar(searchText: searchText.value, { (result: Result<Avatar, Error>) in
+    //            switch result {
+    //            case .success(let success):
+    //
+    //                let avatarUrl = success.avatarUrl
+    //
+    ////                self.imageUrl.value = avatarUrl
+    //                self.rxEmojiImageUrl.onNext(avatarUrl)
+    //
+    //            case .failure(let failure):
+    //                print("Failure to Get Avatar: \(failure)")
+    //            }
+    //        })
+    //    }
 
-                let avatarUrl = success.avatarUrl
+    func getAvatar(searchText: String) {
+        self.searchAvatarName.onNext(searchText)
 
-//                self.imageUrl.value = avatarUrl
-                self.rxEmojiImageUrl.onNext(avatarUrl)
-
-            case .failure(let failure):
-                print("Failure to Get Avatar: \(failure)")
-            }
-        })
     }
 }

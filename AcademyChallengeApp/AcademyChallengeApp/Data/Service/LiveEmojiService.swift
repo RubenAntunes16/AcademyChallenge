@@ -22,8 +22,11 @@ class LiveEmojiService: EmojiService {
     }
 
     private func persistEmojis(emojis: [Emoji]) {
-        emojis.forEach { emoji in
-            persistence.persist(object: emoji)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            emojis.forEach { emoji in
+                self.persistence.persist(object: emoji)
+            }
         }
     }
 
@@ -33,18 +36,19 @@ class LiveEmojiService: EmojiService {
             .do(onError: { error in
                 print("[LiveEmojiService] Error to get fetch: \(error)")
             })
-            .flatMap({ fetchedEmojis in
-                if fetchedEmojis.isEmpty {
-                    // SUBSCRIBE DESTROI OS OBSERVABLES
-                    // SUBSCRIBE APENAS DEVE HAVER NO FIM
-                    // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
-                    // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
-                    return self.networkManager.rxExecuteNetworkCall(EmojiAPI.getEmojis)
-                        .map { (emojisResult: EmojiAPICallResult) in
-                                 return emojisResult.emojis
+                .flatMap({ fetchedEmojis in
+                    if fetchedEmojis.isEmpty {
+                        // SUBSCRIBE DESTROI OS OBSERVABLES
+                        // SUBSCRIBE APENAS DEVE HAVER NO FIM
+                        // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
+                        // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
+                        return self.networkManager.rxExecuteNetworkCall(EmojiAPI.getEmojis)
+                            .map { (emojisResult: EmojiAPICallResult) in
+                                self.persistEmojis(emojis: emojisResult.emojis)
+                                return emojisResult.emojis
                             }
-                }
-                return Single<[Emoji]>.just(fetchedEmojis)
-            })
+                    }
+                    return Single<[Emoji]>.just(fetchedEmojis)
+                })
     }
 }

@@ -107,6 +107,10 @@ class MainViewController: BaseGenericViewController<MainView> {
                 .subscribe(genericView.emojiImageView.rx.image)
                 .disposed(by: disposeBag)
 
+        viewModel?.searchAvatar
+                .subscribe(genericView.emojiImageView.rx.image)
+                .disposed(by: disposeBag)
+
         buttonRandomEmojisTap()
     }
 
@@ -143,7 +147,8 @@ class MainViewController: BaseGenericViewController<MainView> {
 
     func buttonSearchTap() {
         guard let searchBarText = genericView.searchBar.text else { return }
-        viewModel?.searchText.value = searchBarText
+        viewModel?.getAvatar(searchText: searchBarText)
+//        viewModel?.searchText.value = searchBarText
     }
 
     func buttonAppleReposListTap() {

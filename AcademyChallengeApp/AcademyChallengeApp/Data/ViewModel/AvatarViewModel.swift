@@ -25,6 +25,6 @@ class AvatarViewModel {
     func deleteAvatar(avatar: Avatar, at index: Int) {
         self.avatarService?.deleteAvatar(avatarToDelete: avatar)
 
-        self.avatarList.remove(at: index)
+        self.avatarList.value?.remove(at: index)
     }
 }

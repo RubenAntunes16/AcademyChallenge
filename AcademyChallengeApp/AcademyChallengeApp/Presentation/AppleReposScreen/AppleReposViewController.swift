@@ -33,31 +33,47 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.appleReposList.bind(listener: { [weak self] reposList in
-            guard
-                let self = self,
-                let reposList = reposList else { return }
-            self.appleReposList = reposList
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
+        viewModel?.appleReposReturn
+            .subscribe(onNext: { appleRepos in
+                self.appleReposList = appleRepos
                 self.genericView.tableView.reloadData()
                 self.finishedFetchData = true
-                // THIS IS TO FILL TABLE VIEW IF THE TABLE HAS SPACE TO DO IT
                 if self.genericView.tableView.contentSize.height < self.genericView.tableView.frame.size.height {
                     self.fetchDataTableView()
                 }
                 self.genericView.loadingSpinner.stopAnimating()
-            }
-        })
+            }, onError: { error in
+                print("Get Apple Repos: \(error)")
+            })
+            .disposed(by: disposeBag)
+
+//        viewModel?.appleReposList.bind(listener: { [weak self] reposList in
+//            guard
+//                let self = self,
+//                let reposList = reposList else { return }
+//            self.appleReposList = reposList
+//            DispatchQueue.main.async { [weak self] in
+//                guard let self = self else { return }
+//                self.genericView.tableView.reloadData()
+//                self.finishedFetchData = true
+//                // THIS IS TO FILL TABLE VIEW IF THE TABLE HAS SPACE TO DO IT
+//                if self.genericView.tableView.contentSize.height < self.genericView.tableView.frame.size.height {
+//                    self.fetchDataTableView()
+//                }
+//                self.genericView.loadingSpinner.stopAnimating()
+//            }
+//        })
         viewModel?.isEnd.bind(listener: { [weak self] ended in
             guard let self = self else { return }
             self.isEnd = ended
         })
+
+        fetchDataTableView()
     }
 
     func fetchDataTableView() {
         genericView.loadingSpinner.startAnimating()
-        viewModel?.getAppleRepos()
+        viewModel?.callGetReposObservable()
     }
 }
 

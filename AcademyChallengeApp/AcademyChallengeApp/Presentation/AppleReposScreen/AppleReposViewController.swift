@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 class AppleReposViewController: BaseGenericViewController<AppleReposView> {
 
 //    let loadingFooterText: UILabel
@@ -34,6 +36,7 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         viewModel?.appleReposReturn
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { appleRepos in
                 self.appleReposList = appleRepos
                 self.genericView.tableView.reloadData()

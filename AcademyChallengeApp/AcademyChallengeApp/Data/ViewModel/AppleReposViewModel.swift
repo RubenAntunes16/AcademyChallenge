@@ -54,7 +54,6 @@ class AppleReposViewModel {
                 self.appleReposList.append(contentsOf: result)
                 return Observable<[AppleRepos]>.just(self.appleReposList)
             })
-            .observe(on: MainScheduler.instance)
             .subscribe(appleRepos)
             .disposed(by: disposeBag)
     }

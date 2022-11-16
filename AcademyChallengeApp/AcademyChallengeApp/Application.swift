@@ -13,12 +13,12 @@ class Application {
 
     var emojiService: EmojiService
     var avatarService: LiveAvatarService
-    var appleReposService: LiveAppleReposService
+    var appleReposService: AppleReposService
 
     init() {
         emojiService = LiveEmojiService(persistentContainer: persistentContainer)
         avatarService = .init(persistentContainer: persistentContainer)
-        appleReposService = .init()
+        appleReposService = MockedAppleReposService()
     }
 
     static func initialize() {

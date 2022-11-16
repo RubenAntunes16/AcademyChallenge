@@ -45,10 +45,8 @@ class MockedAppleReposService: AppleReposService {
             let endIndex = size * page
             let startIndex = endIndex - size
 
-            for index in startIndex...endIndex - 1 {
-                if index < self.mockedRepos.count {
+            for index in startIndex...endIndex - 1 where index < self.mockedRepos.count {
                     repos.append(self.mockedRepos[index])
-                }
             }
 
             observer.onNext(repos)

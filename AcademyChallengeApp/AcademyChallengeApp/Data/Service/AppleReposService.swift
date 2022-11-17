@@ -12,5 +12,5 @@ protocol AppleReposService {
 
 //    func getAppleRepos(page: Int, size: Int, _ resultHandler: @escaping (Result<[AppleRepos], Error>) -> Void)
 
-    func getAppleRepos(page: Int, size: Int) -> Observable<[AppleRepos]> 
+    func getAppleRepos(page: Int, size: Int) -> Single<[AppleRepos]> 
 }

@@ -75,6 +75,7 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
     }
 
     func fetchDataTableView() {
+        finishedFetchData = false
         genericView.loadingSpinner.startAnimating()
         viewModel?.callGetReposObservable()
     }
@@ -92,7 +93,6 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
         let offsetNewFetch = heightVisibleScroll * 0.25
 
         if offset > 0 && (offset + heightVisibleScroll + offsetNewFetch) > heightTable && finishedFetchData && !isEnd {
-            finishedFetchData = false
             fetchDataTableView()
         }
     }

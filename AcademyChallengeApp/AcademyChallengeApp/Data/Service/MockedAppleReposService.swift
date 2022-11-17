@@ -38,9 +38,9 @@ class MockedAppleReposService: AppleReposService {
 //
 //    }
 
-    func getAppleRepos(page: Int, size: Int) -> Observable<[AppleRepos]> {
+    func getAppleRepos(page: Int, size: Int) -> Single<[AppleRepos]> {
 
-        return Observable<[AppleRepos]>.create { observer in
+        return Single<[AppleRepos]>.create { observer in
             var repos: [AppleRepos] = []
             let endIndex = size * page
             let startIndex = endIndex - size
@@ -49,7 +49,7 @@ class MockedAppleReposService: AppleReposService {
                     repos.append(self.mockedRepos[index])
             }
 
-            observer.onNext(repos)
+            observer(.success(repos))
 
             return Disposables.create()
         }

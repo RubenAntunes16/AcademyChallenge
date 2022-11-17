@@ -18,7 +18,7 @@ class Application {
     init() {
         emojiService = LiveEmojiService(persistentContainer: persistentContainer)
         avatarService = .init(persistentContainer: persistentContainer)
-        appleReposService = MockedAppleReposService()
+        appleReposService = LiveAppleReposService()
     }
 
     static func initialize() {

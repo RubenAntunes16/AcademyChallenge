@@ -24,9 +24,8 @@ class LiveAppleReposService: AppleReposService {
 //        }
 //    }
 
-    func getAppleRepos(page: Int, size: Int) -> Observable<[AppleRepos]> {
+    func getAppleRepos(page: Int, size: Int) -> Single<[AppleRepos]> {
         return networkManager
             .rxExecuteNetworkCall(AppleReposAPI.getAppleRepos(perPage: size, page: page))
-                .asObservable()
     }
 }

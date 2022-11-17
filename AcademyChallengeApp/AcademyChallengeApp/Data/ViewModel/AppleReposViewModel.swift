@@ -49,12 +49,14 @@ class AppleReposViewModel {
 
         self.page += 1
         appleReposService.getAppleRepos(page: page, size: size)
-            .flatMap({ [weak self] result -> Observable<[AppleRepos]> in
-                guard let self = self else { return Observable.never() }
+            .subscribe(onSuccess: { [weak self] result in
+                guard let self = self else { return }
                 self.appleReposList.append(contentsOf: result)
-                return Observable<[AppleRepos]>.just(self.appleReposList)
+                if result.count < Constants.AppleRepos.perPage {
+                    self.isEnd.value = true
+                }
+                self.appleRepos.onNext(self.appleReposList)
             })
-            .subscribe(appleRepos)
             .disposed(by: disposeBag)
     }
 }

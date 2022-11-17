@@ -34,6 +34,8 @@ class MainViewController: BaseGenericViewController<MainView> {
 
     var viewModel: MainViewModel?
 
+    weak var delegate: MainViewDelegate?
+
     // 1 - CREATE VIEWS
     init() {
         // ESTE INIT É NECESSÁRIO
@@ -47,7 +49,6 @@ class MainViewController: BaseGenericViewController<MainView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
 
         viewModel?.imageUrl.bind(listener: { [weak self] url in
             guard let url = url, let self = self else {
@@ -105,28 +106,14 @@ class MainViewController: BaseGenericViewController<MainView> {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-
     }
 
     func buttonEmojisListTap() {
-
-        guard let emojiService = viewModel?.application.emojiService else { return }
-        let emojiListCoordinator = EmojisListCoordinator(presenter: navigationController!, emojiService: emojiService)
-
-        emojiListCoordinator.start()
-
-        self.emojisListCoordinator = emojiListCoordinator
+        delegate?.navigateToEmoji()
     }
 
     func buttonAvatarListTap() {
-
-        guard let avatarService = viewModel?.application.avatarService else { return }
-        let avatarListCoordinator = AvatarListCoordinator(presenter: navigationController!,
-                                                          avatarService: avatarService)
-
-        avatarListCoordinator.start()
-
-        self.avatarListCoordinator = avatarListCoordinator
+        delegate?.navigateToAvatar()
     }
 
     func buttonRandomEmojisTap() {
@@ -139,14 +126,7 @@ class MainViewController: BaseGenericViewController<MainView> {
     }
 
     func buttonAppleReposListTap() {
-
-        guard let appleReposService = viewModel?.application.appleReposService else { return }
-        let appleReposListCoordinator = AppleReposCoordinator(presenter: navigationController!,
-                                                              appleReposService: appleReposService)
-
-        appleReposListCoordinator.start()
-
-        self.appleReposCoordinator = appleReposListCoordinator
+        delegate?.navigateToAppleRepos()
     }
 
 }

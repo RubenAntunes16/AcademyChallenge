@@ -16,6 +16,9 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
 
     var viewModel: EmojiViewModel?
 
+    weak var delegate: BackMainDelegate?
+    weak var delegateTest: TestDelegate?
+
     // ---- VARIABLE TO INJECT IN DATASOURCE PROPERTY MOCKED DATA
     var mockedDataSource = MockedEmojiDataSource()
 
@@ -49,12 +52,19 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        genericView.rxButtonTap
+            .subscribe({ _ in self.testTap() })
+
         genericView.collectionView.dataSource = self
 
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        delegate?.back()
+            delegate?.back()
+    }
+
+    func testTap() {
+        delegateTest?.navigateToTest()
     }
 
 }

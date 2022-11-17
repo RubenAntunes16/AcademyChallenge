@@ -23,6 +23,8 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
 
     var viewModel: AppleReposViewModel?
 
+    weak var delegate: BackMainDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         genericView.tableView.delegate = self

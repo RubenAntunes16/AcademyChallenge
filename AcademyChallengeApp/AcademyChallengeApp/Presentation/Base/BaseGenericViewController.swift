@@ -13,8 +13,6 @@ class BaseGenericViewController<View: BaseGenericView>: UIViewController {
 
     var disposeBag = DisposeBag()
 
-    var delegate: BackMainDelegate?
-
     var genericView: View {
         // swiftlint:disable:next force_cast
         view as! View

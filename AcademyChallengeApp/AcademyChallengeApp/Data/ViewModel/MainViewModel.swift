@@ -21,6 +21,8 @@ class MainViewModel {
     // This will 
     let backgroundScheduler = SerialDispatchQueueScheduler(internalSerialQueueName: "MainPageViewModel.backgroundScheduler")
 
+    weak var delegate: MainViewDelegate?
+
     private var rxEmojiImageUrl: BehaviorSubject<URL?> = BehaviorSubject(value: nil)
     private var _rxEmojiImage: BehaviorSubject<UIImage?> = BehaviorSubject(value: nil)
     var rxEmojiImage: Observable<UIImage?> { _rxEmojiImage.asObservable() }

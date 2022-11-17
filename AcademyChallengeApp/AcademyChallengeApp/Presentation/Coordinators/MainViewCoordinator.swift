@@ -7,6 +7,16 @@
 
 import UIKit
 
+protocol MainViewDelegate: AnyObject {
+    func navigateToEmoji()
+    func navigateToAvatar()
+    func navigateToAppleRepos()
+}
+
+protocol BackMainDelegate: AnyObject {
+    func back()
+}
+
 class MainViewCoordinator: Coordinator {
 
     var childCoordinators: [Coordinator] = []
@@ -74,14 +84,4 @@ extension MainViewCoordinator: BackMainDelegate {
     func back() {
         childCoordinators.removeLast()
     }
-}
-
-protocol MainViewDelegate: AnyObject {
-    func navigateToEmoji()
-    func navigateToAvatar()
-    func navigateToAppleRepos()
-}
-
-protocol BackMainDelegate: AnyObject {
-    func back()
 }

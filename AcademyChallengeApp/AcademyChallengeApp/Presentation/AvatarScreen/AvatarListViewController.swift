@@ -11,6 +11,7 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
 
     var viewModel: AvatarViewModel?
     var avatarList: [Avatar] = []
+    weak var delegate: BackMainDelegate?
 
     init() {
         super.init(nibName: nil, bundle: nil)

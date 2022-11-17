@@ -31,6 +31,11 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
         genericView.tableView.dataSource = self
     }
 
+    deinit {
+        print("Deinit Apple")
+        delegate?.back()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -57,9 +62,9 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
         })
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        delegate?.back()
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        delegate?.back()
+//    }
 
     func fetchDataTableView() {
         genericView.loadingSpinner.startAnimating()

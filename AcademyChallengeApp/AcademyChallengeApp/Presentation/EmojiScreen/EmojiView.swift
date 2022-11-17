@@ -13,9 +13,6 @@ class EmojiView: BaseGenericView {
 
     var collectionView: UICollectionView
     private var emojiImageView: UIImageView
-    private var button: UIButton!
-
-    var rxButtonTap: Observable<Void> { button.rx.tap.asObservable() }
 
     override init(frame: CGRect) {
         let layout = UICollectionViewFlowLayout()
@@ -24,7 +21,6 @@ class EmojiView: BaseGenericView {
         layout.minimumInteritemSpacing = 4
         collectionView = .init(frame: .zero, collectionViewLayout: layout)
         emojiImageView = .init(frame: .zero)
-        button = .init(configuration: .filled())
         super.init(frame: frame)
     }
 
@@ -46,33 +42,21 @@ class EmojiView: BaseGenericView {
         collectionView.backgroundColor = .none
         collectionView.register(EmojisListCollectionViewCell.self,
                                 forCellWithReuseIdentifier: EmojisListCollectionViewCell.reuseCellIdentifier)
-
-        button.addTarget(self, action: #selector(tapTest), for: .touchDown)
     }
 
     // 2 - ADD TO THE SUPERVIEW
     private func addViewsToSuperview() {
-        addSubview(button)
         addSubview(collectionView)
     }
 
     private func setupConstraints() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor),
-            button.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            collectionView.topAnchor.constraint(equalTo: button.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-    }
-
-    @objc func tapTest() {
-        
     }
 }
 

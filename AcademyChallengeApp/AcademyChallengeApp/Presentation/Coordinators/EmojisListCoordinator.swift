@@ -35,7 +35,6 @@ class EmojisListCoordinator: Coordinator {
         emojisListViewController.title = "Emojis List"
 
         emojisListViewController.delegate = self
-        emojisListViewController.delegateTest = self
 
         let viewModel = EmojiViewModel()
 
@@ -53,14 +52,4 @@ extension EmojisListCoordinator: BackMainDelegate {
     func back() {
         self.delegate?.back()
     }
-}
-
-extension EmojisListCoordinator: TestDelegate {
-    func navigateToTest() {
-        let coordinator: TestCoordinator = TestCoordinator(presenter: presenter)
-        childCoordinators.append(coordinator)
-        coordinator.start()
-    }
-
-
 }

@@ -42,7 +42,3 @@ extension AppleReposCoordinator: BackMainDelegate {
         self.delegate?.back()
     }
 }
-
-protocol AppleReposListCoordinatorDelegate {
-    func navigateToAppleRepos()
-}

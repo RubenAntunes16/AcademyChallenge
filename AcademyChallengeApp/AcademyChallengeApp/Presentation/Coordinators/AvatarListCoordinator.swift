@@ -43,7 +43,3 @@ extension AvatarListCoordinator: BackMainDelegate {
         self.delegate?.back()
     }
 }
-
-protocol AvatarListCoordinatorDelegate {
-    func navigateToAvatar()
-}

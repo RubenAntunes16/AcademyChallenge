@@ -12,13 +12,18 @@ class TestViewController: UIViewController {
 
     weak var delegate: BackMainDelegate?
 
+    deinit {
+        print("Deinit Test")
+        delegate?.back()
+    }
+
     override func viewDidLoad() {
         view.backgroundColor = .purple
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        if isMovingToParent {
-            delegate?.back()
-        }
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        if isMovingToParent {
+//            delegate?.back()
+//        }
+//    }
 }

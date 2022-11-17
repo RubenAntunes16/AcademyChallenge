@@ -16,6 +16,12 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
     init() {
         super.init(nibName: nil, bundle: nil)
     }
+
+    deinit {
+        print("Deinit Avatar")
+        self.delegate?.back()
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented.")
     }
@@ -45,9 +51,9 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
         viewModel?.getAvatars()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        delegate?.back()
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        delegate?.back()
+//    }
 }
 
 extension AvatarListViewController: UICollectionViewDataSource, UICollectionViewDelegate {

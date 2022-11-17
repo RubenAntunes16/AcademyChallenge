@@ -59,7 +59,7 @@ extension MainViewCoordinator: MainViewDelegate {
         let emojiCoordinator = EmojisListCoordinator(presenter: presenter,
                                                      emojiService: applicationStarter.emojiService)
         emojiCoordinator.delegate = self
-        childCoordinators.append(emojiCoordinator)
+        addToChildCoordinators(childCoordinator: emojiCoordinator)
         emojiCoordinator.start()
     }
 
@@ -67,7 +67,7 @@ extension MainViewCoordinator: MainViewDelegate {
         let avatarCoordinator = AvatarListCoordinator(presenter: presenter,
                                                       avatarService: applicationStarter.avatarService)
         avatarCoordinator.delegate = self
-        childCoordinators.append(avatarCoordinator)
+        addToChildCoordinators(childCoordinator: avatarCoordinator)
         avatarCoordinator.start()
     }
 
@@ -75,7 +75,7 @@ extension MainViewCoordinator: MainViewDelegate {
         let appleReposCoordinator = AppleReposCoordinator(presenter: presenter,
                                                           appleReposService: applicationStarter.appleReposService)
         appleReposCoordinator.delegate = self
-        childCoordinators.append(appleReposCoordinator)
+        addToChildCoordinators(childCoordinator: appleReposCoordinator)
         appleReposCoordinator.start()
     }
 }

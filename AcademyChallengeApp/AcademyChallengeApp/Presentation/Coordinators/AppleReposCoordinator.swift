@@ -11,7 +11,6 @@ class AppleReposCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
 
     private let presenter: UINavigationController
-    private var appleReposViewController: AppleReposViewController?
     private let appleReposService: AppleReposService
     weak var delegate: BackMainDelegate?
 
@@ -32,8 +31,6 @@ class AppleReposCoordinator: Coordinator {
         appleReposViewController.viewModel = viewModel
 
         presenter.pushViewController(appleReposViewController, animated: true)
-
-        self.appleReposViewController = appleReposViewController
     }
 }
 

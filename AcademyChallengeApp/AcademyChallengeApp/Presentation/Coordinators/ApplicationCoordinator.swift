@@ -26,6 +26,7 @@ class ApplicationCoordinator: Coordinator {
 
         let application: Application = .init()
         mainViewCoordinator = MainViewCoordinator(presenter: rootViewController, application: application)
+        addToChildCoordinators(childCoordinator: mainViewCoordinator)
     }
 
     // THIS FUNCTION WILL PRESENT THE WINDOW WITH ITS ROOTVIEWCONTROLLER

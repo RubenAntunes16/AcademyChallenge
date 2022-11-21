@@ -11,7 +11,6 @@ class AvatarListCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
 
     private let presenter: UINavigationController
-    private var avatarListViewController: AvatarListViewController?
     private let avatarService: LiveAvatarService
     weak var delegate: BackMainDelegate?
 
@@ -33,8 +32,6 @@ class AvatarListCoordinator: Coordinator {
         avatarListViewController.viewModel = viewModel
 
         presenter.pushViewController(avatarListViewController, animated: true)
-
-        self.avatarListViewController = avatarListViewController
     }
 }
 

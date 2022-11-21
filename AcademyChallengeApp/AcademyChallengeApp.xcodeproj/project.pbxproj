@@ -10,7 +10,6 @@
 		3206C80628DE062500397C95 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80528DE062500397C95 /* Coordinator.swift */; };
 		3206C80928DE067000397C95 /* EmojisListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80828DE067000397C95 /* EmojisListViewController.swift */; };
 		3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3206C80A28DE08D400397C95 /* EmojisListCoordinator.swift */; };
-		320A3EDB2925304200108E24 /* ViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320A3EDA2925304200108E24 /* ViewControllerTest.swift */; };
 		324AE7DA28DB5C8700B816A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7D928DB5C8700B816A7 /* AppDelegate.swift */; };
 		324AE7DC28DB5C8700B816A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7DB28DB5C8700B816A7 /* SceneDelegate.swift */; };
 		324AE7DE28DB5C8700B816A7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324AE7DD28DB5C8700B816A7 /* MainViewController.swift */; };
@@ -78,7 +77,6 @@
 		3206C80528DE062500397C95 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		3206C80828DE067000397C95 /* EmojisListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisListViewController.swift; sourceTree = "<group>"; };
 		3206C80A28DE08D400397C95 /* EmojisListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisListCoordinator.swift; sourceTree = "<group>"; };
-		320A3EDA2925304200108E24 /* ViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerTest.swift; sourceTree = "<group>"; };
 		324AE7D628DB5C8700B816A7 /* AcademyChallengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AcademyChallengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		324AE7D928DB5C8700B816A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		324AE7DB28DB5C8700B816A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -168,12 +166,12 @@
 			path = Coordinators;
 			sourceTree = "<group>";
 		};
-		3206C80728DE065600397C95 /* Views */ = {
+		3206C80728DE065600397C95 /* ReusableViews */ = {
 			isa = PBXGroup;
 			children = (
 				32B6D4B32907F22E00319867 /* ReusableView.swift */,
 			);
-			path = Views;
+			path = ReusableViews;
 			sourceTree = "<group>";
 		};
 		324AE7CD28DB5C8700B816A7 = {
@@ -254,8 +252,7 @@
 				32B71D472915319C009FEFAE /* Base */,
 				32B71D4629153189009FEFAE /* MainScreen */,
 				3206C80428DE061100397C95 /* Coordinators */,
-				3206C80728DE065600397C95 /* Views */,
-				320A3EDA2925304200108E24 /* ViewControllerTest.swift */,
+				3206C80728DE065600397C95 /* ReusableViews */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -503,7 +500,6 @@
 				3206C80628DE062500397C95 /* Coordinator.swift in Sources */,
 				32B5641A29002E2A0088D24C /* AppleReposService.swift in Sources */,
 				32B8285428EED8FC00EDFFF1 /* EmojiService.swift in Sources */,
-				320A3EDB2925304200108E24 /* ViewControllerTest.swift in Sources */,
 				32B6D4C6290A920E00319867 /* EmojiViewModel.swift in Sources */,
 				32B71D4E2915742F009FEFAE /* EmojiView.swift in Sources */,
 				3206C80B28DE08D400397C95 /* EmojisListCoordinator.swift in Sources */,

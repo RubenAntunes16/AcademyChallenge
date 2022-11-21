@@ -22,7 +22,6 @@ class MainViewCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
 
     private let presenter: UINavigationController
-    private var mainViewController: MainViewController?
     private var emojis: [Emoji]?
     private let applicationStarter: Application
 
@@ -42,15 +41,9 @@ class MainViewCoordinator: Coordinator {
 
         let viewModel = MainViewModel(application: applicationStarter)
 
-        viewModel.application.emojiService = applicationStarter.emojiService
-
-        viewModel.application.avatarService = applicationStarter.avatarService
-
         mainViewController.viewModel = viewModel
 
         presenter.pushViewController(mainViewController, animated: true)
-
-        self.mainViewController = mainViewController
     }
 }
 

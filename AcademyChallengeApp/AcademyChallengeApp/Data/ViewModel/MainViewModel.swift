@@ -60,10 +60,10 @@ class MainViewModel {
     }
 
     private func getAvatar() {
-        application.avatarService.getAvatar(searchText: searchText.value, { (result: Result<Avatar, Error>) in
+        application.avatarService.getAvatar(searchText: searchText.value, { [weak self] (result: Result<Avatar, Error>) in
             switch result {
             case .success(let success):
-
+                guard let self = self else { return }
                 let avatarUrl = success.avatarUrl
 
                 self.imageUrl.value = avatarUrl

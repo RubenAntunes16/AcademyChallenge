@@ -8,18 +8,13 @@
 import Foundation
 import UIKit
 
-protocol TestDelegate: AnyObject {
-    func navigateToTest()
-}
-
 class EmojisListCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     weak var delegate: BackMainDelegate?
     private let presenter: UINavigationController
-    private var emojisListViewController: EmojisListViewController?
 
     var viewModel: EmojiViewModel?
-    private let emojiService: EmojiService
+    private let emojiService: EmojiService?
 //    private var emojiList: EmojiStorage
 //    private var emojiList: [Emoji]
 
@@ -30,7 +25,7 @@ class EmojisListCoordinator: Coordinator {
     }
 
     func start() {
-        let emojisListViewController = EmojisListViewController()
+        let emojisListViewController: EmojisListViewController = EmojisListViewController()
 
         emojisListViewController.title = "Emojis List"
 
@@ -43,8 +38,6 @@ class EmojisListCoordinator: Coordinator {
         emojisListViewController.viewModel = viewModel
 
         presenter.pushViewController(emojisListViewController, animated: true)
-
-        self.emojisListViewController = emojisListViewController
     }
 }
 

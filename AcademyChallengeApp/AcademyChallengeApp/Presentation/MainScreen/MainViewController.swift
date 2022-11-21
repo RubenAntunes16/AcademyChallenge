@@ -4,9 +4,7 @@
 //
 //  Created by Rúben Antunes on 21/09/2022.
 //
-
 import UIKit
-import Alamofire
 
 enum World {
     struct Margin {
@@ -27,10 +25,6 @@ extension CGFloat {
 }
 
 class MainViewController: BaseGenericViewController<MainView> {
-
-    private var emojisListCoordinator: EmojisListCoordinator?
-    private var avatarListCoordinator: AvatarListCoordinator?
-    private var appleReposCoordinator: AppleReposCoordinator?
 
     var viewModel: MainViewModel?
 

@@ -14,7 +14,8 @@ class AvatarViewModel {
     var avatarList: Wrapper<[Avatar]?> = Wrapper([])
 
     func getAvatars() {
-        avatarService?.fetchAvatarList({ (result: [Avatar]) in
+        avatarService?.fetchAvatarList({ [weak self] (result: [Avatar]) in
+            guard let self = self else { return }
             self.avatarList.value = result
         })
     }

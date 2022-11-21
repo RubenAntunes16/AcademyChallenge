@@ -23,10 +23,17 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
 
     var viewModel: AppleReposViewModel?
 
+    weak var delegate: BackMainDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         genericView.tableView.delegate = self
         genericView.tableView.dataSource = self
+    }
+
+    deinit {
+        print("Deinit Apple")
+        delegate?.back()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +61,10 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
             self.isEnd = ended
         })
     }
+
+//    override func viewDidDisappear(_ animated: Bool) {
+//        delegate?.back()
+//    }
 
     func fetchDataTableView() {
         genericView.loadingSpinner.startAnimating()

@@ -19,7 +19,7 @@ class AppleReposView: BaseGenericView {
         loadingSpinner = .init(style: .large)
 
         super.init(frame: frame)
-        
+
         backgroundColor = .appColor(name: .surface)
     }
 

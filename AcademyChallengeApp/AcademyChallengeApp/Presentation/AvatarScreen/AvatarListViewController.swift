@@ -11,10 +11,17 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
 
     var viewModel: AvatarViewModel?
     var avatarList: [Avatar] = []
+    weak var delegate: BackMainDelegate?
 
     init() {
         super.init(nibName: nil, bundle: nil)
     }
+
+    deinit {
+        print("Deinit Avatar")
+        self.delegate?.back()
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented.")
     }
@@ -43,6 +50,10 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
         })
         viewModel?.getAvatars()
     }
+
+//    override func viewDidDisappear(_ animated: Bool) {
+//        delegate?.back()
+//    }
 }
 
 extension AvatarListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -67,20 +78,12 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
 
     // Delegate goes to view
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Delete Avatar",
-                                      message: "Are you sure you want delete the avatar?",
-                                      preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default))
-
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {(_: UIAlertAction!) in
-
+        let alert = genericView.createDeleteAlert { [weak self] in
+            guard let self = self else { return }
             let avatar = self.avatarList[indexPath.row]
-
-            self.viewModel?.deleteAvatar(avatar: avatar, at: indexPath.row)
-
-        }))
-
+            self.viewModel?.avatarService?.deleteAvatar(avatarToDelete: avatar)
+        }
         self.present(alert, animated: true, completion: nil)
 
     }

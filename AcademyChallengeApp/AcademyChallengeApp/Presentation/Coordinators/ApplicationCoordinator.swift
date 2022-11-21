@@ -8,6 +8,7 @@
 import UIKit
 
 class ApplicationCoordinator: Coordinator {
+    var childCoordinators: [Coordinator] = []
 
     // SETUPS IT'S PRESENTATIONS IN THE APP'S WINDOW
     let window: UIWindow
@@ -25,6 +26,7 @@ class ApplicationCoordinator: Coordinator {
 
         let application: Application = .init()
         mainViewCoordinator = MainViewCoordinator(presenter: rootViewController, application: application)
+        addToChildCoordinators(childCoordinator: mainViewCoordinator)
     }
 
     // THIS FUNCTION WILL PRESENT THE WINDOW WITH ITS ROOTVIEWCONTROLLER

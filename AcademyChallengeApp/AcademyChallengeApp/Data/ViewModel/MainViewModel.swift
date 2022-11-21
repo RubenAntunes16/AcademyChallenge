@@ -21,6 +21,8 @@ class MainViewModel {
     // This will 
     let backgroundScheduler = SerialDispatchQueueScheduler(internalSerialQueueName: "MainPageViewModel.backgroundScheduler")
 
+    weak var delegate: MainViewDelegate?
+
     private var rxEmojiImageUrl: BehaviorSubject<URL?> = BehaviorSubject(value: nil)
     private var _rxEmojiImage: BehaviorSubject<UIImage?> = BehaviorSubject(value: nil)
     var rxEmojiImage: Observable<UIImage?> { _rxEmojiImage.asObservable() }
@@ -58,10 +60,10 @@ class MainViewModel {
     }
 
     private func getAvatar() {
-        application.avatarService.getAvatar(searchText: searchText.value, { (result: Result<Avatar, Error>) in
+        application.avatarService.getAvatar(searchText: searchText.value, { [weak self] (result: Result<Avatar, Error>) in
             switch result {
             case .success(let success):
-
+                guard let self = self else { return }
                 let avatarUrl = success.avatarUrl
 
                 self.imageUrl.value = avatarUrl

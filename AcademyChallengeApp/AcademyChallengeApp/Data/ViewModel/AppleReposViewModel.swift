@@ -21,7 +21,8 @@ class AppleReposViewModel {
         self.page += 1
         self.appleReposService?
             .getAppleRepos(page: self.page,
-                           size: size, { (result: Result<[AppleRepos], Error>) in
+                           size: size, { [weak self] (result: Result<[AppleRepos], Error>) in
+                guard let self = self else { return }
             switch result {
             case .success(let success):
                 self.appleReposList.value?.append(contentsOf: success)

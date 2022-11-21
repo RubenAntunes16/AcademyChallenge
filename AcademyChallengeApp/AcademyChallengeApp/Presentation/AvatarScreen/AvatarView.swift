@@ -60,4 +60,20 @@ class AvatarView: BaseGenericView {
         ])
 
     }
+
+    func createDeleteAlert(_ deleteFunction: @escaping () -> Void) -> UIAlertController {
+        let alert = UIAlertController(title: "Delete Avatar",
+                                      message: "Are you sure you want delete the avatar?",
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default))
+
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {(_: UIAlertAction!) in
+
+            deleteFunction()
+
+        }))
+
+        return alert
+    }
 }

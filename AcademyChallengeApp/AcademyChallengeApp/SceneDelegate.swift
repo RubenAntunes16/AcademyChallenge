@@ -23,7 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.backgroundColor = .appColor(name: .surface)
         let coordinator = ApplicationCoordinator(window: window)
 
-        self.window = window
         self.applicationCoordinator = coordinator
 
         // WILL PRESENT APPLICATION COORDINATOR MAIN PRESENTATION

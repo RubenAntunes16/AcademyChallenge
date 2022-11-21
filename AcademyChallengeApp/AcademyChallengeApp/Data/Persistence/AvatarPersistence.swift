@@ -9,6 +9,12 @@ import UIKit
 import CoreData
 import RxSwift
 
+enum AvatarErrors: Error{
+    case getAvatarError
+    case deleteAvatarError
+    case serviceNotAvailable
+}
+
 class AvatarPersistence: Persistence {
 
     var persistentContainer: NSPersistentContainer
@@ -144,25 +150,34 @@ class AvatarPersistence: Persistence {
         })
     }
 
-    func delete(avatarObject: Avatar) {
+    func delete(avatarObject: Avatar) -> Completable {
 
-        let managedContext = self.persistentContainer.viewContext
+        return Completable.create { completable in
+            let disposable: Disposable = Disposables.create {}
 
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+            let managedContext = self.persistentContainer.viewContext
 
-        fetchRequest.predicate = NSPredicate(format: "name = %@", avatarObject.name)
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
-        do {
-            let avatarToDelete = try managedContext.fetch(fetchRequest)
-            if avatarToDelete.count == 1 {
-                guard let avatar = avatarToDelete.first else { return }
-                managedContext.delete(avatar)
-                try managedContext.save()
+            fetchRequest.predicate = NSPredicate(format: "name = %@", avatarObject.name)
+
+            guard
+                let avatarToDelete = try? managedContext.fetch(fetchRequest),
+                let avatar = avatarToDelete.first
+            else {
+                completable(.error(AvatarErrors.getAvatarError))
+                return disposable
             }
 
-        } catch let error as NSError {
-            print("[DELETE AVATAR] Error to delete avatar: \(error)")
+            do {
+                managedContext.delete(avatar)
+                try? managedContext.save()
+            } catch {
+                completable(.error(AvatarErrors.deleteAvatarError))
+                return disposable
+            }
+            completable(.completed)
+            return disposable
         }
-
     }
 }

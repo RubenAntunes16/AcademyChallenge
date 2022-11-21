@@ -87,6 +87,17 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
             let avatar = self.avatarList[indexPath.row]
 
             self.viewModel?.deleteAvatar(avatar: avatar, at: indexPath.row)
+                .subscribe({ completableResult in
+                switch completableResult {
+                case .completed:
+                    print("AVATAR LIST COMPLETED")
+                    self.genericView.collectionView.reloadData()
+                case .error(let error):
+                    print("Completed with an error: \(error)")
+                }
+
+            })
+                .disposed(by: self.disposeBag)
 
         }))
 

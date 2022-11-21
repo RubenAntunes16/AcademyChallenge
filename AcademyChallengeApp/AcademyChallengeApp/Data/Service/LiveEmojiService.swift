@@ -21,11 +21,17 @@ class LiveEmojiService: EmojiService {
         self.persistentContainer = persistentContainer
     }
 
+    let disposeBag: DisposeBag = DisposeBag()
+
     private func persistEmojis(emojis: [Emoji]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             emojis.forEach { emoji in
                 self.persistence.persist(object: emoji)
+                    .subscribe(onError: { error in
+                        print("Error in persist emoji : \(error)")
+                    })
+                    .disposed(by: self.disposeBag)
             }
         }
     }

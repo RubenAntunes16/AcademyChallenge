@@ -22,7 +22,7 @@ class AvatarViewModel {
         return avatarService.fetchAvatarList()
     }
 
-    func deleteAvatar(avatar: Avatar, at index: Int) -> Completable {
+    func deleteAvatar(avatar: Avatar) -> Completable {
         guard let avatarService = avatarService else {
             return Completable.error(AvatarErrors.serviceNotAvailable)
         }

@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import UIKit
 import CoreData
+import UIKit
+
 import RxSwift
 
 class EmojiPersistence: Persistence {
@@ -18,26 +19,38 @@ class EmojiPersistence: Persistence {
         self.persistentContainer = persistentContainer
     }
 
-    func persist(object: Emoji) {
+    func persist(object: Emoji) -> Completable {
 
-        // FIRST THING TO DO SO WE CAN WORK WITH NSManagedObject
-        let managedContext = self.persistentContainer.viewContext
+        return Completable.create { [weak self] completable in
+            let disposable: Disposable = Disposables.create {}
+            guard let self = self else {
+                completable(.error(PersistenceError.selfError))
+                return disposable
+            }
 
-        // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
-        let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity", in: managedContext)!
+            let managedContext = self.persistentContainer.viewContext
 
-        let emoji = NSManagedObject(entity: entity, insertInto: managedContext)
+            // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
+            let entity = NSEntityDescription.entity(forEntityName: "EmojiEntity", in: managedContext)!
 
-        // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
-        emoji.setValue(object.name, forKeyPath: "name")
-        emoji.setValue(object.urlImage.absoluteString, forKeyPath: "imageUrl")
+            let emoji = NSManagedObject(entity: entity, insertInto: managedContext)
 
-        // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
-        // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+            // KEY PATH !!MUST!! HAVE THE SAME NAME AS THE DATA MODEL, OTHERWISE, THE APP CRASHES
+            emoji.setValue(object.name, forKeyPath: "name")
+            emoji.setValue(object.urlImage.absoluteString, forKeyPath: "imageUrl")
+
+            do {
+                try managedContext.save()
+            } catch let error as NSError {
+                print("[PERSIST] Could not save. \(error), \(error.userInfo)")
+                completable(.error(PersistenceError.saveContextError))
+                return disposable
+            }
+
+            completable(.completed)
+
+            return disposable
+
         }
     }
 
@@ -68,8 +81,4 @@ class EmojiPersistence: Persistence {
             return disposable
         })
     }
-}
-
-enum PersistenceError: Error {
-    case fetchError
 }

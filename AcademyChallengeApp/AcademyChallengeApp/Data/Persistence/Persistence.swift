@@ -18,7 +18,13 @@ protocol Persistence {
  */
     associatedtype ObjectType
 
-    func persist(object: ObjectType)
+    func persist(object: ObjectType) -> Completable
 
     func fetch() -> Single<[ObjectType]>
+}
+
+enum PersistenceError: Error {
+    case fetchError
+    case selfError
+    case saveContextError
 }

@@ -8,9 +8,11 @@
 import UIKit
 
 class AvatarListCoordinator: Coordinator {
+    var childCoordinators: [Coordinator] = []
+
     private let presenter: UINavigationController
-    private var avatarListViewController: AvatarListViewController?
     private let avatarService: LiveAvatarService
+    weak var delegate: BackMainDelegate?
 
     init(presenter: UINavigationController, avatarService: LiveAvatarService) {
         self.presenter = presenter
@@ -21,6 +23,8 @@ class AvatarListCoordinator: Coordinator {
         let avatarListViewController = AvatarListViewController()
         avatarListViewController.title = "Avatar List"
 
+        avatarListViewController.delegate = self
+
         let viewModel = AvatarViewModel()
 
         viewModel.avatarService = avatarService
@@ -28,7 +32,11 @@ class AvatarListCoordinator: Coordinator {
         avatarListViewController.viewModel = viewModel
 
         presenter.pushViewController(avatarListViewController, animated: true)
+    }
+}
 
-        self.avatarListViewController = avatarListViewController
+extension AvatarListCoordinator: BackMainDelegate {
+    func back() {
+        self.delegate?.back()
     }
 }

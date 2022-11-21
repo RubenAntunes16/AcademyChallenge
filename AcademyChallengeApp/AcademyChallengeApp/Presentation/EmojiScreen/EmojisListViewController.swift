@@ -17,15 +17,14 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
 
     var viewModel: EmojiViewModel?
 
+    weak var delegate: BackMainDelegate?
+
     // ---- VARIABLE TO INJECT IN DATASOURCE PROPERTY MOCKED DATA
     var mockedDataSource = MockedEmojiDataSource()
 
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented.")
+    deinit {
+        print("Deinit Eomji")
+        delegate?.back()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +53,6 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
         genericView.collectionView.dataSource = self
 
     }
-
 }
 
 extension EmojisListViewController: UICollectionViewDataSource {

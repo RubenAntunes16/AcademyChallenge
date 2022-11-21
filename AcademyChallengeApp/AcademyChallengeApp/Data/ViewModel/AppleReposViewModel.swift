@@ -48,6 +48,7 @@ class AppleReposViewModel {
         }
 
         self.page += 1
+
         appleReposService.getAppleRepos(page: page, size: size)
             .subscribe(onSuccess: { [weak self] result in
                 guard let self = self else { return }

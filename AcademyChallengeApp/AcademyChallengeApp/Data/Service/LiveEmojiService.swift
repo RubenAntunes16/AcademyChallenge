@@ -48,7 +48,7 @@ class LiveEmojiService: EmojiService {
                     // SUBSCRIBE APENAS DEVE HAVER NO FIM
                     // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
                     // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
-                    return self.networkManager.rxExecuteNetworkCall(EmojiAPI.getEmojis)
+                    return self.networkManager.rx.executeNetworkCall(EmojiAPI.getEmojis)
                         .map { (emojisResult: EmojiAPICallResult) in
                             self.persistEmojis(emojis: emojisResult.emojis)
                             return emojisResult.emojis
@@ -56,13 +56,5 @@ class LiveEmojiService: EmojiService {
                 }
                 return Single<[Emoji]>.just(fetchedEmojis)
             })
-    }
-}
-
-extension Reactive where Base: LiveEmojiService {
-
-    func getEmojiList() -> Single<[Emoji]> {
-
-        return base.getEmojisList()
     }
 }

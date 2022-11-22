@@ -13,6 +13,7 @@ class LiveAvatarService: ReactiveCompatible {
 
     var networkManager: NetworkManager = .init()
     let persistence: AvatarPersistence
+    let disposeBag: DisposeBag = DisposeBag()
 
     init(persistentContainer: NSPersistentContainer) {
         self.persistence = .init(persistentContainer: persistentContainer)
@@ -59,9 +60,13 @@ class LiveAvatarService: ReactiveCompatible {
             .flatMap({ avatar -> Observable<Avatar> in
                 guard
                     let avatar = avatar else {
-                     return self.networkManager.rxExecuteNetworkCall(AvatarAPI.getAvatars(searchText))
+                    return self.networkManager.rx.executeNetworkCall(AvatarAPI.getAvatars(searchText))
                         .do { (result: Avatar) in
                             self.persistence.persist(object: result)
+                                .subscribe(onError: { error in
+                                    print("Error in persist emoji : \(error)")
+                                })
+                                .disposed(by: self.disposeBag)
                         }
                         .asObservable()
                 }
@@ -74,4 +79,3 @@ class LiveAvatarService: ReactiveCompatible {
         return persistence.delete(avatarObject: avatarToDelete)
     }
 }
-

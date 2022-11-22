@@ -49,10 +49,13 @@ class MainViewModel {
                 let observable = self.ongoingRequests[url?.absoluteString ?? ""]
 
                 if observable == nil {
-                    self.ongoingRequests[url?.absoluteString ?? ""] = self.dataOfUrl(url).share(replay: 1, scope: .forever)
+                    let observableUrl = self.dataOfUrl(url).share(replay: 1, scope: .forever)
+                    self.ongoingRequests[url?.absoluteString ?? ""] = observableUrl
                 }
 
-                guard let observable = self.ongoingRequests[url?.absoluteString ?? ""] else { return Observable.never() }
+                guard
+                    let observable = self.ongoingRequests[url?.absoluteString ?? ""]
+                else { return Observable.never() }
 
                 return observable
             })
@@ -99,9 +102,9 @@ class MainViewModel {
     //                    let self = self,
     //                    let randomUrl = success.randomElement()?.urlImage else { return }
     //                self.rxEmojiImageUrl.onNext(randomUrl)
-    ////                DispatchQueue.main.async {
-    ////                    self.imageUrl.value = randomUrl
-    ////                }
+    //                DispatchQueue.main.async {
+    //                    self.imageUrl.value = randomUrl
+    //                }
     //            case .failure(let failure):
     //                print("Failure: \(failure)")
     //                //                 self?.emojiImageView.image = UIImage(named: "noEmoji")
@@ -112,7 +115,7 @@ class MainViewModel {
     //    }
 
     func getRandomEmoji() {
-        application.emojiService.rx.getEmojisList()
+        application.emojiService.getEmojisList()
             .subscribe(
                 onSuccess: { [weak self] emojiResult in
                     guard
@@ -136,7 +139,8 @@ class MainViewModel {
     //
     //                let avatarUrl = success.avatarUrl
     //
-    ////                self.imageUrl.value = avatarUrl
+    //
+    //                self.imageUrl.value = avatarUrl
     //                self.rxEmojiImageUrl.onNext(avatarUrl)
     //
     //            case .failure(let failure):

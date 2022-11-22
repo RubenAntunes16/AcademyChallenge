@@ -20,18 +20,7 @@ class EmojiViewModel {
 
     var ongoingRequests: [String: Observable<UIImage>] = [:]
 
-    private var _rxEmojiList: PublishSubject<[Emoji]?> = PublishSubject()
-    // WE USE VARIBLE OF TYPE OBSERVALBLE, ONLY TO ACCESS OUTSIDE
-    // WE CAN'T CALL onNext() FUNCTIONS
-    var rxEmojiList: Observable<[Emoji]?> { _rxEmojiList.asObservable() }
-
     let disposeBag = DisposeBag()
-
-//    init() {
-//        _rxEmojiList
-//            .
-//            .disposed(by: disposeBag)
-//    }
 
     func imageFromUrl(url: URL) -> Observable<UIImage> {
         Observable<UIImage>

@@ -19,7 +19,7 @@ class AppleReposViewModel {
     let size = Constants.AppleRepos.perPage
 
     let disposeBag = DisposeBag()
-    
+
     private var appleRepos: PublishSubject<[AppleRepos]> = PublishSubject()
     var appleReposReturn: Observable<[AppleRepos]> { appleRepos.asObservable() }
 

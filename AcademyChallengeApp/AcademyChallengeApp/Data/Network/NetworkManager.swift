@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-class NetworkManager {
+class NetworkManager: ReactiveCompatible {
     static func initialize() {
 //        let sessionConfiguration = URLSessionConfiguration.default
 //        sessionConfiguration.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
@@ -40,37 +40,6 @@ class NetworkManager {
 
         task.resume()
     }
-
-    func rxExecuteNetworkCall<ResultType: Decodable>(_ call: APIProtocol) -> Single<ResultType> {
-        let decoder = JSONDecoder()
-        var request = URLRequest(url: call.url)
-        request.httpMethod = call.method.rawValue
-        call.headers.forEach { (key: String, value: String) in
-            request.setValue(value, forHTTPHeaderField: key)
-        }
-
-        return Single<ResultType>.create { single in
-                let task = URLSession.shared.dataTask(with: request) { data, _, error in
-                    if let error = error {
-                        single(.failure(error))
-                        return
-                    }
-                    print("hello")
-                    guard let data = data,
-                          let result = try? decoder.decode(ResultType.self, from: data)
-                    else {
-                        single(.failure(APIError.parseError))
-                        return
-                    }
-
-                    single(.success(result))
-                }
-
-                task.resume()
-
-                return Disposables.create { task.cancel() }
-            }
-    }
 }
 
 enum Method: String {
@@ -87,4 +56,37 @@ protocol APIProtocol {
 enum APIError: Error {
     case unknownError
     case parseError
+}
+
+extension Reactive where Base: NetworkManager {
+
+    func executeNetworkCall<ResultType: Decodable>(_ call: APIProtocol) -> Single<ResultType> {
+        let decoder = JSONDecoder()
+        var request = URLRequest(url: call.url)
+        request.httpMethod = call.method.rawValue
+        call.headers.forEach { (key: String, value: String) in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+
+        return Single<ResultType>.create { single in
+                let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                    if let error = error {
+                        single(.failure(error))
+                        return
+                    }
+                    guard let data = data,
+                          let result = try? decoder.decode(ResultType.self, from: data)
+                    else {
+                        single(.failure(APIError.parseError))
+                        return
+                    }
+
+                    single(.success(result))
+                }
+
+                task.resume()
+
+                return Disposables.create { task.cancel() }
+            }
+    }
 }

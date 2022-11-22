@@ -78,7 +78,7 @@ class EmojiViewModel {
 }
 
 func downloadTask(url: URL, placeholder: UIImage = UIImage()) -> Observable<UIImage> {
-    guard let request = try? URLRequest(url: url, method: .get) else { return Observable.just(placeholder) }
+    guard let request = try? URLRequest(url: url) else { return Observable.just(placeholder) }
     return URLSession.shared.rx.response(request: request)
         .map { (response: HTTPURLResponse, data: Data) -> UIImage in
             guard

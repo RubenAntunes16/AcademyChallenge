@@ -15,7 +15,6 @@ class MockedEmojiService: EmojiService {
     func getEmojisList() -> Single<[Emoji]> {
         return Single<[Emoji]>.create(subscribe: { [weak self] single in
             let disposable: Disposable = Disposables.create()
-            
             guard let self = self else { return disposable }
             single(.success(self.emojiMocked.mockedEmojis))
             return disposable

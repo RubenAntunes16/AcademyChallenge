@@ -9,10 +9,10 @@ import UIKit
 import CoreData
 import RxSwift
 
-class LiveAvatarService {
+class LiveAvatarService: ReactiveCompatible {
 
-    private var networkManager: NetworkManager = .init()
-    private let persistence: AvatarPersistence
+    var networkManager: NetworkManager = .init()
+    let persistence: AvatarPersistence
 
     init(persistentContainer: NSPersistentContainer) {
         self.persistence = .init(persistentContainer: persistentContainer)
@@ -53,14 +53,6 @@ class LiveAvatarService {
 //        }
 //    }
 
-    func getAvatar(searchText: String, _ resultHandler: @escaping (Result<Avatar, Error>) -> Void) {
-
-        persistence.verifyAvatarExist(searchText: searchText) { [weak self] ( result: Result<[Avatar], Error>) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let success):
-                if success.count != 0 {
-
     func getAvatar(searchText: String) -> Observable<Avatar> {
 
         return persistence.verifyAvatarExist(searchText: searchText)
@@ -82,3 +74,4 @@ class LiveAvatarService {
         return persistence.delete(avatarObject: avatarToDelete)
     }
 }
+

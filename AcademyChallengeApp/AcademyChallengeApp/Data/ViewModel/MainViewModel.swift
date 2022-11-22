@@ -46,7 +46,7 @@ class MainViewModel {
             .debug("rxEmojiImageUrl")
             .flatMap({ [weak self] url -> Observable<UIImage?> in
                 guard let self = self else { return Observable.never() }
-                var observable = self.ongoingRequests[url?.absoluteString ?? ""]
+                let observable = self.ongoingRequests[url?.absoluteString ?? ""]
 
                 if observable == nil {
                     self.ongoingRequests[url?.absoluteString ?? ""] = self.dataOfUrl(url).share(replay: 1, scope: .forever)
@@ -112,7 +112,7 @@ class MainViewModel {
     //    }
 
     func getRandomEmoji() {
-        application.emojiService.getEmojisList()
+        application.emojiService.rx.getEmojisList()
             .subscribe(
                 onSuccess: { [weak self] emojiResult in
                     guard

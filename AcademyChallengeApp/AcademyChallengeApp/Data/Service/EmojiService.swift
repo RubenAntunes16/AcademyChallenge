@@ -9,7 +9,13 @@ import Foundation
 
 import RxSwift
 
-protocol EmojiService {
+protocol EmojiService: ReactiveCompatible {
 
     func getEmojisList() -> Single<[Emoji]>
 }
+
+//extension Reactive where Base: EmojiService {
+//    func getEmojisList() -> Single<[Emoji]> {
+//        return base.getEmojisList()
+//    }
+//}

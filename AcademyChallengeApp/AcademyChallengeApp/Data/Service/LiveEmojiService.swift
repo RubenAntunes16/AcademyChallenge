@@ -42,19 +42,27 @@ class LiveEmojiService: EmojiService {
             .do(onError: { error in
                 print("[LiveEmojiService] Error to get fetch: \(error)")
             })
-                .flatMap({ fetchedEmojis in
-                    if fetchedEmojis.isEmpty {
-                        // SUBSCRIBE DESTROI OS OBSERVABLES
-                        // SUBSCRIBE APENAS DEVE HAVER NO FIM
-                        // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
-                        // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
-                        return self.networkManager.rxExecuteNetworkCall(EmojiAPI.getEmojis)
-                            .map { (emojisResult: EmojiAPICallResult) in
-                                self.persistEmojis(emojis: emojisResult.emojis)
-                                return emojisResult.emojis
-                            }
-                    }
-                    return Single<[Emoji]>.just(fetchedEmojis)
-                })
+            .flatMap({ fetchedEmojis in
+                if fetchedEmojis.isEmpty {
+                    // SUBSCRIBE DESTROI OS OBSERVABLES
+                    // SUBSCRIBE APENAS DEVE HAVER NO FIM
+                    // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
+                    // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
+                    return self.networkManager.rxExecuteNetworkCall(EmojiAPI.getEmojis)
+                        .map { (emojisResult: EmojiAPICallResult) in
+                            self.persistEmojis(emojis: emojisResult.emojis)
+                            return emojisResult.emojis
+                        }
+                }
+                return Single<[Emoji]>.just(fetchedEmojis)
+            })
+    }
+}
+
+extension Reactive where Base: LiveEmojiService {
+
+    func getEmojiList() -> Single<[Emoji]> {
+
+        return base.getEmojisList()
     }
 }

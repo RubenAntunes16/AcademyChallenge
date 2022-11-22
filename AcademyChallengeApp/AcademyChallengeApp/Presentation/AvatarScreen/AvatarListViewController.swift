@@ -106,10 +106,8 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
 
                 })
                 .disposed(by: self.disposeBag)
-
-        }))
+        }
         self.present(alert, animated: true, completion: nil)
-
     }
 }
 

@@ -70,18 +70,22 @@ class MainViewController: BaseGenericViewController<MainView> {
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonEmojisListTap()
             })
+            .disposed(by: disposeBag)
         genericView.rxAvatarListTap
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonAvatarListTap()
             })
+            .disposed(by: disposeBag)
         genericView.rxAppleReposTap
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonAppleReposListTap()
             })
+            .disposed(by: disposeBag)
         genericView.rxSearchTap
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonSearchTap()
             })
+            .disposed(by: disposeBag)
 
         genericView.spinnerView.startAnimating()
 

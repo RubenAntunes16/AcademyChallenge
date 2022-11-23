@@ -92,7 +92,7 @@ class MainViewController: BaseGenericViewController<MainView> {
         viewModel?.rxEmojiImage
             .do(onNext: { [weak self] image in
                 guard let self = self else { return }
-                if image. != UIImage() && image != nil {
+                if image != UIImage() && image != nil {
                     self.genericView.removeSpinner()
 
                 }

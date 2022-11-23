@@ -48,6 +48,28 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
             })
             .disposed(by: disposeBag)
     }
+
+    private func presentAlertDeleteAvatar(at index: Int) {
+        let alert = genericView.createDeleteAlert { [weak self] in
+            guard let self = self else { return }
+            let avatar = self.avatarList[index]
+            self.viewModel?.deleteAvatar(avatar: avatar)
+                .subscribe({ [weak self] completableResult in
+                    guard let self = self else { return }
+                    switch completableResult {
+                    case .completed:
+                        print("AVATAR LIST COMPLETED")
+                        self.avatarList.remove(at: index)
+                        self.genericView.collectionView.reloadData()
+                    case .error(let error):
+                        print("Completed with an error: \(error)")
+                    }
+
+                })
+                .disposed(by: self.disposeBag)
+        }
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension AvatarListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -72,27 +94,7 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
 
     // Delegate goes to view
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        let alert = genericView.createDeleteAlert { [weak self] in
-            guard let self = self else { return }
-            let avatar = self.avatarList[indexPath.row]
-
-            self.viewModel?.deleteAvatar(avatar: avatar)
-                .subscribe({ [weak self] completableResult in
-                    guard let self = self else { return }
-                    switch completableResult {
-                    case .completed:
-                        print("AVATAR LIST COMPLETED")
-                        self.avatarList.remove(at: indexPath.row)
-                        self.genericView.collectionView.reloadData()
-                    case .error(let error):
-                        print("Completed with an error: \(error)")
-                    }
-
-                })
-                .disposed(by: self.disposeBag)
-        }
-        self.present(alert, animated: true, completion: nil)
+        presentAlertDeleteAvatar(at: indexPath.row)
     }
 }
 

@@ -44,22 +44,22 @@ class MainViewController: BaseGenericViewController<MainView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel?.imageUrl.bind(listener: { [weak self] url in
-            guard let url = url, let self = self else {
-                return
-            }
-
-            let dataTask = self.genericView.emojiImageView.createDownloadDataTask(from: url)
-
-            dataTask.resume()
-
-            self.genericView.removeSpinner()
-            self.genericView.buttonRandomEmojis.isEnabled = true
-            self.genericView.buttonEmojisList.isEnabled = true
-
-            // falta colocar quando não consegue fazer um download do emoji
-
-        })
+//        viewModel?.imageUrl.bind(listener: { [weak self] url in
+//            guard let url = url, let self = self else {
+//                return
+//            }
+//
+//            let dataTask = self.genericView.emojiImageView.createDownloadDataTask(from: url)
+//
+//            dataTask.resume()
+//
+//            self.genericView.removeSpinner()
+//            self.genericView.buttonRandomEmojis.isEnabled = true
+//            self.genericView.buttonEmojisList.isEnabled = true
+//
+//            // falta colocar quando não consegue fazer um download do emoji
+//
+//        })
 
         genericView.rxRandomEmojiTap
             .subscribe(onNext: { [weak self] _ in
@@ -70,27 +70,43 @@ class MainViewController: BaseGenericViewController<MainView> {
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonEmojisListTap()
             })
+            .disposed(by: disposeBag)
         genericView.rxAvatarListTap
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonAvatarListTap()
             })
+            .disposed(by: disposeBag)
         genericView.rxAppleReposTap
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonAppleReposListTap()
             })
+            .disposed(by: disposeBag)
         genericView.rxSearchTap
             .subscribe(onNext: { [weak self] _ in
                 self?.buttonSearchTap()
             })
+            .disposed(by: disposeBag)
 
         genericView.spinnerView.startAnimating()
 
         viewModel?.rxEmojiImage
             .do(onNext: { [weak self] image in
-                self?.genericView.spinnerView.stopAnimating()
+                guard let self = self else { return }
+                if image != UIImage() && image != nil {
+                    self.genericView.removeSpinner()
+
+                }
                 // Arranjar forma de mudar o state das views (com cases)
                 // self?.genericView
+            },
+                onError: { [weak self] _ in
+                guard let self = self else { return }
+                self.genericView.emojiImageView.image = UIImage(named: "noEmoji")
             })
+                .subscribe(genericView.emojiImageView.rx.image)
+                .disposed(by: disposeBag)
+
+        viewModel?.searchAvatar
                 .subscribe(genericView.emojiImageView.rx.image)
                 .disposed(by: disposeBag)
 
@@ -116,7 +132,8 @@ class MainViewController: BaseGenericViewController<MainView> {
 
     func buttonSearchTap() {
         guard let searchBarText = genericView.searchBar.text else { return }
-        viewModel?.searchText.value = searchBarText
+        viewModel?.getAvatar(searchText: searchBarText)
+//        viewModel?.searchText.value = searchBarText
     }
 
     func buttonAppleReposListTap() {

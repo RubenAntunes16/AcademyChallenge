@@ -7,6 +7,8 @@
 
 import Foundation
 
+import RxSwift
+
 class MockedAppleReposService: AppleReposService {
 
     private var reposMocked: AppleReposMock = .init()
@@ -25,7 +27,6 @@ class MockedAppleReposService: AppleReposService {
             repos = [AppleRepos](mockedRepos[startIndex...endIndex-1])
         }
 
-//        repos.replaceSubrange(startIndex...endIndex - 1, with: mockedRepos.)
 //        for i in startIndex...endIndex - 1{
 //            if i < mockedRepos.count {
 //                repos.append(mockedRepos[i])
@@ -34,6 +35,24 @@ class MockedAppleReposService: AppleReposService {
 //        }
 
         resultHandler(.success(repos))
+
+    }
+
+    func getAppleRepos(page: Int, size: Int) -> Single<[AppleRepos]> {
+
+        return Single<[AppleRepos]>.create { observer in
+            var repos: [AppleRepos] = []
+            let endIndex = size * page
+            let startIndex = endIndex - size
+
+            for index in startIndex...endIndex - 1 where index < self.mockedRepos.count {
+                    repos.append(self.mockedRepos[index])
+            }
+
+            observer(.success(repos))
+
+            return Disposables.create()
+        }
 
     }
 

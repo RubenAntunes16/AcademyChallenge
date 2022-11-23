@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 // -------------------------------------------------------------------
 
@@ -30,18 +31,20 @@ class EmojisListViewController: BaseGenericViewController<EmojiView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.emojisList.bind(listener: { [weak self] emojisList in
-            guard let self = self else { return }
-
-            self.emojisList = emojisList
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.genericView.collectionView.reloadData()
-            }
-
-        })
         viewModel?.getEmojisList()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] emojiList in
+                guard let self = self else { return }
+                self.emojisList = emojiList
+                self.genericView.collectionView.reloadData()
+            }, onFailure: { error in
+                print("GOT ERROR: \(error)")
+            }, onDisposed: {
+                print("Got Disposed!!  BYEEEEEE")
+            })
+            .disposed(by: disposeBag)
+
+//        viewModel?.getEmojisList()
     }
 
     override func viewDidLoad() {
@@ -64,7 +67,10 @@ extension EmojisListViewController: UICollectionViewDataSource {
 
         guard let url = emojisList?[indexPath.row].urlImage else { return UICollectionViewCell()}
 
-        cell.setupCell(url: url)
+        viewModel?.imageFromUrl(url: url)
+            .asOptional()
+            .subscribe(cell.emojiImageView.rx.image)
+            .disposed(by: cell.reusableDisposeBag)
 
         return cell
     }

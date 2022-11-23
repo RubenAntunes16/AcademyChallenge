@@ -36,24 +36,40 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.avatarList.bind(listener: { [weak self] avatarList in
-            guard
-                let self = self,
-                let avatarList = avatarList else { return }
-
-            self.avatarList = avatarList
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.genericView.collectionView.reloadData()
-            }
-        })
         viewModel?.getAvatars()
+            .subscribe(onSuccess: { [weak self] avatars in
+                guard let self = self else { return }
+                self.avatarList = avatars
+                self.genericView.collectionView.reloadData()
+            }, onFailure: { error in
+                print("ERROR TO GET AVATARS :\(error)")
+            }, onDisposed: {
+                print("GOT DISPOSED! BYEEEEE")
+            })
+            .disposed(by: disposeBag)
     }
 
-//    override func viewDidDisappear(_ animated: Bool) {
-//        delegate?.back()
-//    }
+    private func presentAlertDeleteAvatar(at index: Int) {
+        let alert = genericView.createDeleteAlert { [weak self] in
+            guard let self = self else { return }
+            let avatar = self.avatarList[index]
+            self.viewModel?.deleteAvatar(avatar: avatar)
+                .subscribe({ [weak self] completableResult in
+                    guard let self = self else { return }
+                    switch completableResult {
+                    case .completed:
+                        print("AVATAR LIST COMPLETED")
+                        self.avatarList.remove(at: index)
+                        self.genericView.collectionView.reloadData()
+                    case .error(let error):
+                        print("Completed with an error: \(error)")
+                    }
+
+                })
+                .disposed(by: self.disposeBag)
+        }
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension AvatarListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -78,14 +94,7 @@ extension AvatarListViewController: UICollectionViewDataSource, UICollectionView
 
     // Delegate goes to view
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        let alert = genericView.createDeleteAlert { [weak self] in
-            guard let self = self else { return }
-            let avatar = self.avatarList[indexPath.row]
-            self.viewModel?.avatarService?.deleteAvatar(avatarToDelete: avatar)
-        }
-        self.present(alert, animated: true, completion: nil)
-
+        presentAlertDeleteAvatar(at: indexPath.row)
     }
 }
 

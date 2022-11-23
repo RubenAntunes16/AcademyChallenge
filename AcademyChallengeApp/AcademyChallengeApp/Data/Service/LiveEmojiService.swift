@@ -7,60 +7,58 @@
 
 import Foundation
 import CoreData
+import RxSwift
 
 class LiveEmojiService: EmojiService {
 
     private var networkManager: NetworkManager = .init()
     private let persistentContainer: NSPersistentContainer
-    private var persistence: EmojiPersistence {
-        return .init(persistentContainer: persistentContainer)
-    }
+    private let persistence: EmojiPersistence
 
     init(persistentContainer: NSPersistentContainer) {
         self.persistentContainer = persistentContainer
+        self.persistence = .init(persistentContainer: persistentContainer)
     }
+
+    let disposeBag: DisposeBag = DisposeBag()
 
     private func persistEmojis(emojis: [Emoji]) {
-        emojis.forEach { emoji in
-            persistence.persist(object: emoji)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            emojis.forEach { emoji in
+                self.persistence.persist(object: emoji)
+                    .subscribe(onError: { error in
+                        print("Error in persist emoji : \(error)")
+                    })
+                    .disposed(by: self.disposeBag)
+            }
         }
     }
 
-    func getEmojisList(_ resultHandler: @escaping (Result<[Emoji], Error>) -> Void) {
-        var fetchedEmojis: [Emoji] = []
+    func getEmojisList() -> Single<[Emoji]> {
 
-        persistence.fetch { (result: Result<[Emoji], Error>) in
-            switch result {
-            case .success(let success):
-                fetchedEmojis = success
-            case .failure(let failure):
-                resultHandler(.failure(failure))
-            }
+        return persistence.fetch()
+            .do(onError: { error in
+                print("[LiveEmojiService] Error to get fetch: \(error)")
+            })
+            .flatMap({ fetchedEmojis in
+                if fetchedEmojis.isEmpty {
+                    // SUBSCRIBE DESTROI OS OBSERVABLES
+                    // SUBSCRIBE APENAS DEVE HAVER NO FIM
+                    // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
+                    // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
+                    return self.networkManager.rx.executeNetworkCall(EmojiAPI.getEmojis)
+                        .map { [weak self] (emojisResult: EmojiAPICallResult) in
+                            guard let self = self else { return [] }
+                            if emojisResult.emojis.count != 0 {
+                                self.persistEmojis(emojis: emojisResult.emojis)
 
-        }
+                            }
 
-        if !fetchedEmojis.isEmpty {
-
-            resultHandler(.success(fetchedEmojis))
-
-        } else {
-            // METHOD IN EMOJI API
-            networkManager.executeNetworkCall(
-                EmojiAPI.getEmojis) { [weak self] (result: Result<EmojiAPICallResult, Error>) in
-                guard let self = self else { return }
-                switch result {
-                case .success(let success):
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-
-                        self.persistEmojis(emojis: success.emojis)
-                    }
-                    resultHandler(.success(success.emojis))
-                case .failure(let failure):
-                    print("[Emoji Live] Failure: \(failure)")
-                    resultHandler(.failure(failure))
+                            return emojisResult.emojis
+                        }
                 }
-            }
-        }
+                return Single<[Emoji]>.just(fetchedEmojis)
+            })
     }
 }

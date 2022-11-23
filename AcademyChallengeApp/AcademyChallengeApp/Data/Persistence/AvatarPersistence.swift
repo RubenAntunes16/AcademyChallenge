@@ -7,6 +7,13 @@
 
 import UIKit
 import CoreData
+import RxSwift
+
+enum AvatarError: Error {
+    case getAvatarError
+    case deleteAvatarError
+    case serviceNotAvailable
+}
 
 class AvatarPersistence: Persistence {
 
@@ -16,97 +23,173 @@ class AvatarPersistence: Persistence {
         self.persistentContainer = persistentContainer
     }
 
-    func verifyAvatarExist(searchText: String, _ resultHandler: @escaping (Result<[Avatar], Error>) -> Void) {
-        let managedContext = self.persistentContainer.viewContext
+//    func verifyAvatarExist(searchText: String, _ resultHandler: @escaping (Result<[Avatar], Error>) -> Void) {
+//        let managedContext = self.persistentContainer.viewContext
+//
+//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+//
+//        fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
+//
+//        do {
+//            let result = try managedContext.fetch(fetchRequest)
+//
+//            var toAvatarList: [Avatar] = []
+//
+//            result.forEach { item in
+//                guard let avatar = item.toAvatar() else { return }
+//                toAvatarList.append(avatar)
+//            }
+//
+//            resultHandler(.success(toAvatarList))
+//        } catch {
+//            print(error)
+//            resultHandler(.failure(error))
+//        }
+//    }
 
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+    func verifyAvatarExist(searchText: String) -> Observable<Avatar?> {
 
-        fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
+        return Observable<Avatar?>.create({ observer in
+            let disposable: Disposable = Disposables.create()
+            let managedContext = self.persistentContainer.viewContext
 
-        do {
-            let result = try managedContext.fetch(fetchRequest)
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
-            var toAvatarList: [Avatar] = []
+            fetchRequest.predicate = NSPredicate(format: "name ==[cd] %@", searchText)
 
-            result.forEach { item in
-                guard let avatar = item.toAvatar() else { return }
-                toAvatarList.append(avatar)
+            guard
+                let result: [NSManagedObject] = try? managedContext.fetch(fetchRequest)
+            else {
+                print("Fetch Error")
+                return disposable
             }
 
-            resultHandler(.success(toAvatarList))
-        } catch {
-            print(error)
-            resultHandler(.failure(error))
+            observer.onNext(result.first?.toAvatar())
+
+            return disposable
+        })
+    }
+
+    func persist(object: Avatar) -> Completable {
+
+        return Completable.create { [weak self] completable in
+            let disposable: Disposable = Disposables.create {}
+
+            guard let self = self else {
+                completable(.error(PersistenceError.selfError))
+                return disposable
+            }
+            let managedContext = self.persistentContainer.viewContext
+
+            // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
+            let entity = NSEntityDescription.entity(forEntityName: "AvatarEntity", in: managedContext)!
+
+            let avatar = NSManagedObject(entity: entity, insertInto: managedContext)
+
+            avatar.setValue(object.name, forKeyPath: "name")
+            avatar.setValue(object.avatarUrl.absoluteString, forKeyPath: "avatarUrl")
+            avatar.setValue(object.id, forKeyPath: "id")
+
+            do {
+                try managedContext.save()
+            } catch let error as NSError {
+                print("[PERSIST] Could not save. \(error), \(error.userInfo)")
+                completable(.error(PersistenceError.saveContextError))
+                return disposable
+            }
+
+            completable(.completed)
+
+            return disposable
         }
     }
 
-    func persist(object: Avatar) {
+//    func fetch(_ resulthandler: @escaping (Result<[Avatar], Error>) -> Void) {
+//        var resultFetch: [NSManagedObject]
+//        var result: [Avatar] = []
+//
+//        let managedContext = self.persistentContainer.viewContext
+//
+//        // FETCH ALL THE DATA FROM THE ENTITY PERSON
+//        let fetchRequest =
+//        NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+//
+//        /* WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
+//         SEND ALL THE DATA FROM THE PERSON ENTITY */
+//        do {
+//            resultFetch = try managedContext.fetch(fetchRequest)
+//
+//            result = resultFetch.compactMap({ item -> Avatar? in
+//                item.toAvatar()
+//            })
+//
+//            resulthandler(.success(result))
+//        } catch let error as NSError {
+//          print("Could not fetch. \(error), \(error.userInfo)")
+//            resulthandler(.failure(error))
+//        }
+//    }
 
-        let managedContext = self.persistentContainer.viewContext
+    func fetch() -> Single<[Avatar]> {
 
-        // WE CREATE A NEW MANAGED OBJECT AND INSERT IT INTO THE CONTEXT CREATE ABOVE BY USING THE ENTITY METHOD
-        let entity = NSEntityDescription.entity(forEntityName: "AvatarEntity", in: managedContext)!
+        return Single<[Avatar]>.create(subscribe: { [weak self] single in
 
-        let avatar = NSManagedObject(entity: entity, insertInto: managedContext)
+            let disposable: Disposable = Disposables.create()
+            guard let self = self else {
+                single(.failure(PersistenceError.fetchError))
+                return disposable
+            }
 
-        avatar.setValue(object.name, forKeyPath: "name")
-        avatar.setValue(object.avatarUrl.absoluteString, forKeyPath: "avatarUrl")
-        avatar.setValue(object.id, forKeyPath: "id")
+            let managedContext = self.persistentContainer.viewContext
 
-        // COMMIT THE NAME IN THE PERSON OBJECT AND USE THE SAVE METHOD TO PERSIST NEW VALUE
-        // IT'S A GOOD PRACTICE TO PERSIST THE DATA INSIDE A CATCH, SINCE SAVE CAN THROW AN ERROR
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("[PERSIST] Could not save. \(error), \(error.userInfo)")
-        }
-    }
+            // FETCH ALL THE DATA FROM THE ENTITY PERSON
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
-    func fetch(_ resulthandler: @escaping (Result<[Avatar], Error>) -> Void) {
-        var resultFetch: [NSManagedObject]
-        var result: [Avatar] = []
+            guard
+                let resultFetch = try? managedContext.fetch(fetchRequest)
+            else {
+                single(.failure(PersistenceError.fetchError))
+                return disposable
+            }
 
-        let managedContext = self.persistentContainer.viewContext
-
-        // FETCH ALL THE DATA FROM THE ENTITY PERSON
-        let fetchRequest =
-        NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
-
-        /* WE GET THE DATA THOUGH THE FETCHREQUEST CRITERIA, IN THIS CASE WE ASK THE MANAGED CONTEXT TO
-         SEND ALL THE DATA FROM THE PERSON ENTITY */
-        do {
-            resultFetch = try managedContext.fetch(fetchRequest)
-
-            result = resultFetch.compactMap({ item -> Avatar? in
+            let result = resultFetch.compactMap({ item -> Avatar? in
                 item.toAvatar()
             })
 
-            resulthandler(.success(result))
-        } catch let error as NSError {
-          print("Could not fetch. \(error), \(error.userInfo)")
-            resulthandler(.failure(error))
-        }
+            single(.success(result))
+
+            return disposable
+        })
     }
 
-    func delete(avatarObject: Avatar) {
+    func delete(avatar: Avatar) -> Completable {
 
-        let managedContext = self.persistentContainer.viewContext
+        return Completable.create { completable in
+            let disposable: Disposable = Disposables.create {}
 
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
+            let managedContext = self.persistentContainer.viewContext
 
-        fetchRequest.predicate = NSPredicate(format: "name = %@", avatarObject.name)
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
-        do {
-            let avatarToDelete = try managedContext.fetch(fetchRequest)
-            if avatarToDelete.count == 1 {
-                guard let avatar = avatarToDelete.first else { return }
-                managedContext.delete(avatar)
-                try managedContext.save()
+            fetchRequest.predicate = NSPredicate(format: "name = %@", avatar.name)
+
+            guard
+                let avatarResult = try? managedContext.fetch(fetchRequest),
+                let avatarToDelete = avatarResult.first
+            else {
+                completable(.error(AvatarError.getAvatarError))
+                return disposable
             }
 
-        } catch let error as NSError {
-            print("[DELETE AVATAR] Error to delete avatar: \(error)")
+            do {
+                managedContext.delete(avatarToDelete)
+                try managedContext.save()
+            } catch {
+                completable(.error(AvatarError.deleteAvatarError))
+                return disposable
+            }
+            completable(.completed)
+            return disposable
         }
-
     }
 }

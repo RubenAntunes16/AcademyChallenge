@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 class LiveAppleReposService: AppleReposService {
 
@@ -21,5 +22,10 @@ class LiveAppleReposService: AppleReposService {
                 resultHandler(.failure(failure))
             }
         }
+    }
+
+    func getAppleRepos(page: Int, size: Int) -> Single<[AppleRepos]> {
+        return networkManager
+            .rx.executeNetworkCall(AppleReposAPI.getAppleRepos(perPage: size, page: page))
     }
 }

@@ -7,13 +7,14 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 class EmojisListCollectionViewCell: UICollectionViewCell {
 
-    private var emojiImageView: UIImageView
-    var dataTask: URLSessionTask?
+    let emojiImageView: UIImageView
+    private var dataTask: URLSessionTask?
 
-    let shared = URLSession.shared
+    var reusableDisposeBag: DisposeBag = .init()
 
     let blurEffect: UIBlurEffect
     let blurEffectView: UIVisualEffectView
@@ -69,5 +70,6 @@ class EmojisListCollectionViewCell: UICollectionViewCell {
         // NOTE: - Don't forget to clear your cell before reusing it!
         // Em caso de placeholders, o nil será substituido por uma imagem que será o placeholder
         emojiImageView.image = nil
+        reusableDisposeBag = DisposeBag()
     }
 }

@@ -6,34 +6,58 @@
 //
 
 import Foundation
+import RxSwift
 
 class AppleReposViewModel {
 
     var appleReposService: AppleReposService?
-    var appleReposList: Wrapper<[AppleRepos]?> = Wrapper([])
+    var appleReposList: [AppleRepos] = []
     var isEnd = Wrapper(false)
 
     var page: Int = 0
 
     let size = Constants.AppleRepos.perPage
 
-    func getAppleRepos() {
-        self.page += 1
-        self.appleReposService?
-            .getAppleRepos(page: self.page,
-                           size: size, { [weak self] (result: Result<[AppleRepos], Error>) in
-                guard let self = self else { return }
-            switch result {
-            case .success(let success):
-                self.appleReposList.value?.append(contentsOf: success)
+    let disposeBag = DisposeBag()
 
-                if success.count < Constants.AppleRepos.perPage {
+    private var appleRepos: PublishSubject<[AppleRepos]> = PublishSubject()
+    var appleReposResult: Observable<[AppleRepos]> { appleRepos.asObservable() }
+
+//    func getAppleRepos() {
+//        self.page += 1
+//        self.appleReposService?
+//            .getAppleRepos(page: self.page,
+//                           size: size, { (result: Result<[AppleRepos], Error>) in
+//            switch result {
+//            case .success(let success):
+//                self.appleReposList.value?.append(contentsOf: success)
+//
+//                if success.count < Constants.AppleRepos.perPage {
+//                    self.isEnd.value = true
+//                }
+//
+//            case .failure(let failure):
+//                print("[PREFETCH] Error : \(failure)")
+//            }
+//        })
+//    }
+
+    func callGetReposObservable() {
+        guard let appleReposService = appleReposService else {
+            return
+        }
+
+        self.page += 1
+
+        appleReposService.getAppleRepos(page: page, size: size)
+            .subscribe(onSuccess: { [weak self] result in
+                guard let self = self else { return }
+                self.appleReposList.append(contentsOf: result)
+                if result.count < Constants.AppleRepos.perPage {
                     self.isEnd.value = true
                 }
-
-            case .failure(let failure):
-                print("[PREFETCH] Error : \(failure)")
-            }
-        })
+                self.appleRepos.onNext(self.appleReposList)
+            })
+            .disposed(by: disposeBag)
     }
 }

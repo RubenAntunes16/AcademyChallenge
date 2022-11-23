@@ -16,7 +16,7 @@ class AppleReposView: BaseGenericView {
 
     override init(frame: CGRect) {
         tableView = .init(frame: .zero)
-        loadingSpinner = .init(style: .large)
+        loadingSpinner = .init(style: .medium)
 
         super.init(frame: frame)
 

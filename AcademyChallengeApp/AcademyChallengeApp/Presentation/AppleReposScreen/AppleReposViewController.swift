@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 class AppleReposViewController: BaseGenericViewController<AppleReposView> {
 
 //    let loadingFooterText: UILabel
@@ -40,35 +42,34 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.appleReposList.bind(listener: { [weak self] reposList in
-            guard
-                let self = self,
-                let reposList = reposList else { return }
-            self.appleReposList = reposList
-            DispatchQueue.main.async { [weak self] in
+        viewModel?.appleReposResult
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] appleRepos in
                 guard let self = self else { return }
+                self.appleReposList = appleRepos
                 self.genericView.tableView.reloadData()
                 self.finishedFetchData = true
-                // THIS IS TO FILL TABLE VIEW IF THE TABLE HAS SPACE TO DO IT
                 if self.genericView.tableView.contentSize.height < self.genericView.tableView.frame.size.height {
                     self.fetchDataTableView()
                 }
                 self.genericView.loadingSpinner.stopAnimating()
-            }
-        })
+            }, onError: { error in
+                print("Get Apple Repos: \(error)")
+            })
+            .disposed(by: disposeBag)
+
         viewModel?.isEnd.bind(listener: { [weak self] ended in
             guard let self = self else { return }
             self.isEnd = ended
         })
+
+        fetchDataTableView()
     }
 
-//    override func viewDidDisappear(_ animated: Bool) {
-//        delegate?.back()
-//    }
-
     func fetchDataTableView() {
+        finishedFetchData = false
         genericView.loadingSpinner.startAnimating()
-        viewModel?.getAppleRepos()
+        viewModel?.callGetReposObservable()
     }
 }
 
@@ -84,7 +85,6 @@ extension AppleReposViewController: UITableViewDataSource, UITableViewDelegate {
         let offsetNewFetch = heightVisibleScroll * 0.25
 
         if offset > 0 && (offset + heightVisibleScroll + offsetNewFetch) > heightTable && finishedFetchData && !isEnd {
-            finishedFetchData = false
             fetchDataTableView()
         }
     }

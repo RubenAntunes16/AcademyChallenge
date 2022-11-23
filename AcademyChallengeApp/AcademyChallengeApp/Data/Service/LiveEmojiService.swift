@@ -13,12 +13,11 @@ class LiveEmojiService: EmojiService {
 
     private var networkManager: NetworkManager = .init()
     private let persistentContainer: NSPersistentContainer
-    private var persistence: EmojiPersistence {
-        return .init(persistentContainer: persistentContainer)
-    }
+    private let persistence: EmojiPersistence
 
     init(persistentContainer: NSPersistentContainer) {
         self.persistentContainer = persistentContainer
+        self.persistence = .init(persistentContainer: persistentContainer)
     }
 
     let disposeBag: DisposeBag = DisposeBag()
@@ -49,8 +48,13 @@ class LiveEmojiService: EmojiService {
                     // DO() SÓ ESTAMOS A ACRESCENTAR UM EVENTO (SIDE EFFECT) AO OBSERVABLE
                     // DO() NÃO TERMINA O FLUXO DO OBSERVABLE
                     return self.networkManager.rx.executeNetworkCall(EmojiAPI.getEmojis)
-                        .map { (emojisResult: EmojiAPICallResult) in
-                            self.persistEmojis(emojis: emojisResult.emojis)
+                        .map { [weak self] (emojisResult: EmojiAPICallResult) in
+                            guard let self = self else { return [] }
+                            if emojisResult.emojis.count != 0 {
+                                self.persistEmojis(emojis: emojisResult.emojis)
+
+                            }
+
                             return emojisResult.emojis
                         }
                 }

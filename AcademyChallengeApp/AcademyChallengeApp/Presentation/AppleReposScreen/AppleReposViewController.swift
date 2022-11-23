@@ -42,9 +42,10 @@ class AppleReposViewController: BaseGenericViewController<AppleReposView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        viewModel?.appleReposReturn
+        viewModel?.appleReposResult
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { appleRepos in
+            .subscribe(onNext: { [weak self] appleRepos in
+                guard let self = self else { return }
                 self.appleReposList = appleRepos
                 self.genericView.tableView.reloadData()
                 self.finishedFetchData = true

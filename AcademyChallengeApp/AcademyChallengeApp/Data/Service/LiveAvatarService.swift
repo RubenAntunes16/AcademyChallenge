@@ -64,7 +64,7 @@ class LiveAvatarService: ReactiveCompatible {
                         .do { (result: Avatar) in
                             self.persistence.persist(object: result)
                                 .subscribe(onError: { error in
-                                    print("Error in persist emoji : \(error)")
+                                    print("Error in persist avatar : \(error)")
                                 })
                                 .disposed(by: self.disposeBag)
                         }
@@ -76,6 +76,6 @@ class LiveAvatarService: ReactiveCompatible {
 
     func deleteAvatar(avatarToDelete: Avatar) -> Completable {
 
-        return persistence.delete(avatarObject: avatarToDelete)
+        return persistence.delete(avatar: avatarToDelete)
     }
 }

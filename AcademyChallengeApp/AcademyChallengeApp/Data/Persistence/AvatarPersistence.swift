@@ -162,7 +162,7 @@ class AvatarPersistence: Persistence {
         })
     }
 
-    func delete(avatarObject: Avatar) -> Completable {
+    func delete(avatar: Avatar) -> Completable {
 
         return Completable.create { completable in
             let disposable: Disposable = Disposables.create {}
@@ -171,18 +171,18 @@ class AvatarPersistence: Persistence {
 
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "AvatarEntity")
 
-            fetchRequest.predicate = NSPredicate(format: "name = %@", avatarObject.name)
+            fetchRequest.predicate = NSPredicate(format: "name = %@", avatar.name)
 
             guard
-                let avatarToDelete = try? managedContext.fetch(fetchRequest),
-                let avatar = avatarToDelete.first
+                let avatarResult = try? managedContext.fetch(fetchRequest),
+                let avatarToDelete = avatarResult.first
             else {
                 completable(.error(AvatarErrors.getAvatarError))
                 return disposable
             }
 
             do {
-                managedContext.delete(avatar)
+                managedContext.delete(avatarToDelete)
                 try managedContext.save()
             } catch {
                 completable(.error(AvatarErrors.deleteAvatarError))

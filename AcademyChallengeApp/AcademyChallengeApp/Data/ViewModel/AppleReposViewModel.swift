@@ -21,7 +21,7 @@ class AppleReposViewModel {
     let disposeBag = DisposeBag()
 
     private var appleRepos: PublishSubject<[AppleRepos]> = PublishSubject()
-    var appleReposReturn: Observable<[AppleRepos]> { appleRepos.asObservable() }
+    var appleReposResult: Observable<[AppleRepos]> { appleRepos.asObservable() }
 
 //    func getAppleRepos() {
 //        self.page += 1

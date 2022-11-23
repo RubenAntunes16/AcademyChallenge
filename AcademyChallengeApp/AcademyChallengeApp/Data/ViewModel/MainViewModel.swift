@@ -18,7 +18,6 @@ class MainViewModel {
     var imageUrl: Wrapper<URL?> = Wrapper(nil)
     var searchText = Wrapper("")
 
-    // This will
     let backgroundScheduler = SerialDispatchQueueScheduler(internalSerialQueueName: "MainViewModel.backgroundScheduler")
 
     weak var delegate: MainViewDelegate?

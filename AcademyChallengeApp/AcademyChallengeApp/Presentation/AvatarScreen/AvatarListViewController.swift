@@ -49,7 +49,8 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
 //            }
 //        })
         viewModel?.getAvatars()
-            .subscribe(onSuccess: { avatars in
+            .subscribe(onSuccess: { [weak self] avatars in
+                guard let self = self else { return }
                 self.avatarList = avatars
                 self.genericView.collectionView.reloadData()
             }, onFailure: { error in

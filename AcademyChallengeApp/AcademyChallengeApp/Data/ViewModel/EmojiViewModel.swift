@@ -77,7 +77,3 @@ func downloadTask(url: URL, placeholder: UIImage = UIImage()) -> Observable<UIIm
             return image
         }
 }
-
-enum ServiceError: Error {
-    case cannotInstanciate
-}

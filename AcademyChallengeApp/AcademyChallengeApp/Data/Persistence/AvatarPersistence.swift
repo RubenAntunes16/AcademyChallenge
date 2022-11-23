@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 import RxSwift
 
-enum AvatarErrors: Error {
+enum AvatarError: Error {
     case getAvatarError
     case deleteAvatarError
     case serviceNotAvailable
@@ -177,7 +177,7 @@ class AvatarPersistence: Persistence {
                 let avatarResult = try? managedContext.fetch(fetchRequest),
                 let avatarToDelete = avatarResult.first
             else {
-                completable(.error(AvatarErrors.getAvatarError))
+                completable(.error(AvatarError.getAvatarError))
                 return disposable
             }
 
@@ -185,7 +185,7 @@ class AvatarPersistence: Persistence {
                 managedContext.delete(avatarToDelete)
                 try managedContext.save()
             } catch {
-                completable(.error(AvatarErrors.deleteAvatarError))
+                completable(.error(AvatarError.deleteAvatarError))
                 return disposable
             }
             completable(.completed)

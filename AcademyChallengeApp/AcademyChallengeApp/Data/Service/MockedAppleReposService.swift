@@ -18,14 +18,14 @@ class MockedAppleReposService: AppleReposService {
         mockedRepos = reposMocked.mockedAppleRepos
     }
 
-//    func getAppleRepos(page: Int, size: Int, _ resultHandler: @escaping (Result<[AppleRepos], Error>) -> Void) {
-//        var repos: [AppleRepos] = []
-//        let endIndex = size * page
-//        let startIndex = endIndex - size
-//
-//        if endIndex <= mockedRepos.count {
-//            repos = [AppleRepos](mockedRepos[startIndex...endIndex-1])
-//        }
+    func getAppleRepos(page: Int, size: Int, _ resultHandler: @escaping (Result<[AppleRepos], Error>) -> Void) {
+        var repos: [AppleRepos] = []
+        let endIndex = size * page
+        let startIndex = endIndex - size
+
+        if endIndex <= mockedRepos.count {
+            repos = [AppleRepos](mockedRepos[startIndex...endIndex-1])
+        }
 
 //        for i in startIndex...endIndex - 1{
 //            if i < mockedRepos.count {
@@ -33,10 +33,10 @@ class MockedAppleReposService: AppleReposService {
 //            }
 //
 //        }
-//
-//        resultHandler(.success(repos))
-//
-//    }
+
+        resultHandler(.success(repos))
+
+    }
 
     func getAppleRepos(page: Int, size: Int) -> Single<[AppleRepos]> {
 

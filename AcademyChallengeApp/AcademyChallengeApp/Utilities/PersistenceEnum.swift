@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+enum PersistenceError: Error {
+    case fetchError
+    case selfError
+    case saveContextError
+}

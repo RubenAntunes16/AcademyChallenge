@@ -22,9 +22,3 @@ protocol Persistence {
 
     func fetch() -> Single<[ObjectType]>
 }
-
-enum PersistenceError: Error {
-    case fetchError
-    case selfError
-    case saveContextError
-}

@@ -11,8 +11,8 @@ import RxSwift
 
 class EmojisListCollectionViewCell: UICollectionViewCell {
 
-    var emojiImageView: UIImageView
-    var dataTask: URLSessionTask?
+    let emojiImageView: UIImageView
+    private var dataTask: URLSessionTask?
 
     var reusableDisposeBag: DisposeBag = .init()
 

@@ -9,7 +9,7 @@ import UIKit
 
 class AvatarCollectionViewCell: UICollectionViewCell {
 
-    private var emojiImageView: UIImageView
+    private let emojiImageView: UIImageView
     var dataTask: URLSessionTask?
 
     override init(frame: CGRect) {

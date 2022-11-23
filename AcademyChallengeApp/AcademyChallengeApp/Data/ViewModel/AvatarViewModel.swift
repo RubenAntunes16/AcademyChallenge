@@ -24,7 +24,7 @@ class AvatarViewModel {
 
     func deleteAvatar(avatar: Avatar) -> Completable {
         guard let avatarService = avatarService else {
-            return Completable.error(AvatarErrors.serviceNotAvailable)
+            return Completable.error(AvatarError.serviceNotAvailable)
         }
 
         return avatarService.deleteAvatar(avatarToDelete: avatar)

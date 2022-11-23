@@ -36,18 +36,6 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-//        viewModel?.avatarList.bind(listener: { [weak self] avatarList in
-//            guard
-//                let self = self,
-//                let avatarList = avatarList else { return }
-//
-//            self.avatarList = avatarList
-//
-//            DispatchQueue.main.async { [weak self] in
-//                guard let self = self else { return }
-//                self.genericView.collectionView.reloadData()
-//            }
-//        })
         viewModel?.getAvatars()
             .subscribe(onSuccess: { [weak self] avatars in
                 guard let self = self else { return }
@@ -60,10 +48,6 @@ class AvatarListViewController: BaseGenericViewController<AvatarView> {
             })
             .disposed(by: disposeBag)
     }
-
-//    override func viewDidDisappear(_ animated: Bool) {
-//        delegate?.back()
-//    }
 }
 
 extension AvatarListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
